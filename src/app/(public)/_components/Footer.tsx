@@ -37,7 +37,7 @@ const SNS_LIST = [
 export default function Footer() {
   return (
     <footer className='text-xs text-gray-40'>
-      <RootInner className='md:flex md:h-[6.25rem] md:items-center'>
+      <RootInner className='py-8 md:flex md:h-[6.25rem] md:items-center'>
         <div className='text-center md:w-full md:text-left'>©codeit - 2023</div>
         <nav className='mb-16 mt-3 md:m-0 md:w-full'>
           <ul className='flex justify-center gap-5'>
