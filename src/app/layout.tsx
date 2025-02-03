@@ -1,4 +1,5 @@
 import localFont from 'next/font/local';
+import { Montserrat } from 'next/font/google';
 import './globals.css';
 
 const pretendard = localFont({
@@ -8,6 +9,12 @@ const pretendard = localFont({
   variable: '--font-pretendard',
 });
 
+const montserrat = Montserrat({
+  weight: '700',
+  subsets: ['latin'],
+  variable: '--font-montserrat',
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -15,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='ko'>
-      <body className={pretendard.className}>{children}</body>
+      <body className={`${pretendard.className} ${montserrat.variable}`}>{children}</body>
     </html>
   );
 }
