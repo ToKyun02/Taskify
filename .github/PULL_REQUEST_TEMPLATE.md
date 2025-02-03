@@ -1,5 +1,5 @@
 ## ❓이슈
-- #이슈번호
+- close #이슈번호
 
 ## :writing_hand: Description
 
