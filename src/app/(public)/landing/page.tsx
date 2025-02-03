@@ -2,6 +2,7 @@
 
 import Feature from './_components/Feature';
 import Hero from './_components/Hero';
+import Setting from './_components/Setting';
 import SmoothScroll from './_components/SmoothScroll';
 
 export default function LandingPage() {
@@ -9,6 +10,7 @@ export default function LandingPage() {
     <SmoothScroll>
       <Hero />
       <Feature />
+      <Setting />
     </SmoothScroll>
   );
 }
