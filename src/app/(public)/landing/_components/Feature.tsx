@@ -25,6 +25,7 @@ export default function Feature() {
             <div className='mb-[5.375rem] text-2lg text-[1.375rem] text-gray-40 md:mb-[6.25rem]'>Point {item.point}</div>
             <h2 className='whitespace-pre-wrap text-[2.25rem] font-bold md:text-[3rem]'>{item.title}</h2>
           </div>
+          {/* TODO: clsx 패키지 추가되면, 클래스 정리 필요 */}
           <figure className={`${item.imageClassName ?? ''} lg:flex lg:w-[52%] lg:items-end`}>
             <Image src={item.image} alt={item.title} className='h-auto w-full' />
           </figure>

@@ -47,6 +47,7 @@ export function AccordionItem({ children, value }: PropsWithChildren<{ value: st
   );
 }
 
+// TODO : clsx 패키지 추가후 classname 정리필요
 export function AccordionTrigger({ children }: PropsWithChildren) {
   const { selected, onSelect } = useAccordion();
   const value = useAccordionItem();
@@ -61,6 +62,7 @@ export function AccordionTrigger({ children }: PropsWithChildren) {
   );
 }
 
+// TODO : clsx 패키지 추가후 classname 정리필요
 export function AccordionContent({ children }: PropsWithChildren) {
   const { selected } = useAccordion();
   const value = useAccordionItem();

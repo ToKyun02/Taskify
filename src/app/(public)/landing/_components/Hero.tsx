@@ -13,6 +13,7 @@ export default function Hero() {
         <div className='pt-[15%]'>
           <Image src={LogoFull} alt='TASKIFY' className='mx-auto h-auto w-[26%]' />
         </div>
+        {/* TODO: clsx 패키지 추가후, 클래스 정리 필요 */}
         <div className={`absolute bottom-0 left-0 right-0 transition-opacity ${lottieLoaded ? 'opacity-100' : 'opacity-0'}`}>
           <Lottie animationData={LottieData} loop={true} onDOMLoaded={() => setLottieLoaded(true)} />
           <div className='h-10 bg-[#eee]'></div>
