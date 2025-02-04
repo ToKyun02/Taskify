@@ -2,9 +2,10 @@
 
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm, UseFormRegisterReturn } from 'react-hook-form';
 import Field from '@/components/auth/Field';
+import SubmitButton from '@/components/auth/SubmitButton';
 import { SIGNUP_FORM_PLACEHOLDER, SINGUP_FORM_VALID_LENGTH, SIGNUP_FORM_ERROR_MESSAGE } from '@/constants/auth';
-import { useForm } from 'react-hook-form';
 //TODO: 회원가입 폼 레이아웃 및 validation 작업
 
 //TODO: API 함수 구현 후 스키마와 타입 정의 옮길 예정
@@ -20,12 +21,24 @@ const signupSchema = z
     message: SIGNUP_FORM_ERROR_MESSAGE.PASSWORD_CONFIRM.NOT_MATCH,
     path: ['passwordConfirm'],
   })
-  .refine((check) => check.terms === true, {
+  .refine((check) => check.terms, {
     message: SIGNUP_FORM_ERROR_MESSAGE.TERMS.NOT_TOS,
     path: ['terms'],
   });
 
 type SignupFormData = z.infer<typeof signupSchema>;
+
+function Checkbox({ errorMessage, register }: { errorMessage?: string; register: UseFormRegisterReturn }) {
+  return (
+    <div className='flex flex-col gap-2'>
+      <label className='flex items-center'>
+        <input type='checkbox' {...register} />
+        <span className='text-gray-70'>이용약관에 동의합니다.</span>
+      </label>
+      {errorMessage && <span className='text-md text-red'>{errorMessage}</span>}
+    </div>
+  );
+}
 
 export default function SignupForm() {
   const {
@@ -63,16 +76,13 @@ export default function SignupForm() {
         errorMessage={errors.password?.message}
       />
       <Field label='비밀번호 확인' type='password' placeholder={SIGNUP_FORM_PLACEHOLDER.PASSWORD_CONFIRM} register={register('passwordConfirm')} errorMessage={errors.passwordConfirm?.message} />
-      {/* TODO: 체크박스 및 버튼 컴포넌트 분리 예정*/}
-      <label className='flex items-center text-sm text-gray-700'>
-        <input type='checkbox' {...register('terms')} />
-        <span>이용약관에 동의합니다.</span>
-      </label>
-      {errors.terms && <span className='text-md text-red'>{errors.terms.message}</span>}
-
-      <button disabled={!isValid} className={`rounded-lg ${isValid ? 'cursor-pointer bg-violet-20' : 'cursor-not-allowed bg-gray-40'} py-3 text-2lg font-medium text-white`}>
-        가입하기
-      </button>
+      <Checkbox
+        register={register('terms', {
+          onChange: () => trigger('terms'),
+        })}
+        errorMessage={errors.terms?.message}
+      />
+      <SubmitButton text='가입하기' isValid={isValid} />
     </form>
   );
 }
