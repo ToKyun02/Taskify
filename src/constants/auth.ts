@@ -37,3 +37,27 @@ export const SIGNUP_FORM_ERROR_MESSAGE = {
     NOT_TOS: '이용약관에 동의해야 합니다.',
   },
 } as const;
+
+export const LOGIN_FORM_PLACEHOLDER = {
+  EMAIL: '이메일을 입력해 주세요',
+  PASSWORD: '비밀번호를 입력해 주세요',
+} as const;
+
+export const LOGIN_FORM_VALID_LENGTH = {
+  EMAIL: {
+    MIN: 1,
+  },
+  PASSWORD: {
+    MIN: 8,
+  },
+} as const;
+
+export const LOGIN_FORM_ERROR_MESSAGE = {
+  EMAIL: {
+    MIN: '이메일을 입력해 주세요',
+    NOT_FORM: '이메일 형식으로 작성해 주세요',
+  },
+  PASSWORD: {
+    MIN: '8자 이상 작성해 주세요',
+  },
+} as const;

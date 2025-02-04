@@ -2,9 +2,10 @@
 
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm, UseFormRegisterReturn } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import Field from '@/components/auth/Field';
 import SubmitButton from '@/components/auth/SubmitButton';
+import Checkbox from './Checkbox';
 import { SIGNUP_FORM_PLACEHOLDER, SINGUP_FORM_VALID_LENGTH, SIGNUP_FORM_ERROR_MESSAGE } from '@/constants/auth';
 //TODO: 회원가입 폼 레이아웃 및 validation 작업
 
@@ -27,18 +28,6 @@ const signupSchema = z
   });
 
 type SignupFormData = z.infer<typeof signupSchema>;
-
-function Checkbox({ errorMessage, register }: { errorMessage?: string; register: UseFormRegisterReturn }) {
-  return (
-    <div className='flex flex-col gap-2'>
-      <label className='flex items-center'>
-        <input type='checkbox' {...register} />
-        <span className='text-gray-70'>이용약관에 동의합니다.</span>
-      </label>
-      {errorMessage && <span className='text-md text-red'>{errorMessage}</span>}
-    </div>
-  );
-}
 
 export default function SignupForm() {
   const {
