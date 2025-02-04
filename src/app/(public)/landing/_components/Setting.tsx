@@ -1,7 +1,8 @@
+import Image from 'next/image';
+import { easeInOut, motion } from 'motion/react';
 import setting_img_1 from '@/assets/landings/setting-1.png';
 import setting_img_2 from '@/assets/landings/setting-2.png';
 import setting_img_3 from '@/assets/landings/setting-3.png';
-import Image from 'next/image';
 
 const SETTING_CONTENT = [
   {
@@ -21,13 +22,38 @@ const SETTING_CONTENT = [
   },
 ];
 
+const cardVariants = {
+  initial: {
+    opacity: 0,
+    y: 20,
+  },
+  animate: (index: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: 0.1 * index,
+      ease: easeInOut,
+    },
+  }),
+};
+
 export default function Setting() {
   return (
-    <section className='mx-auto mb-12 max-w-[23.625rem] py-[5.625rem] lg:max-w-full'>
+    <section className='relative mx-auto mb-[12.5rem] max-w-[23.625rem] lg:max-w-full'>
       <h2 className='mb-[2.625rem] text-center text-2xl font-bold md:text-[1.75rem] lg:text-left'>생산성을 높이는 다양한 설정 ⚡</h2>
       <ul className='flex flex-col gap-10 md:gap-12 lg:flex-row lg:gap-8'>
         {SETTING_CONTENT.map((item, index) => (
-          <div key={index} className='overflow-hidden rounded-lg bg-gray-80'>
+          <motion.li
+            key={index}
+            className='overflow-hidden rounded-lg bg-gray-80'
+            custom={index}
+            variants={cardVariants}
+            initial='initial'
+            whileInView='animate'
+            viewport={{
+              margin: '-20% 0px',
+            }}
+          >
             <figure className='bg-gray-60'>
               <Image src={item.image} alt={item.title} className='h-auto w-full' />
             </figure>
@@ -35,7 +61,7 @@ export default function Setting() {
               <h3 className='mb-4 text-2lg font-bold'>{item.title}</h3>
               <div className='font-medium'>{item.desc}</div>
             </div>
-          </div>
+          </motion.li>
         ))}
       </ul>
     </section>
