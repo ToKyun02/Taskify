@@ -4,8 +4,9 @@ import ICON_INSTAGRAM from '@/assets/icons/Instagram.svg';
 import Image from 'next/image';
 import Link from 'next/link';
 import { RootInner } from './Inner';
+import { BaseLinkItem, IconLinkItem } from './type';
 
-const FOOTER_NAV_LIST = [
+const FOOTER_NAV_LIST: BaseLinkItem[] = [
   {
     path: '/privacy',
     label: 'Privacy Policy',
@@ -16,7 +17,7 @@ const FOOTER_NAV_LIST = [
   },
 ];
 
-const SNS_LIST = [
+const SNS_LIST: IconLinkItem[] = [
   {
     path: '#',
     icon: ICON_MAIL,
