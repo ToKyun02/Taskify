@@ -15,6 +15,7 @@ const FEATURE_CONTENT = [
     point: 2,
     title: '해야 할 일을\n등록하세요',
     image: feature_img_2,
+    reverse: true,
   },
 ];
 
@@ -42,7 +43,8 @@ export default function Feature() {
       {FEATURE_CONTENT.map((item, index) => (
         <motion.div
           key={index}
-          className={`sticky overflow-hidden rounded-lg bg-gray-80 lg:flex lg:h-[37.5rem] [&:nth-child(2)]:lg:flex-row-reverse`}
+          // TODO: clsx 패키지 추가되면, 클래스 정리 필요
+          className={`sticky overflow-hidden rounded-lg bg-gray-80 lg:flex lg:h-[37.5rem] ${item.reverse ? 'lg:flex-row-reverse' : ''}`}
           style={{
             top: `${(index + 1) * 5}rem`,
             scale: scaleFactor[index],
