@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { easeInOut, motion } from 'motion/react';
 import Lottie from 'lottie-react';
-import LottieData from '@/assets/landings/heror.json';
+import LottieData from '@/assets/landings/hero.json';
 import LogoFull from '@/assets/images/logo_full_white.svg';
 
 const containerVariants = {
