@@ -1,6 +1,7 @@
 import Link from 'next/link';
+import { BaseLinkItem } from './type';
 
-const ROOT_NAV_LIST = [
+const ROOT_NAV_LIST: BaseLinkItem[] = [
   {
     path: '/login',
     label: '로그인',

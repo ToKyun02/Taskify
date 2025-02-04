@@ -1,10 +1,18 @@
 import { useRef } from 'react';
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 import { useScroll, useTransform, motion } from 'motion/react';
 import feature_img_1 from '@/assets/landings/feature-1.png';
 import feature_img_2 from '@/assets/landings/feature-2.png';
 
-const FEATURE_CONTENT = [
+type FEATURE_CONTENT = {
+  point: number;
+  title: string;
+  image: StaticImageData;
+  imageClassName?: string;
+  reverse?: boolean;
+};
+
+const FEATURE_CONTENTS: FEATURE_CONTENT[] = [
   {
     point: 1,
     title: '일의 우선순위를\n관리하세요',
@@ -40,9 +48,9 @@ export default function Feature() {
 
   return (
     <section className='mb-[12.5rem] grid gap-[5.625rem] py-5' ref={containerRef}>
-      {FEATURE_CONTENT.map((item, index) => (
+      {FEATURE_CONTENTS.map((item, index) => (
         <motion.div
-          key={index}
+          key={item.point}
           // TODO: clsx 패키지 추가되면, 클래스 정리 필요
           className={`sticky overflow-hidden rounded-lg bg-gray-80 lg:flex lg:h-[37.5rem] ${item.reverse ? 'lg:flex-row-reverse' : ''}`}
           style={{
