@@ -34,8 +34,8 @@ export default function Hero() {
         variants={childVariants}
         className='relative mx-auto mb-[1.625rem] aspect-[1.7/1] w-full max-w-[722px] overflow-hidden rounded-lg bg-violet-20 md:mb-12'
       >
-        <div className='pt-[15%]'>
-          <Image src={LogoFull} alt='TASKIFY' className='mx-auto h-auto w-[26%]' />
+        <div className='relative mx-auto mt-[15%] aspect-[189/61] w-[26%]'>
+          <Image src={LogoFull} alt='TASKIFY' fill />
         </div>
         {/* TODO: clsx 패키지 추가후, 클래스 정리 필요 */}
         <div className={`absolute bottom-0 left-0 right-0 transition-opacity ${lottieLoaded ? 'opacity-100' : 'opacity-0'}`}>
