@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import Crown from '@/assets/icons/crown.svg';
 import Title from './Title';
@@ -14,6 +15,11 @@ interface HeaderProps {
   showProfile?: boolean;
 }
 
+const titleMap: { [key: string]: string } = {
+  '/mydashboard': '내 대시보드',
+  '/mypage': '계정관리',
+};
+
 // API 연동 이후 추가 작업 예정, 우선 mock 데이터로 집어넣어놨습니다.
 interface UserType {
   nickname: string;
@@ -25,7 +31,9 @@ const mockUser: UserType = {
   profileImageUrl: 'B',
 };
 
-export default function Header({ title, showCrown = false, showSetting = false, showUsers = false, showProfile = false }: HeaderProps) {
+export default function Header({ showCrown = false, showSetting = false, showUsers = false, showProfile = false }: HeaderProps) {
+  const pathname = usePathname();
+  const title = titleMap[pathname] || '내 대시보드';
   const handleSettingClick = () => {
     console.log('관리 버튼 클릭');
   };

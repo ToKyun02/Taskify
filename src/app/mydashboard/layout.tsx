@@ -6,7 +6,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <div className='flex'>
       <Sidebar />
-      <Header title='나의 대시보드' showCrown showSetting showUsers showProfile />
+      <Header showCrown showSetting showUsers showProfile />
       <main className='flex-1'>{children}</main>
     </div>
   );
