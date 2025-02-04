@@ -7,7 +7,6 @@ import Field from '@/components/auth/Field';
 import SubmitButton from '@/components/auth/SubmitButton';
 import Checkbox from './Checkbox';
 import { SIGNUP_FORM_PLACEHOLDER, SINGUP_FORM_VALID_LENGTH, SIGNUP_FORM_ERROR_MESSAGE } from '@/constants/auth';
-//TODO: 회원가입 폼 레이아웃 및 validation 작업
 
 //TODO: API 함수 구현 후 스키마와 타입 정의 옮길 예정
 const signupSchema = z

@@ -6,7 +6,6 @@ import { useForm } from 'react-hook-form';
 import Field from '@/components/auth/Field';
 import SubmitButton from '@/components/auth/SubmitButton';
 import { LOGIN_FORM_ERROR_MESSAGE, LOGIN_FORM_PLACEHOLDER, LOGIN_FORM_VALID_LENGTH } from '@/constants/auth';
-//TODO: 회원가입 폼 레이아웃 및 validation 작업
 
 //TODO: API 함수 구현 후 스키마와 타입 정의 옮길 예정
 const loginSchema = z.object({
