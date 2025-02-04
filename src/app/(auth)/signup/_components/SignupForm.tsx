@@ -1,32 +1,12 @@
 'use client';
 
-import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import Field from '@/components/auth/Field';
 import SubmitButton from '@/components/auth/SubmitButton';
 import Checkbox from './Checkbox';
-import { SIGNUP_FORM_PLACEHOLDER, SINGUP_FORM_VALID_LENGTH, SIGNUP_FORM_ERROR_MESSAGE } from '@/constants/auth';
-
-//TODO: API 함수 구현 후 스키마와 타입 정의 옮길 예정
-const signupSchema = z
-  .object({
-    email: z.string().min(SINGUP_FORM_VALID_LENGTH.EMAIL.MIN, SIGNUP_FORM_ERROR_MESSAGE.EMAIL.MIN).email(SIGNUP_FORM_ERROR_MESSAGE.EMAIL.NOT_FORM),
-    nickname: z.string().min(SINGUP_FORM_VALID_LENGTH.NICKNAME.MIN, SIGNUP_FORM_ERROR_MESSAGE.NICKNAME.MIN).max(SINGUP_FORM_VALID_LENGTH.NICKNAME.MAX, SIGNUP_FORM_ERROR_MESSAGE.NICKNAME.MAX),
-    password: z.string().min(SINGUP_FORM_VALID_LENGTH.PASSWORD.MIN, SIGNUP_FORM_ERROR_MESSAGE.PASSWORD.MIN),
-    passwordConfirm: z.string(),
-    terms: z.boolean(),
-  })
-  .refine((check) => check.password === check.passwordConfirm, {
-    message: SIGNUP_FORM_ERROR_MESSAGE.PASSWORD_CONFIRM.NOT_MATCH,
-    path: ['passwordConfirm'],
-  })
-  .refine((check) => check.terms, {
-    message: SIGNUP_FORM_ERROR_MESSAGE.TERMS.NOT_TOS,
-    path: ['terms'],
-  });
-
-type SignupFormData = z.infer<typeof signupSchema>;
+import { SIGNUP_FORM_PLACEHOLDER } from '@/constants/auth';
+import { signupSchema, SignupFormData } from '@/apis/users/types';
 
 export default function SignupForm() {
   const {
