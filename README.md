@@ -67,3 +67,6 @@
 
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=F1EFFD&height=200&section=footer&fontSize=80" />
+
+
+안녕하세요
