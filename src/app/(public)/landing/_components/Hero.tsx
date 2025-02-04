@@ -1,9 +1,11 @@
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import Image from 'next/image';
 import { easeInOut, motion } from 'motion/react';
-import Lottie from 'lottie-react';
 import LottieData from '@/assets/landings/hero.json';
 import LogoFull from '@/assets/images/logo_full_white.svg';
+
+const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
 
 const containerVariants = {
   initial: { opacity: 0 },
