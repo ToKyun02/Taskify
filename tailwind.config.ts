@@ -52,6 +52,9 @@ export default {
           30: '#D549B6', //badge text-color
         },
       },
+      fontFamily: {
+        mont: ['var(--font-montserrat)'],
+      },
     },
   },
   plugins: [],
