@@ -1,12 +1,11 @@
 'use client';
 
-import { useState } from 'react';
 import Image from 'next/image';
 
-import { chunkArray } from '@/utils/chunkArray';
+import { UseChunkPagination } from '@/hooks/useChunkPagination';
+import PaginationControls from '../pagination/PaginationControls';
 import SidebarLogo from './SidebarLogo';
 import SidebarItemList from './SidebarItemList';
-import SidebarPaginationControls from './SidebarPaginationControls';
 
 import add_box from '@/assets/icons/add_box.svg';
 
@@ -37,25 +36,11 @@ const mockBoardData: ItemList[] = [
 ];
 
 export default function Sidebar() {
-  const MAX_GROUPS_PER_PAGE = 3;
-  const [page, setPage] = useState(1);
-  const chunkedData = chunkArray(mockBoardData, 5);
-
-  const totalPages = Math.ceil(chunkedData.length / MAX_GROUPS_PER_PAGE);
-
-  const startIndex = (page - 1) * MAX_GROUPS_PER_PAGE;
-  const endIndex = page * MAX_GROUPS_PER_PAGE;
-  const currentGroups = chunkedData.slice(startIndex, endIndex);
-
-  const canGoPrev = page > 1;
-  const canGoNext = page < totalPages;
-
-  const handlePrev = () => {
-    if (canGoPrev) setPage((prev) => prev - 1);
-  };
-  const handleNext = () => {
-    if (canGoNext) setPage((prev) => prev + 1);
-  };
+  const { currentGroups, totalPages, canGoPrev, canGoNext, handlePrev, handleNext } = UseChunkPagination({
+    items: mockBoardData,
+    chunkSize: 5,
+    maxGroupsPerPage: 3,
+  });
 
   return (
     <aside className='h-screen w-[67px] px-2 py-5 md:w-[160px] lg:w-[300px]'>
@@ -71,7 +56,7 @@ export default function Sidebar() {
             <SidebarItemList currentGroups={currentGroups} />
           </div>
 
-          {totalPages > 1 && <SidebarPaginationControls canGoPrev={canGoPrev} canGoNext={canGoNext} handlePrev={handlePrev} handleNext={handleNext} />}
+          <PaginationControls canGoPrev={canGoPrev} canGoNext={canGoNext} handlePrev={handlePrev} handleNext={handleNext} totalPages={totalPages} alwaysShow={false} className='hidden md:flex' />
         </div>
       </div>
     </aside>
