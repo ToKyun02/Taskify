@@ -1,7 +1,4 @@
-function Header() {
-  //TODO: Header 레이아웃 작업
-  return <header></header>;
-}
+import Header from './_components/Header';
 
 export default function Layout({
   children,
