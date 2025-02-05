@@ -20,7 +20,7 @@ const titleMap: { [key: string]: string } = {
   '/mypage': '계정관리',
 };
 
-// API 연동 이후 추가 작업 예정, 우선 mock 데이터로 집어넣어놨습니다.
+// TODO : API 연동 이후 추가 작업 예정, 우선 mock 데이터로 집어넣어놨습니다.
 interface UserType {
   nickname: string;
   profileImageUrl: string;
@@ -36,14 +36,17 @@ export default function Header({ showCrown = false, showSetting = false, showUse
   const title = titleMap[pathname] || '내 대시보드';
   const handleSettingClick = () => {
     console.log('관리 버튼 클릭');
+    // TODO : 디버깅 용도 console.log API 기능 구현 후 수정 예정
   };
 
   const handleInviteClick = () => {
     console.log('초대 버튼 클릭');
+    // TODO : 디버깅 용도 console.log API 기능 구현 후 수정 예정
   };
 
   const handleProfileClick = () => {
     console.log('프로필 버튼 클릭');
+    // TODO : 디버깅 용도 console.log API 기능 구현 후 수정 예정
   };
 
   return (
@@ -51,7 +54,7 @@ export default function Header({ showCrown = false, showSetting = false, showUse
       {/* 왼쪽 제목 그룹 */}
       <div className='flex items-center gap-[8px]'>
         <Title title={title} />
-        {showCrown && <Image src={Crown} alt='방장 표시' className='hidden h-[16px] w-[20px] lg:block' />}
+        {showCrown && <Image src={Crown} alt='방장 표시' width={20} height={16} className='hidden lg:block' />}
       </div>
       {/* 오른쪽 버튼 그룹 */}
       <div className='flex items-center'>

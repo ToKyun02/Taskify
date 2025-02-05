@@ -15,14 +15,14 @@ export default function SettingBtn({ onSettingClick, onInviteClick }: SettingBtn
         className='flex h-[30px] w-[49px] items-center justify-center gap-[8px] rounded-[8px] border border-gray-30 text-[14px] text-gray-50 transition-transform hover:scale-105 hover:border-violet-20 hover:bg-violet-20 hover:text-white sm:h-[40px] sm:w-[88px] md:text-[16px]'
         onClick={onSettingClick}
       >
-        <Image src={Setting} alt='관리 버튼' className='hidden sm:block' />
+        <Image src={Setting} alt='관리 버튼' width={15} height={15} className='hidden sm:block' />
         관리
       </button>
       <button
         className='flex h-[30px] w-[73px] items-center justify-center gap-[8px] rounded-[8px] border border-gray-30 text-[14px] text-gray-50 transition-transform hover:scale-105 hover:border-violet-20 hover:bg-violet-20 hover:text-white sm:h-[40px] sm:w-[116px] md:text-[14px]'
         onClick={onInviteClick}
       >
-        <Image src={AddBox} alt='초대 버튼' className='hidden sm:block' />
+        <Image src={AddBox} alt='초대 버튼' width={15} height={15} className='hidden sm:block' />
         초대하기
       </button>
     </div>
