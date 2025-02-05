@@ -1,14 +1,7 @@
-import Header from './_components/Header';
-
 export default function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <>
-      <Header />
-      {children}
-    </>
-  );
+  return <div className='mx-3 flex min-h-dvh flex-col items-center justify-center gap-9 bg-gray-10'>{children}</div>;
 }
