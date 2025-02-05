@@ -19,3 +19,18 @@ export const signupSchema = z
   });
 
 export type SignupFormData = z.infer<typeof signupSchema>;
+
+export interface SignupSuccessResponse {
+  id: number;
+  email: string;
+  nickname: string;
+  profileImageUrl: string | null;
+  createdAt: string | Date;
+  updatedAt: string | Date;
+}
+
+export interface SignupFailResponse {
+  message: string;
+}
+
+export type SignupResponse = Promise<SignupSuccessResponse | SignupFailResponse>;

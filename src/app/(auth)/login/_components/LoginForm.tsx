@@ -19,7 +19,7 @@ export default function LoginForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitting },
   } = useForm({
     resolver: zodResolver(loginSchema),
     mode: 'onBlur',
@@ -37,7 +37,7 @@ export default function LoginForm() {
     <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-6'>
       <Field label='이메일' type='email' placeholder={LOGIN_FORM_PLACEHOLDER.EMAIL} register={register('email')} errorMessage={errors.email?.message} />
       <Field label='비밀번호' type='password' placeholder={LOGIN_FORM_PLACEHOLDER.PASSWORD} register={register('password')} errorMessage={errors.password?.message} />
-      <SubmitButton text='로그인' isValid={isValid} />
+      <SubmitButton text='로그인' isValid={isValid} isSubmitting={isSubmitting} />
     </form>
   );
 }

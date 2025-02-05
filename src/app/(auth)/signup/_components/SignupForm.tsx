@@ -7,13 +7,14 @@ import SubmitButton from '@/components/auth/SubmitButton';
 import Checkbox from './Checkbox';
 import { SIGNUP_FORM_PLACEHOLDER } from '@/constants/auth';
 import { signupSchema, SignupFormData } from '@/apis/users/types';
+import { signup } from '@/apis/users';
 
 export default function SignupForm() {
   const {
     register,
     trigger,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitting },
   } = useForm({
     resolver: zodResolver(signupSchema),
     mode: 'onBlur',
@@ -25,9 +26,14 @@ export default function SignupForm() {
       terms: false,
     },
   });
-  const onSubmit = (signupFormData: SignupFormData) => {
-    // TODO : 디버깅 용으로 남겼습니다. API 함수 구현이 완료되면 로직 수정 예정입니다.
-    console.log(signupFormData);
+  const onSubmit = async (signupFormData: SignupFormData) => {
+    const response = await signup(signupFormData);
+    // TODO: 디버깅 용으로 alert로 구현했습니다. 모달 기능 구현 후 로직 수정 예정입니다.
+    if ('message' in response) {
+      alert(response.message);
+    } else {
+      alert('가입이 완료되었습니다!');
+    }
   };
 
   return (
@@ -50,7 +56,7 @@ export default function SignupForm() {
         })}
         errorMessage={errors.terms?.message}
       />
-      <SubmitButton text='가입하기' isValid={isValid} />
+      <SubmitButton text='가입하기' isValid={isValid} isSubmitting={isSubmitting} />
     </form>
   );
 }
