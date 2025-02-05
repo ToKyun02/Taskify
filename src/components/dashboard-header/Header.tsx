@@ -6,12 +6,14 @@ import Image from 'next/image';
 import Crown from '@/assets/icons/crown.svg';
 import Title from './Title';
 import SettingBtn from './SettingBtn';
+import Members from './Members';
+import Profile from './Profile';
 
 interface HeaderProps {
   title?: string;
   showCrown?: boolean;
   showSetting?: boolean;
-  showUsers?: boolean;
+  showMembers?: boolean;
   showProfile?: boolean;
 }
 
@@ -26,12 +28,13 @@ interface UserType {
   profileImageUrl: string;
 }
 
-const mockUser: UserType = {
-  nickname: '배유철',
-  profileImageUrl: 'B',
-};
+const mockUsers: UserType[] = [
+  { nickname: '배유철', profileImageUrl: 'B' },
+  { nickname: '김철수', profileImageUrl: 'K' },
+  { nickname: '이영희', profileImageUrl: 'L' },
+];
 
-export default function Header({ showCrown = false, showSetting = false, showUsers = false, showProfile = false }: HeaderProps) {
+export default function Header({ showCrown = false, showSetting = false, showMembers = false, showProfile = false }: HeaderProps) {
   const pathname = usePathname();
   const title = titleMap[pathname] || '내 대시보드';
   const handleSettingClick = () => {
@@ -58,30 +61,11 @@ export default function Header({ showCrown = false, showSetting = false, showUse
       </div>
       {/* 오른쪽 버튼 그룹 */}
       <div className='flex items-center'>
-        <>
-          <div className='flex items-center gap-[16px] border-r border-gray-30 pr-[12px] sm:gap-[32px] sm:pr-[24px] md:gap-[40px] md:pr-[32px]'>
-            {showSetting && <SettingBtn onSettingClick={handleSettingClick} onInviteClick={handleInviteClick} />}
-            {showUsers && (
-              <div className='flex'>
-                <span className='-ml-[8px] flex h-[34px] w-[34px] items-center justify-center rounded-full border-2 border-white bg-green-30 text-white sm:h-[38px] sm:w-[38px]'>
-                  {mockUser.profileImageUrl}
-                </span>
-                <span className='-ml-[8px] flex h-[34px] w-[34px] items-center justify-center rounded-full border-2 border-white bg-green-30 text-white sm:h-[38px] sm:w-[38px]'>
-                  {mockUser.profileImageUrl}
-                </span>
-                <span className='-ml-[8px] flex h-[34px] w-[34px] items-center justify-center rounded-full border-2 border-white bg-green-30 text-white sm:h-[38px] sm:w-[38px]'>
-                  {mockUser.profileImageUrl}
-                </span>
-              </div>
-            )}
-          </div>
-          {showProfile && (
-            <button onClick={handleProfileClick} className='mr-[40px] flex items-center justify-center gap-[12px] pl-[12px] sm:pl-[24px] md:pl-[32px]'>
-              <span className='flex h-[34px] w-[34px] items-center justify-center rounded-full border-2 border-white bg-green-30 text-white sm:h-[38px] sm:w-[38px]'>{mockUser.profileImageUrl}</span>
-              <span className='hidden text-[16px] md:block'>{mockUser.nickname}</span>
-            </button>
-          )}
-        </>
+        <div className='flex items-center gap-[16px] border-r border-gray-30 pr-[12px] sm:gap-[32px] sm:pr-[24px] md:gap-[40px] md:pr-[32px]'>
+          {showSetting && <SettingBtn onSettingClick={handleSettingClick} onInviteClick={handleInviteClick} />}
+          {showMembers && <Members users={mockUsers} />}
+        </div>
+        {showProfile && <Profile nickname={mockUsers[0].nickname} profileImageUrl={mockUsers[0].profileImageUrl} onClick={handleProfileClick} />}
       </div>
     </header>
   );
