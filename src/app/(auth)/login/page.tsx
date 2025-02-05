@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import LoginForm from './_components/LoginForm';
 import Header from '../_components/Header';
-export default function Signup() {
+export default function Login() {
   return (
     <>
       <Header>오늘도 만나서 반가워요!</Header>
