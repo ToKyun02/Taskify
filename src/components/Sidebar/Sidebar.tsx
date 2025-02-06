@@ -35,21 +35,19 @@ export default function Sidebar() {
   });
 
   return (
-    <aside className='h-screen w-[67px] px-2 py-5 md:w-[160px] lg:w-[300px]'>
-      <div className='flex flex-col items-center gap-[14px] md:items-center md:gap-14 lg:items-stretch'>
+    <aside className='flex h-screen flex-col px-2 py-5'>
+      <div className='mb-[14px] flex justify-center md:mb-14 md:justify-start'>
         <SidebarLogo />
-
-        <div className='flex flex-col gap-8'>
-          <div className='flex flex-col gap-4'>
-            <div className='flex justify-center md:justify-between'>
-              <p className='hidden text-xs font-semibold text-gray-50 md:block'>Dash Boards</p>
-              <Image src={add_box} width={14} height={14} alt='add_button' className='cursor-pointer' />
-            </div>
-            <SidebarItemList currentGroups={currentGroups} />
-          </div>
-
-          <PaginationControls canGoPrev={canGoPrev} canGoNext={canGoNext} handlePrev={handlePrev} handleNext={handleNext} totalPages={totalPages} alwaysShow={false} className='hidden md:flex' />
+      </div>
+      <div className='mb-4 flex justify-center md:justify-between'>
+        <p className='hidden text-xs font-semibold text-gray-50 md:block'>Dash Boards</p>
+        <Image src={add_box} width={14} height={14} alt='add_button' className='cursor-pointer' />
+      </div>
+      <div className='flex-1 overflow-y-auto [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar]:w-1'>
+        <div className='mb-8'>
+          <SidebarItemList currentGroups={currentGroups} />
         </div>
+        <PaginationControls canGoPrev={canGoPrev} canGoNext={canGoNext} handlePrev={handlePrev} handleNext={handleNext} totalPages={totalPages} alwaysShow={false} className='hidden md:flex' />
       </div>
     </aside>
   );
