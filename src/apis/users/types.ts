@@ -1,6 +1,10 @@
 import { z } from 'zod';
 import { SINGUP_FORM_VALID_LENGTH, SIGNUP_FORM_ERROR_MESSAGE } from '@/constants/auth';
 
+interface FailResponse {
+  message: string;
+}
+
 export const signupSchema = z
   .object({
     email: z.string().min(SINGUP_FORM_VALID_LENGTH.EMAIL.MIN, SIGNUP_FORM_ERROR_MESSAGE.EMAIL.MIN).email(SIGNUP_FORM_ERROR_MESSAGE.EMAIL.NOT_FORM),
@@ -31,8 +35,6 @@ export interface User {
 
 export type SignupSuccessResponse = User;
 
-export interface SignupFailResponse {
-  message: string;
-}
+export type SignupFailResponse = FailResponse;
 
 export type SignupResponse = Promise<SignupSuccessResponse | SignupFailResponse>;
