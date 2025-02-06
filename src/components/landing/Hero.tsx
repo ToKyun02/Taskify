@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { easeInOut, motion } from 'motion/react';
 import LottieData from '@/assets/landings/hero.json';
 import LogoFull from '@/assets/images/logo_full_white.svg';
+import Link from 'next/link';
 
 const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
 
@@ -21,6 +22,8 @@ const childVariants = {
   initial: { y: 20, opacity: 0 },
   animate: { y: 0, opacity: 1, transition: { ease: easeInOut } },
 };
+
+const MotionLink = motion.create(Link);
 
 export default function Hero() {
   const [lottieLoaded, setLottieLoaded] = useState(false);
@@ -56,12 +59,13 @@ export default function Hero() {
         <span className='text-[2.5rem] font-bold tracking-tight text-white md:text-[3.5rem] lg:text-[4.75rem]'>새로운 일정 관리</span>
         <span className='font-mont text-[2.625rem] font-thin tracking-normal text-violet-20 md:text-[4.375rem] lg:text-[5.625rem]'>Taskify</span>
       </motion.h1>
-      <motion.button
+      <MotionLink
+        href='/login'
         variants={childVariants}
         className='mx-auto flex h-[2.875rem] w-[14.69rem] items-center justify-center rounded-lg bg-violet-20 text-md font-medium md:h-[3.375rem] md:w-[17.5rem] md:text-2lg'
       >
         로그인하기
-      </motion.button>
+      </MotionLink>
     </motion.div>
   );
 }

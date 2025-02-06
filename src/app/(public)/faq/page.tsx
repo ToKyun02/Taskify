@@ -1,5 +1,5 @@
-import SubHeader from '../_components/SubHeader';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './_components/Accordion';
+import SubHeader from '@/components/landing/layout/SubHeader';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/landing/Accordion';
 
 const FAQ_CONTENTS = [
   {
