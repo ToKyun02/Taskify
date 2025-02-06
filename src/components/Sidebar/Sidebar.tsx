@@ -6,38 +6,30 @@ import { UseChunkPagination } from '@/hooks/useChunkPagination';
 import PaginationControls from '../pagination/PaginationControls';
 import SidebarLogo from './SidebarLogo';
 import SidebarItemList from './SidebarItemList';
-
 import add_box from '@/assets/icons/add_box.svg';
+
+// TODO : 실제 api 요청으로 변경
+import { mockDashboardData } from '@/apis/dashboards/mockData';
 
 interface ItemList {
   id: number;
-  name: string;
-  colorClass: 'green-30' | 'blue-20' | 'orange-20' | 'purple' | 'pink-20';
-  hasCrown?: boolean;
+  title: string;
+  color: 'green-30' | 'blue-20' | 'orange-20' | 'purple' | 'pink-20';
+  createdByMe: boolean;
 }
 
-const mockBoardData: ItemList[] = [
-  { id: 1, name: '비브리지', colorClass: 'green-30', hasCrown: true },
-  { id: 2, name: '코드잇', colorClass: 'blue-20', hasCrown: true },
-  { id: 3, name: '3분기 계획', colorClass: 'green-30' },
-  { id: 4, name: '회의록', colorClass: 'blue-20' },
-  { id: 5, name: '중요 문서함', colorClass: 'pink-20' },
-  { id: 6, name: '비브리지', colorClass: 'blue-20', hasCrown: true },
-  { id: 7, name: '코드잇', colorClass: 'purple', hasCrown: true },
-  { id: 8, name: '3분기 계획', colorClass: 'blue-20' },
-  { id: 9, name: '회의록', colorClass: 'purple' },
-  { id: 10, name: '중요 문서함', colorClass: 'blue-20' },
-  { id: 11, name: '비브리지', colorClass: 'blue-20', hasCrown: true },
-  { id: 12, name: '코드잇', colorClass: 'pink-20', hasCrown: true },
-  { id: 13, name: '3분기 계획', colorClass: 'orange-20' },
-  { id: 14, name: '회의록', colorClass: 'blue-20' },
-  { id: 15, name: '중요 문서함', colorClass: 'blue-20' },
-  { id: 16, name: '중요 테스트', colorClass: 'blue-20' },
-];
+const dashboardsForSidebar: ItemList[] = mockDashboardData.dashboards.map((dash) => {
+  return {
+    id: dash.id,
+    title: dash.title,
+    color: dash.color as ItemList['color'],
+    createdByMe: dash.createdByMe,
+  };
+});
 
 export default function Sidebar() {
   const { currentGroups, totalPages, canGoPrev, canGoNext, handlePrev, handleNext } = UseChunkPagination({
-    items: mockBoardData,
+    items: dashboardsForSidebar,
     chunkSize: 5,
     maxGroupsPerPage: 3,
   });
