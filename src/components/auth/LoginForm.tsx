@@ -1,19 +1,14 @@
 'use client';
 
-import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import Field from '@/components/auth/Field';
 import SubmitButton from '@/components/auth/SubmitButton';
-import { LOGIN_FORM_ERROR_MESSAGE, LOGIN_FORM_PLACEHOLDER, LOGIN_FORM_VALID_LENGTH } from '@/constants/auth';
-
-//TODO: API 함수 구현 후 스키마와 타입 정의 옮길 예정
-const loginSchema = z.object({
-  email: z.string().min(LOGIN_FORM_VALID_LENGTH.EMAIL.MIN, LOGIN_FORM_ERROR_MESSAGE.EMAIL.MIN).email(LOGIN_FORM_ERROR_MESSAGE.EMAIL.NOT_FORM),
-  password: z.string().min(LOGIN_FORM_VALID_LENGTH.PASSWORD.MIN, LOGIN_FORM_ERROR_MESSAGE.PASSWORD.MIN),
-});
-
-type LoginFormData = z.infer<typeof loginSchema>;
+import { LOGIN_FORM_PLACEHOLDER } from '@/constants/auth';
+import { loginSchema, LoginFormData } from '@/apis/auth/types';
+import { login } from '@/apis/auth';
+import { useRouter } from 'next/navigation';
+import useAuthStore from '@/hooks/useAuthStore';
 
 export default function LoginForm() {
   const {
@@ -28,9 +23,20 @@ export default function LoginForm() {
       password: '',
     },
   });
-  const onSubmit = (loginFormData: LoginFormData) => {
-    // TODO : 디버깅 용으로 남겼습니다. API 함수 구현이 완료되면 로직 수정 예정입니다.
-    console.log(loginFormData);
+
+  const router = useRouter();
+  const { setAccessToken } = useAuthStore();
+
+  const onSubmit = async (loginFormData: LoginFormData) => {
+    const response = await login(loginFormData);
+    // TODO: 디버깅 용으로 alert로 구현했습니다. 모달 기능 구현 후 로직 수정 예정입니다.
+    if ('message' in response) {
+      alert(response.message);
+    } else {
+      alert('로그인이 완료되었습니다!');
+      setAccessToken(response.accessToken);
+      router.replace('/mydashboard');
+    }
   };
 
   return (

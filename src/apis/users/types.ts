@@ -20,7 +20,7 @@ export const signupSchema = z
 
 export type SignupFormData = z.infer<typeof signupSchema>;
 
-export interface SignupSuccessResponse {
+export interface User {
   id: number;
   email: string;
   nickname: string;
@@ -28,6 +28,8 @@ export interface SignupSuccessResponse {
   createdAt: string | Date;
   updatedAt: string | Date;
 }
+
+export type SignupSuccessResponse = User;
 
 export interface SignupFailResponse {
   message: string;
