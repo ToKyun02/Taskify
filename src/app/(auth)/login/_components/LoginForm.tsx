@@ -1,19 +1,11 @@
 'use client';
 
-import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import Field from '@/components/auth/Field';
 import SubmitButton from '@/components/auth/SubmitButton';
-import { LOGIN_FORM_ERROR_MESSAGE, LOGIN_FORM_PLACEHOLDER, LOGIN_FORM_VALID_LENGTH } from '@/constants/auth';
-
-//TODO: API 함수 구현 후 스키마와 타입 정의 옮길 예정
-const loginSchema = z.object({
-  email: z.string().min(LOGIN_FORM_VALID_LENGTH.EMAIL.MIN, LOGIN_FORM_ERROR_MESSAGE.EMAIL.MIN).email(LOGIN_FORM_ERROR_MESSAGE.EMAIL.NOT_FORM),
-  password: z.string().min(LOGIN_FORM_VALID_LENGTH.PASSWORD.MIN, LOGIN_FORM_ERROR_MESSAGE.PASSWORD.MIN),
-});
-
-type LoginFormData = z.infer<typeof loginSchema>;
+import { LOGIN_FORM_PLACEHOLDER } from '@/constants/auth';
+import { loginSchema, LoginFormData } from '@/apis/auth/types';
 
 export default function LoginForm() {
   const {
