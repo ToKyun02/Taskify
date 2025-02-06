@@ -104,11 +104,15 @@ export default function Dropdown({ defaultValue, options, placeholder = '이름�
 
       {/* 드롭다운 메뉴 */}
       {isOpen && (
-        <div className={`absolute right-0 top-full z-50 mt-1 w-full rounded-lg border border-gray-30 bg-white shadow-lg ${type === 'kebab' ? 'mt-0 h-[85px] w-24' : ''}`}>
+        <div className={`absolute right-0 top-full z-50 mt-1 w-full rounded-lg border border-gray-30 bg-white p-[7px] shadow-lg ${type === 'kebab' ? 'mt-0 w-[110px]' : ''}`}>
           <ul className='max-h-48'>
             {filteredOptions.length > 0 ? (
               filteredOptions.map((option) => (
-                <li key={option.value} className='flex cursor-pointer items-center justify-between px-4 py-2 text-gray-70 hover:bg-violet-10' onClick={() => handleSelect(option)}>
+                <li
+                  key={option.value}
+                  className={`flex cursor-pointer items-center justify-between rounded-[4px] px-4 py-2 text-[16px] text-gray-70 hover:bg-violet-10 hover:text-violet-20 ${type === 'kebab' ? 'text-[14px]' : ''}`}
+                  onClick={() => handleSelect(option)}
+                >
                   <div className='flex items-center gap-2'>
                     {type !== 'kebab' && <div className='w-[22px]'>{selectedValue?.value === option.value && <Image src={Check} alt='선택됨' width={22} height={22} />}</div>}
                     {option.component || option.label || option.value}
