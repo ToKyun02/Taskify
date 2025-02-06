@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  .safe-center {
+    display:flex;
+    align-items: safe center;
+    justify-content: safe center;
+  }
+}
 
 :root {
   --font-pretendard: 'Pretendard', sans-serif;
