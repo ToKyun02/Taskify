@@ -8,7 +8,7 @@ import { LOGIN_FORM_PLACEHOLDER } from '@/constants/auth';
 import { loginSchema, LoginFormData } from '@/apis/auth/types';
 import { login } from '@/apis/auth';
 import { useRouter } from 'next/navigation';
-import useAuthStore from '@/stores/useAuthStore';
+import useAuthStore from '@/hooks/useAuthStores';
 
 export default function LoginForm() {
   const {

@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 
@@ -8,7 +7,7 @@ interface AuthState {
   clearAccessToken: () => void;
 }
 
-const useAuthStoreBase = create<AuthState>()(
+const authStore = create<AuthState>()(
   persist(
     (set) => ({
       accessToken: null,
@@ -22,13 +21,4 @@ const useAuthStoreBase = create<AuthState>()(
   ),
 );
 
-export default function useAuthStore() {
-  const store = useAuthStoreBase();
-  const [isHydrated, setIsHydrated] = useState(false);
-
-  useEffect(() => {
-    setIsHydrated(true);
-  }, []);
-
-  return isHydrated ? store : { accessToken: null, setAccessToken: () => {}, clearAccessToken: () => {} };
-}
+export default authStore;
