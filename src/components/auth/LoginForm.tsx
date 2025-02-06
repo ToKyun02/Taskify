@@ -8,6 +8,7 @@ import { LOGIN_FORM_PLACEHOLDER } from '@/constants/auth';
 import { loginSchema, LoginFormData } from '@/apis/auth/types';
 import { login } from '@/apis/auth';
 import { useRouter } from 'next/navigation';
+import useAuthStore from '@/stores/useAuthStore';
 
 export default function LoginForm() {
   const {
@@ -24,6 +25,7 @@ export default function LoginForm() {
   });
 
   const router = useRouter();
+  const { setAccessToken } = useAuthStore();
 
   const onSubmit = async (loginFormData: LoginFormData) => {
     const response = await login(loginFormData);
@@ -32,6 +34,7 @@ export default function LoginForm() {
       alert(response.message);
     } else {
       alert('로그인이 완료되었습니다!');
+      setAccessToken(response.accessToken);
       router.replace('/mydashboard');
     }
   };
