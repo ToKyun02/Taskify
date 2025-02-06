@@ -1,4 +1,4 @@
-import SubHeader from '../_components/SubHeader';
+import SubHeader from '@/components/landing/layout/SubHeader';
 
 type PRIVACY_CONTENT = {
   title: string;
