@@ -28,7 +28,7 @@ export interface User {
   id: number;
   email: string;
   nickname: string;
-  profileImageUrl: string | null;
+  profileImageUrl: string | null | URL;
   createdAt: string | Date;
   updatedAt: string | Date;
 }
@@ -38,3 +38,9 @@ export type SignupSuccessResponse = User;
 export type SignupFailResponse = FailResponse;
 
 export type SignupResponse = Promise<SignupSuccessResponse | SignupFailResponse>;
+
+export type GetUserSuccessResponse = User;
+
+export type GetUserFailResponse = FailResponse;
+
+export type GetUserResponse = Promise<GetUserSuccessResponse | GetUserFailResponse>;
