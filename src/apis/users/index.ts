@@ -16,13 +16,6 @@ export const signup = async (signupFormData: SignupFormData): SignupResponse => 
 };
 
 export const getUser = async (): GetUserResponse => {
-  try {
-    const response = await axiosHelper.get('/users/me');
-    return response.data;
-  } catch (error) {
-    if (isAxiosError(error)) return error.response?.data;
-    return {
-      message: isError(error) ? error.message : String(error),
-    };
-  }
+  const response = await axiosHelper.get('/users/me');
+  return response.data;
 };
