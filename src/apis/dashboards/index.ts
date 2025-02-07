@@ -1,15 +1,5 @@
 import axiosHelper from '@/utils/network/axiosHelper';
-import {
-  BasePaginationParams,
-  Dashboard,
-  DashboardFormType,
-  DashboardInvitation,
-  DashboardInvitationResponse,
-  DashboardsResponse,
-  GetDashboardsParams,
-  InviteDashboardType,
-  UpdateDashboardType,
-} from './types';
+import { BasePaginationParams, Dashboard, DashboardFormType, DashboardInvitation, DashboardInvitationResponse, DashboardsResponse, GetDashboardsParams, InviteDashboardType } from './types';
 
 // dashboard 목록 조회
 export const getDashboards = async ({ cursorId, page, size, navigationMethod }: GetDashboardsParams) => {
@@ -37,7 +27,7 @@ export const getDashboardDetails = async (id: number) => {
 };
 
 // dashboard 수정
-export const updateDashboard = async (id: number, data: UpdateDashboardType) => {
+export const updateDashboard = async (id: number, data: DashboardFormType) => {
   const response = await axiosHelper.put<Dashboard>(`/dashboards/${id}`, data);
   return response.data;
 };

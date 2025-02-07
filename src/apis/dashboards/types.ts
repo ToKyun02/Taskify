@@ -39,10 +39,6 @@ export const dashboardFormSchema = z.object({
 });
 export type DashboardFormType = z.infer<typeof dashboardFormSchema>;
 
-// dashboard 수정 스키마
-export const updateDashboardFormSchema = dashboardFormSchema.partial();
-export type UpdateDashboardType = Partial<DashboardFormType>;
-
 // invitation 타입
 export type InvitationUser = Pick<User, 'id' | 'email' | 'nickname'>;
 export type InvitationDashboard = Pick<Dashboard, 'id' | 'title'>;
