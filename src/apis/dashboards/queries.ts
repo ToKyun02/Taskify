@@ -28,7 +28,10 @@ export const useDashboardMutation = () => {
     },
   });
 
+  // TODO : update query 작성
   const update = () => {};
+
+  // TODO : remove query 작성
   const remove = () => {};
 
   return {
