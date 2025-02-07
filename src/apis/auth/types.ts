@@ -18,9 +18,7 @@ export interface LoginSuccessResponse {
   accessToken: string;
 }
 
-export interface LoginFailResponse {
-  message: string;
-}
+export type LoginFailResponse = FailResponse;
 
 export type LoginResponse = Promise<LoginSuccessResponse | LoginFailResponse>;
 
@@ -37,8 +35,4 @@ export const passwordSchema = z
 
 export type PutPasswordFormData = z.infer<typeof passwordSchema>;
 
-export type PutPasswordSuccessResponse = null;
-
-export type PutPasswordFailResponse = FailResponse;
-
-export type PutPasswordResponse = Promise<PutPasswordSuccessResponse | PutPasswordFailResponse>;
+export type PutPasswordResponse = Promise<void>;

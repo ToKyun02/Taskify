@@ -14,11 +14,5 @@ export const login = async (loginFormData: LoginFormData): LoginResponse => {
 };
 
 export const putPassword = async (putPasswordFormData: PutPasswordFormData): PutPasswordResponse => {
-  try {
-    await axiosHelper.put('/auth/password', putPasswordFormData);
-    return null;
-  } catch (error) {
-    if (isAxiosError(error)) return error.response?.data;
-    return { message: isError(error) ? error.message : String(error) };
-  }
+  await axiosHelper.put('/auth/password', putPasswordFormData);
 };

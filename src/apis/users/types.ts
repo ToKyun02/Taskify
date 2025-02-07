@@ -39,8 +39,4 @@ export type SignupFailResponse = FailResponse;
 
 export type SignupResponse = Promise<SignupSuccessResponse | SignupFailResponse>;
 
-export type GetUserSuccessResponse = User;
-
-export type GetUserFailResponse = FailResponse;
-
-export type GetUserResponse = Promise<GetUserSuccessResponse | GetUserFailResponse>;
+export type GetUserResponse = Promise<User>;
