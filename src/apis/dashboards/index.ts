@@ -8,7 +8,7 @@ import {
   DashboardsResponse,
   GetDashboardsParams,
   InviteDashboardType,
-  updateDashboardType,
+  UpdateDashboardType,
 } from './types';
 
 // dashboard 목록 조회
@@ -37,7 +37,7 @@ export const getDashboardDetails = async (id: number) => {
 };
 
 // dashboard 수정
-export const updateDashboard = async (id: number, data: updateDashboardType) => {
+export const updateDashboard = async (id: number, data: UpdateDashboardType) => {
   const response = await axiosHelper.put<Dashboard>(`/dashboards/${id}`, data);
   return response.data;
 };
