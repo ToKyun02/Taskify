@@ -1,5 +1,5 @@
 import axiosHelper from '@/utils/network/axiosHelper';
-import { GetUserResponse, SignupFormData, SignupResponse, UpdateUserForm, User } from './types';
+import { CreateProfileImageForm, CreateProfileImageSuccessResponse, GetUserResponse, SignupFormData, SignupResponse, UpdateUserForm, User } from './types';
 import { isAxiosError } from 'axios';
 import { isError } from 'es-toolkit/compat';
 
@@ -22,5 +22,14 @@ export const getUser = async (): GetUserResponse => {
 
 export const updateUser = async (updateUserForm: UpdateUserForm) => {
   const response = await axiosHelper.put<User>('/users/me', updateUserForm);
+  return response.data;
+};
+
+export const createProfileImage = async (createProfileImageForm: CreateProfileImageForm) => {
+  const response = await axiosHelper.post<CreateProfileImageSuccessResponse>('/users/me/image', createProfileImageForm, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
   return response.data;
 };

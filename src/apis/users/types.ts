@@ -41,11 +41,29 @@ export type SignupResponse = Promise<SignupSuccessResponse | SignupFailResponse>
 
 export type GetUserResponse = Promise<User>;
 
+type ProfileImageUrl = string | URL | null;
+
 export const updateUserFormSchema = z.object({
   nickname: z.string(),
   profileImageUrl: z.string(),
 });
 
 export type UpdateUserForm = Omit<z.infer<typeof updateUserFormSchema>, 'profileImageUrl'> & {
-  profileImageUrl: string | URL | null;
+  profileImageUrl: ProfileImageUrl;
+};
+
+const profileImageUrlSchema = z.instanceof(File).refine((file) => ['image/jpeg', 'image/jpg', 'image/png', 'image/svg+xml'].includes(file.type), {
+  message: '지원되지 않는 이미지 파일입니다.',
+});
+
+export const createProfileImageFormSchema = z.object({
+  image: profileImageUrlSchema,
+});
+
+export interface CreateProfileImageForm {
+  image: File;
+}
+
+export type CreateProfileImageSuccessResponse = {
+  profileImageUrl: Exclude<ProfileImageUrl, null>;
 };
