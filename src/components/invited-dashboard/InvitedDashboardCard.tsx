@@ -9,7 +9,7 @@ import { useInfiniteInvitations } from '@/hooks/useInfiniteInvitations';
 
 export default function InvitedDashboardCard() {
   const [searchKeyword, setSearchKeyword] = useState('');
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteInvitations(searchKeyword);
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteInvitations();
   const invitations = data?.pages.flatMap((page) => page.invitations) ?? [];
 
   const filteredInvitations = invitations.filter((item) => item.dashboard.title.toLowerCase().includes(searchKeyword.toLowerCase()));
