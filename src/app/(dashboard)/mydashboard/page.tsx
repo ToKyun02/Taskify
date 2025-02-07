@@ -1,3 +1,9 @@
+import InvitedDashboardCard from '@/components/invited-dashboard/InvitedDashboardCard';
+
 export default function page() {
-  return <div>마이데시보드 페이지</div>;
+  return (
+    <div>
+      <InvitedDashboardCard />
+    </div>
+  );
 }
