@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { User } from '../users/types';
+import { DASHBOARD_FORM_ERROR_MESSAGE, DASHBOARD_FORM_VALID_LENGTH } from '@/constants/dashboard';
 
 // base pagination params 타입 (필요시 공용으로 추출)
 export type BasePaginationParams = {
@@ -20,7 +21,7 @@ export type Dashboard = {
 
 // dashboard 리스트 응답 타입
 export type DashboardsResponse = {
-  cursorId: number;
+  cursorId: number | null;
   totalCount: number;
   dashboards: Dashboard[];
 };
@@ -34,7 +35,10 @@ export type GetDashboardsParams = BasePaginationParams & {
 
 // dashboard 작성 스키마
 export const dashboardFormSchema = z.object({
-  title: z.string(),
+  title: z
+    .string()
+    .min(DASHBOARD_FORM_VALID_LENGTH.TITLE.MIN, { message: DASHBOARD_FORM_ERROR_MESSAGE.TITLE.MIN })
+    .max(DASHBOARD_FORM_VALID_LENGTH.TITLE.MAX, { message: DASHBOARD_FORM_ERROR_MESSAGE.TITLE.MAX }),
   color: z.string(),
 });
 export type DashboardFormType = z.infer<typeof dashboardFormSchema>;
@@ -61,6 +65,6 @@ export type DashboardInvitationResponse = {
 
 // invitation 스키마
 export const inviteDashboardFormSchema = z.object({
-  email: z.string(),
+  email: z.string().email({ message: DASHBOARD_FORM_ERROR_MESSAGE.EMAIL.INVALID }),
 });
 export type InviteDashboardType = z.infer<typeof inviteDashboardFormSchema>;
