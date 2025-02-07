@@ -14,8 +14,8 @@ import { cn } from '@/utils/helper';
  * modalRef.current.close() // 모달닫기
  *
  * <Modal ref={modalRef}>
- *   <ModalHeader>제목</ModalHeader>
- *   <ModalContent>
+ *   <ModalContent> // 하얀색 배경카드 (꼭 있어야합니다.)
+ *     <ModalHeader>제목</ModalHeader>
  *     <div>내용</div>
  *     <ModalFooter>버튼들</ModalFooter> // flex 배치됨
  *   </ModalContent>
