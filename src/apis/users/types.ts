@@ -1,11 +1,15 @@
 import { z } from 'zod';
-import { SINGUP_FORM_VALID_LENGTH, SIGNUP_FORM_ERROR_MESSAGE } from '@/constants/auth';
+import { SIGNUP_FORM_VALID_LENGTH, SIGNUP_FORM_ERROR_MESSAGE } from '@/constants/auth';
+
+interface FailResponse {
+  message: string;
+}
 
 export const signupSchema = z
   .object({
-    email: z.string().min(SINGUP_FORM_VALID_LENGTH.EMAIL.MIN, SIGNUP_FORM_ERROR_MESSAGE.EMAIL.MIN).email(SIGNUP_FORM_ERROR_MESSAGE.EMAIL.NOT_FORM),
-    nickname: z.string().min(SINGUP_FORM_VALID_LENGTH.NICKNAME.MIN, SIGNUP_FORM_ERROR_MESSAGE.NICKNAME.MIN).max(SINGUP_FORM_VALID_LENGTH.NICKNAME.MAX, SIGNUP_FORM_ERROR_MESSAGE.NICKNAME.MAX),
-    password: z.string().min(SINGUP_FORM_VALID_LENGTH.PASSWORD.MIN, SIGNUP_FORM_ERROR_MESSAGE.PASSWORD.MIN),
+    email: z.string().min(SIGNUP_FORM_VALID_LENGTH.EMAIL.MIN, SIGNUP_FORM_ERROR_MESSAGE.EMAIL.MIN).email(SIGNUP_FORM_ERROR_MESSAGE.EMAIL.NOT_FORM),
+    nickname: z.string().min(SIGNUP_FORM_VALID_LENGTH.NICKNAME.MIN, SIGNUP_FORM_ERROR_MESSAGE.NICKNAME.MIN).max(SIGNUP_FORM_VALID_LENGTH.NICKNAME.MAX, SIGNUP_FORM_ERROR_MESSAGE.NICKNAME.MAX),
+    password: z.string().min(SIGNUP_FORM_VALID_LENGTH.PASSWORD.MIN, SIGNUP_FORM_ERROR_MESSAGE.PASSWORD.MIN),
     passwordConfirm: z.string(),
     terms: z.boolean(),
   })
@@ -24,15 +28,42 @@ export interface User {
   id: number;
   email: string;
   nickname: string;
-  profileImageUrl: string | null;
+  profileImageUrl: string | null | URL;
   createdAt: string | Date;
   updatedAt: string | Date;
 }
 
 export type SignupSuccessResponse = User;
 
-export interface SignupFailResponse {
-  message: string;
-}
+export type SignupFailResponse = FailResponse;
 
 export type SignupResponse = Promise<SignupSuccessResponse | SignupFailResponse>;
+
+export type GetUserResponse = Promise<User>;
+
+type ProfileImageUrl = string | URL | null;
+
+export const updateUserFormSchema = z.object({
+  nickname: z.string(),
+  profileImageUrl: z.string(),
+});
+
+export type UpdateUserForm = Omit<z.infer<typeof updateUserFormSchema>, 'profileImageUrl'> & {
+  profileImageUrl: ProfileImageUrl;
+};
+
+const profileImageUrlSchema = z.instanceof(File).refine((file) => ['image/jpeg', 'image/jpg', 'image/png', 'image/svg+xml'].includes(file.type), {
+  message: '지원되지 않는 이미지 파일입니다.',
+});
+
+export const createProfileImageFormSchema = z.object({
+  image: profileImageUrlSchema,
+});
+
+export interface CreateProfileImageForm {
+  image: File;
+}
+
+export type CreateProfileImageSuccessResponse = {
+  profileImageUrl: Exclude<ProfileImageUrl, null>;
+};

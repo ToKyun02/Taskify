@@ -5,7 +5,7 @@ export const SIGNUP_FORM_PLACEHOLDER = {
   PASSWORD_CONFIRM: '비밀번호를 한번 더 입력해 주세요',
 } as const;
 
-export const SINGUP_FORM_VALID_LENGTH = {
+export const SIGNUP_FORM_VALID_LENGTH = {
   EMAIL: {
     MIN: 1,
   },
@@ -59,5 +59,26 @@ export const LOGIN_FORM_ERROR_MESSAGE = {
   },
   PASSWORD: {
     MIN: '8자 이상 작성해 주세요',
+  },
+} as const;
+
+export const PASSWORD_PUT_FORM_VALID_LENGTH = {
+  PASSWORD: {
+    MIN: 8,
+  },
+  NEW_PASSWORD: {
+    MIN: 8,
+  },
+} as const;
+
+export const PASSWORD_PUT_FORM_ERROR_MESSAGE = {
+  PASSWORD: {
+    MIN: '8자 이상 입력해 주세요',
+  },
+  NEW_PASSWORD: {
+    MIN: '8자 이상 입력해 주세요',
+  },
+  NEW_PASSWORD_CONFRIM: {
+    NOT_MATCH: '비밀번호가 일치하지 않습니다',
   },
 } as const;
