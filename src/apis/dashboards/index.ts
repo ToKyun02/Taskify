@@ -1,6 +1,6 @@
 import axiosHelper from '@/utils/network/axiosHelper';
 import {
-  BasePaginationParma,
+  BasePaginationParams,
   Dashboard,
   DashboardFormType,
   DashboardInvitation,
@@ -49,7 +49,7 @@ export const deleteDashboard = async (id: number) => {
 };
 
 // dashboard 초대 불러오기
-export const getDashboardInvitations = async (id: number, { page, size }: BasePaginationParma) => {
+export const getDashboardInvitations = async (id: number, { page, size }: BasePaginationParams) => {
   const response = await axiosHelper.get<DashboardInvitation>(`/dashboards/${id}/invitations`, {
     params: {
       page: page || 1,

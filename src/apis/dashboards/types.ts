@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { User } from '../users/types';
 
 // base pagination params 타입 (필요시 공용으로 추출)
-export type BasePaginationParma = {
+export type BasePaginationParams = {
   page?: number;
   size?: number;
 };
@@ -27,7 +27,7 @@ export type DashboardsResponse = {
 
 // dashboard get params 타입
 export type NavigationMethod = 'infiniteScroll' | 'pagination';
-export type GetDashboardsParams = BasePaginationParma & {
+export type GetDashboardsParams = BasePaginationParams & {
   cursorId?: number;
   navigationMethod: NavigationMethod;
 };
