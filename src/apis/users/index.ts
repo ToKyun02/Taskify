@@ -1,5 +1,5 @@
 import axiosHelper from '@/utils/network/axiosHelper';
-import { GetUserResponse, SignupFormData, SignupResponse } from './types';
+import { GetUserResponse, SignupFormData, SignupResponse, UpdateUserForm, User } from './types';
 import { isAxiosError } from 'axios';
 import { isError } from 'es-toolkit/compat';
 
@@ -17,5 +17,10 @@ export const signup = async (signupFormData: SignupFormData): SignupResponse => 
 
 export const getUser = async (): GetUserResponse => {
   const response = await axiosHelper.get('/users/me');
+  return response.data;
+};
+
+export const updateUser = async (updateUserForm: UpdateUserForm) => {
+  const response = await axiosHelper.put<User>('/users/me', updateUserForm);
   return response.data;
 };

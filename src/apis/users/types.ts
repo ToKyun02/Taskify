@@ -40,3 +40,12 @@ export type SignupFailResponse = FailResponse;
 export type SignupResponse = Promise<SignupSuccessResponse | SignupFailResponse>;
 
 export type GetUserResponse = Promise<User>;
+
+export const updateUserFormSchema = z.object({
+  nickname: z.string(),
+  profileImageUrl: z.string(),
+});
+
+export type UpdateUserForm = Omit<z.infer<typeof updateUserFormSchema>, 'profileImageUrl'> & {
+  profileImageUrl: string | URL | null;
+};
