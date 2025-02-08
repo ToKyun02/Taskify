@@ -1,5 +1,6 @@
 import { ChangeEvent, InputHTMLAttributes, useEffect, useRef } from 'react';
 import Image from 'next/image';
+import { cn } from '@/utils/helper';
 import { BaseError, BaseItem, BaseLabel } from './Base';
 import { BaseField } from './types';
 import deleteIcon from '@/assets/icons/x_white.svg';
@@ -12,7 +13,7 @@ type ImageUploadProps = BaseField &
     onBlur: () => void;
   };
 
-export function ImageUpload({ value, onChange, onBlur, label, required, error }: ImageUploadProps) {
+export function ImageUpload({ value, onChange, onBlur, label, required, error, className }: ImageUploadProps) {
   const preview = value instanceof File ? URL.createObjectURL(value) : value;
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -47,9 +48,9 @@ export function ImageUpload({ value, onChange, onBlur, label, required, error }:
   return (
     <BaseItem>
       {label && <BaseLabel required={required}>{label}</BaseLabel>}
-      <div className='relative aspect-square w-[76px]'>
+      <div className={cn('relative aspect-square w-[76px]', className)}>
         <label className='relative flex h-full w-full cursor-pointer items-center justify-center overflow-hidden rounded-md bg-gray-10'>
-          {preview ? <Image src={preview} alt='thumbnail' fill sizes='40vw' className='absolute h-full w-full object-cover' /> : <Image src={addIcon} alt='업로드' />}
+          {preview ? <Image src={preview} alt='thumbnail' fill sizes='40vw' className='absolute h-full w-full object-cover' /> : <Image src={addIcon} className='h-auto w-[18px]' alt='업로드' />}
           <input type='file' accept='image/*' ref={fileRef} onChange={handleChange} className='sr-only' />
         </label>
         {preview && (
