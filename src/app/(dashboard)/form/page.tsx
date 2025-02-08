@@ -86,7 +86,7 @@ export default function FormPage() {
           <SearchInput placeholder='검색어를 입력해주세요' />
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className='grid gap-4'>
-          {/*  */}
+          {/* input sample : uncontrolled  */}
           <Input //
             label='제목'
             error={errors.title?.message}
