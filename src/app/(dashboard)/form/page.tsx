@@ -116,7 +116,6 @@ export default function FormPage() {
                   placeholder='날짜를 입력해주세요'
                   required
                   {...field}
-                  readOnly
                 />
               );
             }}
