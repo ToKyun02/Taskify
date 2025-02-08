@@ -25,7 +25,7 @@ export const getDashboards = async ({ cursorId, page, size, navigationMethod }: 
 
   const result = dashboardsResponseSchema.safeParse(response.data);
   if (!result.success) {
-    throw new Error('유효하지 않은 응답입니다.');
+    throw new Error('서버에서 받은 데이터가 예상과 다릅니다.');
   }
   return result.data;
 };
@@ -36,7 +36,7 @@ export const createDashboard = async (data: DashboardFormType) => {
 
   const result = dashboardSchema.safeParse(response.data);
   if (!result.success) {
-    throw new Error('유효하지 않은 응답입니다.');
+    throw new Error('서버에서 받은 데이터가 예상과 다릅니다.');
   }
   return result.data;
 };
@@ -47,7 +47,7 @@ export const getDashboardDetails = async (id: number) => {
 
   const result = dashboardSchema.safeParse(response.data);
   if (!result.success) {
-    throw new Error('유효하지 않은 응답입니다.');
+    throw new Error('서버에서 받은 데이터가 예상과 다릅니다.');
   }
   return result.data;
 };
@@ -58,7 +58,7 @@ export const updateDashboard = async (id: number, data: DashboardFormType) => {
 
   const result = dashboardSchema.safeParse(response.data);
   if (!result.success) {
-    throw new Error('유효하지 않은 응답입니다.');
+    throw new Error('서버에서 받은 데이터가 예상과 다릅니다.');
   }
   return result.data;
 };
