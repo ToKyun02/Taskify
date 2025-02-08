@@ -1,5 +1,16 @@
 import axiosHelper from '@/utils/network/axiosHelper';
-import { BasePaginationParams, Dashboard, DashboardFormType, DashboardInvitation, DashboardInvitationResponse, DashboardsResponse, GetDashboardsParams, InviteDashboardType } from './types';
+import {
+  BasePaginationParams,
+  Dashboard,
+  DashboardFormType,
+  DashboardInvitation,
+  DashboardInvitationResponse,
+  dashboardSchema,
+  DashboardsResponse,
+  dashboardsResponseSchema,
+  GetDashboardsParams,
+  InviteDashboardType,
+} from './types';
 
 // dashboard 목록 조회
 export const getDashboards = async ({ cursorId, page, size, navigationMethod }: GetDashboardsParams) => {
@@ -11,25 +22,45 @@ export const getDashboards = async ({ cursorId, page, size, navigationMethod }: 
       navigationMethod,
     },
   });
-  return response.data;
+
+  const result = dashboardsResponseSchema.safeParse(response.data);
+  if (!result.success) {
+    throw new Error('유효하지 않은 응답입니다.');
+  }
+  return result.data;
 };
 
 // dashboard 생성
 export const createDashboard = async (data: DashboardFormType) => {
   const response = await axiosHelper.post<Dashboard>('/dashboards', data);
-  return response.data;
+
+  const result = dashboardSchema.safeParse(response.data);
+  if (!result.success) {
+    throw new Error('유효하지 않은 응답입니다.');
+  }
+  return result.data;
 };
 
 // dashboard 상세 조회
 export const getDashboardDetails = async (id: number) => {
   const response = await axiosHelper.get<Dashboard>(`/dashboards/${id}`);
-  return response.data;
+
+  const result = dashboardSchema.safeParse(response.data);
+  if (!result.success) {
+    throw new Error('유효하지 않은 응답입니다.');
+  }
+  return result.data;
 };
 
 // dashboard 수정
 export const updateDashboard = async (id: number, data: DashboardFormType) => {
   const response = await axiosHelper.put<Dashboard>(`/dashboards/${id}`, data);
-  return response.data;
+
+  const result = dashboardSchema.safeParse(response.data);
+  if (!result.success) {
+    throw new Error('유효하지 않은 응답입니다.');
+  }
+  return result.data;
 };
 
 // dashboard 삭제
@@ -38,6 +69,7 @@ export const deleteDashboard = async (id: number) => {
   return response.data;
 };
 
+// TODO : UserSchema 추가이후, Invitation schema가 작성되면 응답 검증 로직 추가 필요
 // dashboard 초대 불러오기
 export const getDashboardInvitations = async (id: number, { page, size }: BasePaginationParams) => {
   const response = await axiosHelper.get<DashboardInvitation>(`/dashboards/${id}/invitations`, {
@@ -49,6 +81,7 @@ export const getDashboardInvitations = async (id: number, { page, size }: BasePa
   return response.data;
 };
 
+// TODO : UserSchema 추가이후, Invitation schema가 작성되면 응답 검증 로직 추가 필요
 // dashboard 초대
 export const inviteDashboard = async (id: number, data: InviteDashboardType) => {
   const response = await axiosHelper.post<DashboardInvitationResponse>(`/dashboards/${id}/invitations`, data);
