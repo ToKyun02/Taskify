@@ -13,7 +13,7 @@ type DateInputProps = BaseField &
     onChange: (value: Date | null) => void;
   };
 
-export function DateInput({ label, error, value, onChange, onBlur, placeholder, required, className }: DateInputProps) {
+export function DateInput({ label, error, value, onChange, onBlur, placeholder, required, className, disabled, readOnly }: DateInputProps) {
   return (
     <BaseItem>
       {label && <BaseLabel required={required}>{label}</BaseLabel>}
@@ -26,6 +26,8 @@ export function DateInput({ label, error, value, onChange, onBlur, placeholder, 
           className={cn(baseFieldClassName, 'p-4 pl-10', error && baseErrorClassName, className)}
           dateFormat='yyyy년 MM월 dd일'
           placeholderText={placeholder}
+          disabled={disabled}
+          readOnly={readOnly}
         />
       </div>
       {error && <BaseError>{error}</BaseError>}
