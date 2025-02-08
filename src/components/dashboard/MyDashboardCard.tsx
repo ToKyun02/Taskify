@@ -1,5 +1,5 @@
 import { cn } from '@/utils/helper';
-import Dot from '../ui/Dot/Dot';
+import Dot from '@/components/ui/Dot/Dot';
 import Image from 'next/image';
 import crown from '@/assets/icons/crown.svg';
 import right_arrow from '@/assets/icons/right_arrow.svg';
