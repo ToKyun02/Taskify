@@ -1,3 +1,16 @@
+'use client';
+
+import InvitedDashboardCard from '@/components/invited-dashboard/InvitedDashboardCard';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
+
 export default function page() {
-  return <div>마이데시보드 페이지</div>;
+  return (
+    <div>
+      <QueryClientProvider client={queryClient}>
+        <InvitedDashboardCard />
+      </QueryClientProvider>
+    </div>
+  );
 }
