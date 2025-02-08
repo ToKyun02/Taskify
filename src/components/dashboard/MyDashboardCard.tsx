@@ -3,10 +3,11 @@ import Dot from '../ui/Dot/Dot';
 import Image from 'next/image';
 import crown from '@/assets/icons/crown.svg';
 import right_arrow from '@/assets/icons/right_arrow.svg';
+import { DEFAULT_COLOR } from '@/constants/colors';
 
 interface MyDashboardCardProps {
   title: string;
-  color: string;
+  color: DEFAULT_COLOR;
   createdByMe: boolean | undefined;
   variant?: 'sidebar' | 'card';
 }
