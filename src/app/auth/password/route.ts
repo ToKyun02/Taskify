@@ -1,6 +1,5 @@
 import axiosServerHelper from '@/utils/network/axiosServerHelper';
-import { isAxiosError } from 'axios';
-import { isError } from 'es-toolkit/compat';
+import errorResponse from '@/utils/network/errorResponse';
 import { NextRequest, NextResponse } from 'next/server';
 
 // 비밀번호 수정 요청
@@ -12,16 +11,6 @@ export const PUT = async (request: NextRequest) => {
       status: apiResponse.status,
     });
   } catch (error) {
-    if (isAxiosError(error)) {
-      return NextResponse.json(error.response?.data, {
-        status: error.response?.status ?? 500,
-      });
-    }
-    return NextResponse.json(
-      {
-        message: isError(error) ? error.message : String(error),
-      },
-      { status: 500 },
-    );
+    return errorResponse(error);
   }
 };
