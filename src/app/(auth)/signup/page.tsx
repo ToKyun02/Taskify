@@ -1,20 +1,10 @@
 'use client';
 
-import useAuthStore from '@/stores/authStore';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 import Link from 'next/link';
 import SignupForm from '@/components/auth/SignupForm';
 import Header from '@/components/auth/Header';
 
 export default function Signup() {
-  const router = useRouter();
-  const { accessToken } = useAuthStore();
-
-  useEffect(() => {
-    if (accessToken) router.push('/mydashboard');
-  }, [router, accessToken]);
-
   return (
     <>
       <Header>첫 방문을 환영합니다!</Header>
