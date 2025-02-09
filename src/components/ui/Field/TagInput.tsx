@@ -73,7 +73,7 @@ export function TagInput({ label, error, value, onChange, className, placeholder
           <input //
             id={id}
             ref={inputRef}
-            className='flex flex-1 focus-visible:outline-none'
+            className='flex flex-1 text-black focus-visible:outline-none'
             onKeyDown={handleKeyDown}
             onBlur={handleBlur}
             placeholder={placeholder}
