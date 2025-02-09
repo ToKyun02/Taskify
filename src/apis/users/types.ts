@@ -39,7 +39,7 @@ export type SignupFailResponse = FailResponse;
 
 export type SignupResponse = Promise<SignupSuccessResponse | SignupFailResponse>;
 
-export type GetUserResponse = Promise<User>;
+export type GetUserResponse = Promise<{ user: User }>;
 
 type ProfileImageUrl = string | URL | null;
 
