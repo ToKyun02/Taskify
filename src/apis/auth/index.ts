@@ -5,7 +5,7 @@ import { isError } from 'es-toolkit/compat';
 
 export const login = async (loginFormData: LoginFormData): LoginResponse => {
   try {
-    const response = await axiosClientHelper.post('/api/auth/login', loginFormData);
+    const response = await axiosClientHelper.post('/auth/login', loginFormData);
     return response.data;
   } catch (error) {
     if (isAxiosError(error)) return error.response?.data;
@@ -14,5 +14,5 @@ export const login = async (loginFormData: LoginFormData): LoginResponse => {
 };
 
 export const putPassword = async (putPasswordFormData: PutPasswordFormData): PutPasswordResponse => {
-  await axiosClientHelper.put('/api/auth/password', putPasswordFormData);
+  await axiosClientHelper.put('/auth/password', putPasswordFormData);
 };
