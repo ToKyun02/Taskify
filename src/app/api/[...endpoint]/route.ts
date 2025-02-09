@@ -72,7 +72,7 @@ export const DELETE = async (request: NextRequest) => {
   const url = new URL(request.url);
   const endPoint = url.pathname.replace(/^\/api/, '');
   try {
-    const apiResponse = await axiosServerHelper.delete(endPoint, await request.json());
+    const apiResponse = await axiosServerHelper.delete(endPoint);
     if (isEmpty(apiResponse.data))
       return new NextResponse(null, {
         status: apiResponse.status,
