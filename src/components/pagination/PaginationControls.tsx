@@ -38,11 +38,11 @@ export default function PaginationControls({ canGoPrev, canGoNext, handlePrev, h
 
   return (
     <div className={`flex ${className} `}>
-      <button className='flex h-10 w-10 items-center justify-center rounded-bl-[4px] rounded-tl-[4px] border border-gray-30' onClick={handlePrev}>
+      <button className='flex h-10 w-10 items-center justify-center rounded-bl-[4px] rounded-tl-[4px] border border-gray-30' onClick={handlePrev} disabled={!canGoPrev}>
         <Arrow direction='left' disabled={!canGoPrev} />
       </button>
 
-      <button className='flex h-10 w-10 items-center justify-center rounded-br-[4px] rounded-tr-[4px] border border-gray-30' onClick={handleNext}>
+      <button className='flex h-10 w-10 items-center justify-center rounded-br-[4px] rounded-tr-[4px] border border-gray-30' onClick={handleNext} disabled={!canGoNext}>
         <Arrow direction='right' disabled={!canGoNext} />
       </button>
     </div>

@@ -1,9 +1,9 @@
-import { HexColor } from '@/constants/colors';
+import { DEFAULT_COLOR } from '@/constants/colors';
 import { cn } from '@/utils/helper';
 import { HTMLAttributes } from 'react';
 
 interface ColorChipProps extends HTMLAttributes<HTMLSpanElement> {
-  color: HexColor;
+  color: DEFAULT_COLOR;
 }
 
 export default function ColorChip({ color, className, ...props }: ColorChipProps) {

@@ -1,16 +1,15 @@
-'use client';
-
+import MyDashboard from '@/components/dashboard/MyDashboard';
 import InvitedDashboardCard from '@/components/invited-dashboard/InvitedDashboardCard';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-const queryClient = new QueryClient();
-
-export default function page() {
+export default function MydashboardPage() {
   return (
-    <div>
-      <QueryClientProvider client={queryClient}>
-        <InvitedDashboardCard />
-      </QueryClientProvider>
+    <div className='p-10'>
+      <div className='w-full max-w-screen-lg'>
+        <div className='grid gap-10'>
+          <MyDashboard />
+          <InvitedDashboardCard />
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react';
 import Header from '@/components/dashboard-header/Header';
-import Sidebar from '@/components/Sidebar/Sidebar';
+import Sidebar from '@/components/dashboard/Sidebar';
 
 export default function layout({ children }: PropsWithChildren) {
   return (

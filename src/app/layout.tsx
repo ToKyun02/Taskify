@@ -1,6 +1,7 @@
 import localFont from 'next/font/local';
 import { Montserrat } from 'next/font/google';
 import { DialogContainer } from '@/components/ui/Modal/DialogContainer';
+import QueryClientProvider from '@/components/provider/QueryProvider';
 import './globals.css';
 
 const pretendard = localFont({
@@ -24,8 +25,10 @@ export default function RootLayout({
   return (
     <html lang='ko'>
       <body className={`${pretendard.className} ${montserrat.variable}`}>
-        {children}
-        <DialogContainer />
+        <QueryClientProvider>
+          {children}
+          <DialogContainer />
+        </QueryClientProvider>
       </body>
     </html>
   );

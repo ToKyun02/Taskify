@@ -1,12 +1,13 @@
 import { cn } from '@/utils/helper';
-import Dot from '../Sidebar/Dot';
+import Dot from '@/components/ui/Dot/Dot';
 import Image from 'next/image';
 import crown from '@/assets/icons/crown.svg';
 import right_arrow from '@/assets/icons/right_arrow.svg';
+import { DEFAULT_COLOR } from '@/constants/colors';
 
 interface MyDashboardCardProps {
   title: string;
-  color: 'green-30' | 'blue-20' | 'orange-20' | 'purple' | 'pink-20';
+  color: DEFAULT_COLOR;
   createdByMe: boolean | undefined;
   variant?: 'sidebar' | 'card';
 }
@@ -15,7 +16,7 @@ export default function MyDashboardCard({ title, color, createdByMe, variant }: 
   const containerClass = cn(
     'flex rounded-md ',
     variant === 'sidebar' && 'justify-center gap-2.5 p-3 md:justify-start md:hover:bg-violet-10',
-    variant === 'card' && 'items-center justify-between border border-gray-30 hover:shadow-md px-5 py-[22px] w-[260px] md:w-[247px] lg:w-[332px]',
+    variant === 'card' && 'items-center justify-between border border-gray-30 hover:shadow-md p-5 bg-white h-[58px] md:h-[70px]',
   );
 
   const textContainerClass = cn(variant === 'sidebar' ? 'hidden md:flex gap-1.5' : 'flex gap-1.5');
@@ -24,7 +25,7 @@ export default function MyDashboardCard({ title, color, createdByMe, variant }: 
   return (
     <div className={containerClass}>
       <div className='flex items-center gap-2.5'>
-        <Dot colorClass={color} />
+        <Dot color={color} />
         <div className={textContainerClass}>
           <span className={titleClass}>{title}</span>
           {createdByMe && <Image src={crown} width={17} height={14} alt='crown' />}
