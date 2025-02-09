@@ -1,4 +1,4 @@
-import { FocusEvent, InputHTMLAttributes, KeyboardEvent, useEffect, useRef, useState } from 'react';
+import { FocusEvent, InputHTMLAttributes, KeyboardEvent, useEffect, useId, useRef, useState } from 'react';
 import { motion } from 'motion/react';
 import { cn } from '@/utils/helper';
 import TagChip from '../Chip/TagChip';
@@ -14,6 +14,7 @@ type TagInputProps = BaseField &
 export function TagInput({ label, error, value, onChange, className, placeholder, onBlur, required }: TagInputProps) {
   const [focused, setFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const id = useId();
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.nativeEvent.isComposing) return;
@@ -53,7 +54,11 @@ export function TagInput({ label, error, value, onChange, className, placeholder
 
   return (
     <BaseItem>
-      {label && <BaseLabel required={required}>{label}</BaseLabel>}
+      {label && (
+        <BaseLabel required={required} htmlFor={id}>
+          {label}
+        </BaseLabel>
+      )}
       <div className={cn(baseFieldClassName, 'flex h-auto min-h-[50px] flex-wrap items-center gap-2 px-4 py-2', error && baseErrorClassName, className)} onClick={() => setFocused(true)}>
         {value.map((item) => (
           <motion.div //
@@ -66,6 +71,7 @@ export function TagInput({ label, error, value, onChange, className, placeholder
         ))}
         {(value.length === 0 || focused) && (
           <input //
+            id={id}
             ref={inputRef}
             className='flex flex-1 focus-visible:outline-none'
             onKeyDown={handleKeyDown}

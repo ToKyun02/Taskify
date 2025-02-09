@@ -1,4 +1,4 @@
-import { ChangeEvent, InputHTMLAttributes, useEffect, useRef } from 'react';
+import { ChangeEvent, InputHTMLAttributes, useEffect, useId, useRef } from 'react';
 import Image from 'next/image';
 import { cn } from '@/utils/helper';
 import { BaseError, BaseItem, BaseLabel } from './Base';
@@ -16,6 +16,7 @@ type ImageUploadProps = BaseField &
 export function ImageUpload({ value, onChange, onBlur, label, required, error, className }: ImageUploadProps) {
   const preview = value instanceof File ? URL.createObjectURL(value) : value;
   const fileRef = useRef<HTMLInputElement>(null);
+  const id = useId();
 
   useEffect(() => {
     return () => {
@@ -47,11 +48,15 @@ export function ImageUpload({ value, onChange, onBlur, label, required, error, c
 
   return (
     <BaseItem>
-      {label && <BaseLabel required={required}>{label}</BaseLabel>}
+      {label && (
+        <BaseLabel required={required} htmlFor={id}>
+          {label}
+        </BaseLabel>
+      )}
       <div className={cn('relative aspect-square w-[76px]', className)}>
         <label className='relative flex h-full w-full cursor-pointer items-center justify-center overflow-hidden rounded-md bg-gray-10'>
           {preview ? <Image src={preview} alt='thumbnail' fill sizes='40vw' className='absolute h-full w-full object-cover' /> : <Image src={addIcon} className='h-auto w-[18px]' alt='업로드' />}
-          <input type='file' accept='image/*' ref={fileRef} onChange={handleChange} className='sr-only' />
+          <input id={id} type='file' accept='image/*' ref={fileRef} onChange={handleChange} className='sr-only' />
         </label>
         {preview && (
           <button type='button' className='absolute -right-1 -top-1 flex h-5 w-5 cursor-pointer items-center justify-center rounded-full bg-black' onClick={handleRemove}>

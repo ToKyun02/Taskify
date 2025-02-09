@@ -1,4 +1,4 @@
-import { InputHTMLAttributes } from 'react';
+import { InputHTMLAttributes, useId } from 'react';
 import Image from 'next/image';
 import DatePicker from 'react-datepicker';
 import { cn } from '@/utils/helper';
@@ -14,12 +14,19 @@ type DateInputProps = BaseField &
   };
 
 export function DateInput({ label, error, value, onChange, onBlur, placeholder, required, className, disabled, readOnly }: DateInputProps) {
+  const id = useId();
+
   return (
     <BaseItem>
-      {label && <BaseLabel required={required}>{label}</BaseLabel>}
+      {label && (
+        <BaseLabel required={required} htmlFor={id}>
+          {label}
+        </BaseLabel>
+      )}
       <div className='relative grid'>
         <Image src={calendarIcon} alt='날짜선택' className={cn('pointer-events-none absolute left-4 top-1/2 z-20 h-auto w-4 -translate-y-1/2 opacity-50', value && 'opacity-100')} />
         <DatePicker //
+          id={id}
           selected={value}
           onChange={onChange}
           onBlur={onBlur}
