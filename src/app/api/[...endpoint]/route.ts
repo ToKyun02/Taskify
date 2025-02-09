@@ -47,7 +47,15 @@ export const POST = async (request: NextRequest) => {
         'Content-Type': request.headers.get('Content-Type'),
       },
     });
-    return NextResponse.json(omit(apiResponse.data, ['accessToken']), { status: apiResponse.status });
+    const response = NextResponse.json(omit(apiResponse.data, ['accessToken']), { status: apiResponse.status });
+    if (endPoint === '/auth/login')
+      response.cookies.set('accessToken', apiResponse.data.accessToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        path: '/',
+      });
+    return response;
   } catch (error) {
     return errorResponse(error);
   }
