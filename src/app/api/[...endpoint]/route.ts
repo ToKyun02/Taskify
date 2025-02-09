@@ -51,8 +51,8 @@ export const POST = async (request: NextRequest) => {
     if (endPoint === '/auth/login')
       response.cookies.set('accessToken', apiResponse.data.accessToken, {
         httpOnly: true,
+        sameSite: 'lax',
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
         path: '/',
       });
     return response;
