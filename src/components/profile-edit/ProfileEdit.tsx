@@ -12,17 +12,9 @@ interface ProfileEditProps {
 
 export default function ProfileEdit({ currentEmail, currentNickname }: ProfileEditProps) {
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const [email, setEmail] = useState('');
   const [nickname, setNickname] = useState('');
-  const [emailValid, setEmailValid] = useState(true);
   const [nicknameValid, setNicknameValid] = useState(true);
   const [isChanged, setIsChanged] = useState(false);
-
-  // 이메일 유효성 검사 (영문만 허용)
-  const validateEmail = (value: string) => {
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    setEmailValid(emailRegex.test(value));
-  };
 
   // 닉네임 유효성 검사 (최소 2자)
   const validateNickname = (value: string) => {
@@ -44,21 +36,18 @@ export default function ProfileEdit({ currentEmail, currentNickname }: ProfileEd
   };
 
   useEffect(() => {
-    const hasChanged = email.trim() !== '' || nickname.trim() !== '' || previewImage !== null;
-
+    const hasChanged = nickname.trim() !== '' || previewImage !== null;
     setIsChanged(hasChanged);
-  }, [email, nickname, previewImage]);
+  }, [nickname, previewImage]);
 
   const handleSave = () => {
-    if (!isChanged || !emailValid || !nicknameValid) return;
+    if (!isChanged || !nicknameValid) return;
 
-    const updatedData: { email?: string; nickname?: string; profileImage?: string } = {};
-
-    if (email.trim() !== '') updatedData.email = email;
+    const updatedData: { nickname?: string; profileImage?: string } = {};
     if (nickname.trim() !== '') updatedData.nickname = nickname;
     if (previewImage !== null) updatedData.profileImage = previewImage;
 
-    //ToDo : API 연동 시 여기에 axios.post 요청 추가
+    // ToDo : API 연동 시 여기에 axios.post 요청 추가
     alert(`저장된 데이터: \n${JSON.stringify(updatedData, null, 2)}`);
   };
 
@@ -84,24 +73,15 @@ export default function ProfileEdit({ currentEmail, currentNickname }: ProfileEd
         </div>
         {/* 입력 필드 */}
         <div>
-          {/* 이메일 입력 */}
+          {/* 이메일 입력 (readonly) */}
           <div className='mb-[16px] flex flex-col gap-[8px]'>
             <label className='text-[14px] text-gray-70 sm:text-[16px]'>이메일</label>
             <input
               type='email'
-              value={email}
-              placeholder={currentEmail}
-              className={`h-[50px] w-[252px] rounded-lg border pl-[16px] text-[16px] text-gray-60 placeholder:text-gray-40 sm:w-[276px] lg:w-[400px] ${
-                emailValid
-                  ? 'border-gray-30 focus:border-violet-20 focus:outline focus:outline-1 focus:outline-violet-20'
-                  : 'border-red focus:border-red focus:outline focus:outline-1 focus:outline-red'
-              }`}
-              onChange={(e) => {
-                setEmail(e.target.value);
-                validateEmail(e.target.value);
-              }}
+              value={currentEmail}
+              readOnly
+              className='h-[50px] w-[252px] cursor-not-allowed rounded-lg border border-gray-30 bg-gray-10 pl-[16px] text-[16px] text-gray-50 sm:w-[276px] lg:w-[400px]'
             />
-            {!emailValid && <span className='text-sm text-red'>올바른 이메일 형식을 입력하세요.</span>}
           </div>
           {/* 닉네임 입력 */}
           <div className='mb-[24px] flex flex-col gap-[8px]'>
@@ -124,10 +104,8 @@ export default function ProfileEdit({ currentEmail, currentNickname }: ProfileEd
           </div>
           {/* 저장 버튼 */}
           <button
-            className={`h-[54px] w-[252px] rounded-lg text-white sm:w-[276px] lg:w-[400px] ${
-              isChanged && emailValid && nicknameValid ? 'cursor-pointer bg-violet-20' : 'cursor-not-allowed bg-gray-30'
-            }`}
-            disabled={!isChanged || !emailValid || !nicknameValid}
+            className={`h-[54px] w-[252px] rounded-lg text-white sm:w-[276px] lg:w-[400px] ${isChanged && nicknameValid ? 'cursor-pointer bg-violet-20' : 'cursor-not-allowed bg-gray-30'}`}
+            disabled={!isChanged || !nicknameValid}
             onClick={handleSave}
           >
             저장
