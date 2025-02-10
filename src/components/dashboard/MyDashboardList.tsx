@@ -5,7 +5,7 @@ import Link from 'next/link';
 import PaginationControls from '@/components/pagination/PaginationControls';
 import MyDashboardCard from '@/components/dashboard/MyDashboardCard';
 import { useDashboardsQuery } from '@/apis/dashboards/queries';
-import CreateDashboardButton from '../ui/Button/CreateDashboardButton';
+import DashboardButton from '../ui/Button/DashboardButton';
 
 interface MyDashboardListProps {
   onAdd: () => void;
@@ -33,7 +33,7 @@ export default function MyDashboardList({ onAdd }: MyDashboardListProps) {
     <div className='grid gap-3'>
       <ul className='grid-row-6 md:grid-row-3 relative grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3 lg:grid-rows-2'>
         <li>
-          <CreateDashboardButton onAdd={onAdd} />
+          <DashboardButton variant='createDashboard' onClick={onAdd} />
         </li>
 
         {isLoading && [...Array(5)].map((item, index) => <SkeletionItem key={index} />)}
