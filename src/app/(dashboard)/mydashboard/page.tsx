@@ -1,5 +1,5 @@
 import MyDashboard from '@/components/dashboard/MyDashboard';
-import InvitedDashboardCard from '@/components/invited-dashboard/InvitedDashboardCard';
+import MyInvitedDashboardList from '@/components/dashboard/MyInvitedDashboardList';
 
 export default function MydashboardPage() {
   return (
@@ -7,7 +7,7 @@ export default function MydashboardPage() {
       <div className='w-full max-w-screen-lg'>
         <div className='grid gap-10'>
           <MyDashboard />
-          <InvitedDashboardCard />
+          <MyInvitedDashboardList />
         </div>
       </div>
     </div>

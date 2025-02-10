@@ -1,6 +1,5 @@
 import { forwardRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { isAxiosError } from 'axios';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useAlert from '@/hooks/useAlert';
@@ -11,6 +10,7 @@ import ColorPicker from '@/components/ui/Chip/ColorPicker';
 import { useDashboardMutation } from '@/apis/dashboards/queries';
 import { dashboardFormSchema, DashboardFormType } from '@/apis/dashboards/types';
 import { DEFAULT_COLORS } from '@/constants/colors';
+import { getErrorMessage } from '@/utils/errorMessage';
 
 const CreateDashboard = forwardRef<ModalHandle>((props, ref) => {
   const {
@@ -44,7 +44,8 @@ const CreateDashboard = forwardRef<ModalHandle>((props, ref) => {
       handleReset();
       router.push(`/dashboard/${id}`);
     } catch (error) {
-      alert(isAxiosError(error) ? error.message : '문제가 발생했습니다.');
+      const message = getErrorMessage(error);
+      alert(message);
     }
   };
 

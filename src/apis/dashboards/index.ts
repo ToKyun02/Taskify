@@ -4,7 +4,7 @@ import {
   Dashboard,
   DashboardFormType,
   DashboardInvitation,
-  DashboardInvitationResponse,
+  DashboardInvitationsResponse,
   dashboardSchema,
   DashboardsResponse,
   dashboardsResponseSchema,
@@ -69,10 +69,9 @@ export const deleteDashboard = async (id: number) => {
   return response.data;
 };
 
-// TODO : UserSchema 추가이후, Invitation schema가 작성되면 응답 검증 로직 추가 필요
 // dashboard 초대 불러오기
 export const getDashboardInvitations = async (id: number, { page, size }: BasePaginationParams) => {
-  const response = await axiosClientHelper.get<DashboardInvitation>(`/dashboards/${id}/invitations`, {
+  const response = await axiosClientHelper.get<DashboardInvitationsResponse>(`/dashboards/${id}/invitations`, {
     params: {
       page: page || 1,
       size: size || 10,
@@ -81,10 +80,9 @@ export const getDashboardInvitations = async (id: number, { page, size }: BasePa
   return response.data;
 };
 
-// TODO : UserSchema 추가이후, Invitation schema가 작성되면 응답 검증 로직 추가 필요
 // dashboard 초대
 export const inviteDashboard = async (id: number, data: InviteDashboardType) => {
-  const response = await axiosClientHelper.post<DashboardInvitationResponse>(`/dashboards/${id}/invitations`, data);
+  const response = await axiosClientHelper.post<DashboardInvitation>(`/dashboards/${id}/invitations`, data);
   return response.data;
 };
 

@@ -1,26 +1,22 @@
-export interface User {
-  nickname: string;
-  email: string;
-  id: number;
-}
+import { z } from 'zod';
+import { dashboardInvitationSchema } from '../dashboards/types';
 
-export interface Dashboard {
+export type BaseCursorParams = {
+  cursorId?: number;
+  size?: number;
+};
+
+export type MyInvitationsParams = BaseCursorParams & {
   title: string;
-  id: number;
-}
+};
 
-export interface Invitation {
-  id: number;
-  inviter: User;
-  teamId: string;
-  dashboard: Dashboard;
-  invitee: User;
-  inviteAccepted: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
+export const myInvitationsResponseSchema = z.object({
+  cursorId: z.number().nullable(),
+  invitations: z.array(dashboardInvitationSchema),
+});
+export type MyInvitationsResponse = z.infer<typeof myInvitationsResponseSchema>;
 
-export interface InvitationsResponse {
-  invitations: Invitation[];
-  nextPage?: number;
-}
+export const respondToInvitationSchema = z.object({
+  inviteAccepted: z.boolean(),
+});
+export type RespondToInvitation = z.infer<typeof respondToInvitationSchema>;
