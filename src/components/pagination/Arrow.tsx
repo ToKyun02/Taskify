@@ -8,16 +8,17 @@ import { cn } from '@/utils/helper';
 interface ArrowProps {
   direction: 'left' | 'right';
   disabled?: boolean;
+  className?: string;
 }
 
-export default function Arrow({ direction, disabled = false }: ArrowProps) {
+export default function Arrow({ direction, disabled = false, className }: ArrowProps) {
   const baseStyle = 'w-4 h-4 fill-current';
   const colorStyle = disabled ? 'text-gray-30 cursor-default' : 'text-gray-50 hover:text-gray-60 cursor-pointer';
 
   const dValue = direction === 'left' ? ARROW_PATH_LEFT : ARROW_PATH_RIGHT;
 
   return (
-    <svg className={cn(baseStyle, colorStyle)} width='10' height='16' viewBox='0 0 10 16' fill='none' xmlns='http://www.w3.org/2000/svg'>
+    <svg className={cn(baseStyle, colorStyle, className)} width='10' height='16' viewBox='0 0 10 16' fill='none' xmlns='http://www.w3.org/2000/svg'>
       <path d={dValue} fill='currentColor' />
     </svg>
   );
