@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import useAlert from '@/hooks/useAlert';
 import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '@/components/ui/Modal/Modal';
 import Button from '@/components/ui/Button/Button';
+import { Input } from '@/components/ui/Field';
 import ColorPicker from '@/components/ui/Chip/ColorPicker';
 import { useDashboardMutation } from '@/apis/dashboards/queries';
 import { dashboardFormSchema, DashboardFormType } from '@/apis/dashboards/types';
@@ -52,14 +53,13 @@ const CreateDashboard = forwardRef<ModalHandle>((props, ref) => {
       <ModalContent>
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalHeader>새로운 대시보드</ModalHeader>
-          <div className='grid gap-4'>
-            {/* TODO : 공용 Field 컴포넌트 개발후 교체 필요 */}
-            <label className='grid gap-3'>
-              <span>대시보드 이름</span>
-              <input type='text' {...register('title')} className='h-10 rounded-md border px-2' />
-            </label>
-            <div>{errors.title?.message}</div>
-
+          <div className='grid gap-6 py-2'>
+            <Input //
+              label='대시보드 이름'
+              error={errors.title?.message}
+              placeholder='대시보드 이름을 입력해주세요'
+              {...register('title')}
+            />
             <Controller //
               control={control}
               name='color'
