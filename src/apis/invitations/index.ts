@@ -1,5 +1,5 @@
 import axiosClientHelper from '@/utils/network/axiosClientHelper';
-import { MyInvitationsParams, MyInvitationsResponse, myInvitationsResponseSchema, RespondToInvitationParams } from './types';
+import { MyInvitationsParams, MyInvitationsResponse, myInvitationsResponseSchema, RespondToInvitation } from './types';
 import { DashboardInvitation, dashboardInvitationSchema } from '../dashboards/types';
 
 export const getMyInvitations = async ({ cursorId, size, title }: MyInvitationsParams) => {
@@ -18,7 +18,7 @@ export const getMyInvitations = async ({ cursorId, size, title }: MyInvitationsP
   return result.data;
 };
 
-export const RespondToInvitation = async (id: number, data: RespondToInvitationParams) => {
+export const respondToInvitation = async (id: number, data: RespondToInvitation) => {
   const response = await axiosClientHelper.put<DashboardInvitation>(`/invitations/${id}`, data);
 
   const result = dashboardInvitationSchema.safeParse(response.data);

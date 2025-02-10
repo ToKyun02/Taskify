@@ -1,7 +1,7 @@
 'use client';
 
 import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getMyInvitations, RespondToInvitation } from '.';
+import { getMyInvitations, respondToInvitation } from '.';
 
 export const useMyInvitationsQuery = (size: number, title: string) => {
   return useInfiniteQuery({
@@ -22,7 +22,7 @@ export const useInvitationMutation = () => {
 
   const accept = useMutation({
     mutationFn: ({ id, flag }: { id: number; flag: boolean }) => {
-      return RespondToInvitation(id, { inviteAccepted: flag });
+      return respondToInvitation(id, { inviteAccepted: flag });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['myInvitations'] });

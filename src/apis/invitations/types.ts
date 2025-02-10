@@ -16,7 +16,7 @@ export const myInvitationsResponseSchema = z.object({
 });
 export type MyInvitationsResponse = z.infer<typeof myInvitationsResponseSchema>;
 
-export const respondToInvitation = z.object({
+export const respondToInvitationSchema = z.object({
   inviteAccepted: z.boolean(),
 });
-export type RespondToInvitationParams = z.infer<typeof respondToInvitation>;
+export type RespondToInvitation = z.infer<typeof respondToInvitationSchema>;
