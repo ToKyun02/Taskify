@@ -10,6 +10,7 @@ import MyInvitedEmptyCard from './MyInvitedEmptyCard';
 import { SearchInput } from '../ui/Field';
 import useAlert from '@/hooks/useAlert';
 import { getErrorMessage } from '@/utils/errorMessage';
+import { Table, TableBody, TableCell, TableCol, TableColGroup, TableHead, TableHeadCell, TableRow } from '@/components/ui/Table/Table';
 
 export default function MyInvitedDashboardList() {
   const [searchKeyword, setSearchKeyword] = useState('');
@@ -47,26 +48,32 @@ export default function MyInvitedDashboardList() {
       {hasNoInvitations ? (
         <MyInvitedEmptyCard>아직 초대받은 대시보드가 없어요.</MyInvitedEmptyCard>
       ) : (
-        <div className='grid gap-10'>
+        <div className='grid gap-4 md:gap-10'>
           <SearchInput value={searchKeyword} onChange={(e) => setSearchKeyword(e.target.value)} placeholder='검색' />
           {hasNoSearchResults ? (
             <MyInvitedEmptyCard>검색된 초대가 없습니다.</MyInvitedEmptyCard>
           ) : (
-            // TODO : 리스트 테이블 공용 컴포넌트화 필요
-            <div className='flex flex-col gap-6'>
-              <div className='px-8'>
-                <div className='hidden md:block'>
-                  <div className='mb-4 grid grid-cols-[1fr_1fr_2fr] gap-5 text-lg text-gray-40 lg:pl-10'>
-                    <span>이름</span>
-                    <span>초대자</span>
-                    <span>수락 여부</span>
-                  </div>
-                  <div className='flex flex-col gap-5'>
-                    {invitations.map((item) => (
-                      <div key={item.id} className='grid grid-cols-[1fr_1fr_2fr] items-center gap-5 border-b pb-5 text-lg text-gray-70 lg:pl-10'>
-                        <span>{item.dashboard.title}</span>
-                        <span>{item.inviter.nickname}</span>
-                        <div className='flex gap-2.5'>
+            <>
+              <Table responsive>
+                <TableColGroup className='hidden md:table-column-group'>
+                  <TableCol />
+                  <TableCol className='w-[20%]' />
+                  <TableCol className='w-48' />
+                </TableColGroup>
+                <TableHead>
+                  <TableRow>
+                    <TableHeadCell>이름</TableHeadCell>
+                    <TableHeadCell>초대자</TableHeadCell>
+                    <TableHeadCell>수락 여부</TableHeadCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {invitations.map((item) => (
+                    <TableRow key={item.id}>
+                      <TableCell label='이름'>{item.dashboard.title}</TableCell>
+                      <TableCell label='초대자'>{item.inviter.nickname}</TableCell>
+                      <TableCell>
+                        <div className='flex w-full gap-2'>
                           <Button size='sm' onClick={() => handleAccept({ id: item.id, flag: true })}>
                             수락
                           </Button>
@@ -74,15 +81,15 @@ export default function MyInvitedDashboardList() {
                             거절
                           </Button>
                         </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
 
-                {/* 공통 load more 트리거 요소 */}
-                <div ref={ref} className='h-8' />
-              </div>
-            </div>
+              {/* 공통 load more 트리거 요소 */}
+              <div ref={ref} className='h-2' />
+            </>
           )}
         </div>
       )}
