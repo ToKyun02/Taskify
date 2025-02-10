@@ -6,11 +6,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import useAlert from '@/hooks/useAlert';
 import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '@/components/ui/Modal/Modal';
 import Button from '@/components/ui/Button/Button';
+import { Input } from '@/components/ui/Field';
 import ColorPicker from '@/components/ui/Chip/ColorPicker';
 import { useDashboardMutation } from '@/apis/dashboards/queries';
 import { dashboardFormSchema, DashboardFormType } from '@/apis/dashboards/types';
 import { DEFAULT_COLORS } from '@/constants/colors';
-import { Input } from '../ui/Field';
 
 const CreateDashboard = forwardRef<ModalHandle>((props, ref) => {
   const {
