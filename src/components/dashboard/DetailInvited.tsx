@@ -1,23 +1,98 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import Button from '@/components/ui/Button/Button';
 import { Card, CardTitle } from '@/components/ui/Card/Card';
 import { ModalHandle } from '@/components/ui/Modal/Modal';
 import InviteDashboard from './InviteDashboard';
+import { useParams } from 'next/navigation';
+import { useDashboardInvitationsQuery, useDashboardMutation } from '@/apis/dashboards/queries';
+import { getErrorMessage } from '@/utils/errorMessage';
+import useAlert from '@/hooks/useAlert';
+import { Table, TableBody, TableCell, TableCol, TableColGroup, TableHead, TableHeadCell, TableRow } from '@/components/ui/Table/Table';
+import PaginationWithCounter from '@/components/pagination/PaginationWithCounter';
+import { isAxiosError } from 'axios';
+
+const PAGE_SIZE = 5;
 
 export default function DetailInvited() {
+  const { id } = useParams<{ id: string }>();
+  const [page, setPage] = useState(1);
+  const { data, error, isLoading } = useDashboardInvitationsQuery(Number(id), page, PAGE_SIZE);
+  const { cancel } = useDashboardMutation();
+  const alert = useAlert();
   const inviteModalRef = useRef<ModalHandle | null>(null);
+
+  const cancelInvite = async (invitationId: number) => {
+    try {
+      await cancel({ dashboardId: Number(id), invitationId });
+      alert('초대를 취소했습니다.');
+    } catch (error) {
+      const message = getErrorMessage(error);
+      alert(message);
+    }
+  };
+  const notAllowed = isAxiosError(error) && error.status === 403;
 
   return (
     <Card>
       <CardTitle>
         초대내역
         <div className='leading-none'>
-          <Button size='sm' onClick={() => inviteModalRef.current?.open()}>
-            초대하기
-          </Button>
+          <PaginationWithCounter //
+            totalCount={data?.totalCount || 0}
+            page={page}
+            setPage={setPage}
+            pageSize={PAGE_SIZE}
+          />
         </div>
       </CardTitle>
-      <div>대시보드 초대내역(작업필요)</div>
+      <Table className='mb-4'>
+        <TableColGroup>
+          <TableCol />
+          <TableCol className='w-24' />
+        </TableColGroup>
+        <TableHead>
+          <TableRow>
+            <TableHeadCell>이메일</TableHeadCell>
+            <TableHeadCell></TableHeadCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {isLoading && (
+            <TableRow>
+              <TableCell colSpan={2}>
+                <div className='p-4 text-center'>초대목록을 가져오는 중입니다.</div>
+              </TableCell>
+            </TableRow>
+          )}
+          {notAllowed && (
+            <TableRow>
+              <TableCell colSpan={2}>
+                <div className='p-4 text-center'>권한이 없습니다.</div>
+              </TableCell>
+            </TableRow>
+          )}
+          {data?.invitations.length === 0 && (
+            <TableRow>
+              <TableCell colSpan={2}>
+                <div className='p-4 text-center'>초대 내역이 없습니다.</div>
+              </TableCell>
+            </TableRow>
+          )}
+          {data?.invitations.map((item) => (
+            <TableRow key={item.id}>
+              <TableCell>{item.invitee.email}</TableCell>
+              <TableCell>
+                <Button variant='outline' size='sm' onClick={() => cancelInvite(item.id)}>
+                  취소
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      <Button className='w-full' onClick={() => inviteModalRef.current?.open()}>
+        초대하기
+      </Button>
 
       {/* 초대모달 */}
       <InviteDashboard ref={inviteModalRef} />
