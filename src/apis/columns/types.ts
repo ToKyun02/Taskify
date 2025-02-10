@@ -18,6 +18,12 @@ export const columnsResponseSchema = z.object({
 
 export type ColumnsResponse = z.infer<typeof columnsResponseSchema>;
 
+export const getColumnsParamsSchema = z.object({
+  dashboardId: z.number(),
+});
+
+export type GetColumnsParams = z.infer<typeof getColumnsParamsSchema>;
+
 export const columnFormSchema = z.object({
   title: z.string(),
 });
@@ -34,4 +40,4 @@ export const cardImageResponseSchema = z.object({
   imageUrl: z.union([z.string(), z.instanceof(URL)]),
 });
 
-export type cardImageResponse = z.infer<typeof cardImageResponseSchema>;
+export type CardImageResponse = z.infer<typeof cardImageResponseSchema>;
