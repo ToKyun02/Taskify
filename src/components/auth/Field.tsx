@@ -42,14 +42,14 @@ const Field = ({ label, type, placeholder = '', register, errorMessage }: FieldP
         <input
           type={inputType}
           placeholder={placeholder}
-          className={`rounded-lg border p-4 text-gray-70 ${!isEmpty(errorMessage) ? 'border-2 border-red outline-red' : 'outline-violet-20'}`}
+          className={`rounded-lg border p-4 text-gray-70 ${!isEmpty(errorMessage) ? 'border-1 border-red outline-red' : 'outline-violet-20'}`}
           {...register}
         />
         {type === 'password' && (
           <Image src={passwordState.icon} alt='비밀번호 숨김 아이콘' width={24} height={24} onClick={togglePasswordVisibility} className='absolute right-4 top-12 cursor-pointer' />
         )}
       </label>
-      {!isEmpty(errorMessage) && <span className='text-md text-red'>{errorMessage}</span>}
+      {<span className='h-6 text-md text-red'>{errorMessage}</span>}
     </div>
   );
 };

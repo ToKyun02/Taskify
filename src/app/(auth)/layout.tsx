@@ -3,5 +3,5 @@ export default function Layout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <div className='mx-3 flex min-h-dvh flex-col items-center justify-center gap-9 bg-gray-10'>{children}</div>;
+  return <div className='flex min-h-dvh flex-col items-center justify-center gap-3 bg-gray-10 px-3 py-6'>{children}</div>;
 }
