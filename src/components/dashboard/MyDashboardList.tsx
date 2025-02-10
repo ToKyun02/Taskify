@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import PaginationControls from '@/components/pagination/PaginationControls';
 import MyDashboardCard from '@/components/dashboard/MyDashboardCard';
 import { useDashboardsQuery } from '@/apis/dashboards/queries';
 import DashboardButton from '../ui/Button/DashboardButton';
+import PaginationWithCounter from '../pagination/PaginationWithCounter';
 
 interface MyDashboardListProps {
   onAdd: () => void;
@@ -16,18 +16,6 @@ const ITEMS_PER_PAGE = 5;
 export default function MyDashboardList({ onAdd }: MyDashboardListProps) {
   const [page, setPage] = useState(1);
   const { data, isLoading } = useDashboardsQuery(page, ITEMS_PER_PAGE);
-
-  const totalCount = data?.totalCount || 0;
-  const totalPage = Math.ceil(totalCount / ITEMS_PER_PAGE);
-  const hasNext = page < totalPage;
-  const hasPrev = page > 1;
-
-  const handlePrev = () => {
-    setPage((prev) => prev - 1);
-  };
-  const handleNext = () => {
-    setPage((prev) => prev + 1);
-  };
 
   return (
     <div className='grid gap-3'>
@@ -47,14 +35,12 @@ export default function MyDashboardList({ onAdd }: MyDashboardListProps) {
         ))}
       </ul>
 
-      {totalCount > 0 && (
-        <div className='flex items-center justify-end gap-4'>
-          <span className='text-md text-gray-70'>
-            {totalPage} 페이지중 {page}
-          </span>
-          <PaginationControls canGoPrev={hasPrev} canGoNext={hasNext} handlePrev={handlePrev} handleNext={handleNext} totalPages={totalCount} alwaysShow />
-        </div>
-      )}
+      <PaginationWithCounter //
+        totalCount={data?.totalCount || 0}
+        page={page}
+        setPage={setPage}
+        pageSize={ITEMS_PER_PAGE}
+      />
     </div>
   );
 }
