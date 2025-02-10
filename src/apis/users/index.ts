@@ -1,11 +1,11 @@
-import axiosHelper from '@/utils/network/axiosHelper';
+import axiosClientHelper from '@/utils/network/axiosClientHelper';
 import { CreateProfileImageForm, CreateProfileImageSuccessResponse, GetUserResponse, SignupFormData, SignupResponse, UpdateUserForm, User } from './types';
 import { isAxiosError } from 'axios';
 import { isError } from 'es-toolkit/compat';
 
 export const signup = async (signupFormData: SignupFormData): SignupResponse => {
   try {
-    const response = await axiosHelper.post('/users', signupFormData);
+    const response = await axiosClientHelper.post('/users', signupFormData);
     return response.data;
   } catch (error) {
     if (isAxiosError(error)) return error.response?.data;
@@ -16,17 +16,17 @@ export const signup = async (signupFormData: SignupFormData): SignupResponse => 
 };
 
 export const getUser = async (): GetUserResponse => {
-  const response = await axiosHelper.get('/users/me');
+  const response = await axiosClientHelper.get('/users/me');
   return response.data;
 };
 
 export const updateUser = async (updateUserForm: UpdateUserForm) => {
-  const response = await axiosHelper.put<User>('/users/me', updateUserForm);
+  const response = await axiosClientHelper.put<User>('/users/me', updateUserForm);
   return response.data;
 };
 
 export const createProfileImage = async (createProfileImageForm: CreateProfileImageForm) => {
-  const response = await axiosHelper.post<CreateProfileImageSuccessResponse>('/users/me/image', createProfileImageForm, {
+  const response = await axiosClientHelper.post<CreateProfileImageSuccessResponse>('/users/me/image', createProfileImageForm, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
