@@ -1,6 +1,14 @@
 import Link from 'next/link';
 import Arrow from '@/components/pagination/Arrow';
 
+/*
+ * GoBackLink 컴포넌트
+ *
+ * - 이동할 링크 주소를 href prop으로 전달하면 됩니다.
+ * 예시:
+ *   <GoBackLink href="/mydashboard" />
+ */
+
 interface GoBackLinkProps {
   href: string;
 }
