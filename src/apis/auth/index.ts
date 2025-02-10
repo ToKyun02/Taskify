@@ -16,3 +16,7 @@ export const login = async (loginFormData: LoginFormData): LoginResponse => {
 export const putPassword = async (putPasswordFormData: PutPasswordFormData): PutPasswordResponse => {
   await axiosClientHelper.put('/auth/password', putPasswordFormData);
 };
+
+export const logout = async () => {
+  await axiosClientHelper.post('/auth/logout');
+};

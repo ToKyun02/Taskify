@@ -1,5 +1,3 @@
-'use client';
-
 import Link from 'next/link';
 import SignupForm from '@/components/auth/SignupForm';
 import Header from '@/components/auth/Header';
