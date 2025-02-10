@@ -24,22 +24,22 @@ export const signupSchema = z
 
 export type SignupFormData = z.infer<typeof signupSchema>;
 
-export interface User {
-  id: number;
-  email: string;
-  nickname: string;
-  profileImageUrl: string | null | URL;
-  createdAt: string | Date;
-  updatedAt: string | Date;
-}
+export const userSchema = z.object({
+  id: z.number(),
+  email: z.string().email(),
+  nickname: z.string(),
+  profileImageUrl: z.union([z.string().url(), z.null()]),
+  createdAt: z.union([z.string(), z.date()]),
+  updatedAt: z.union([z.string(), z.date()]),
+});
 
-export type SignupSuccessResponse = User;
+export type User = z.infer<typeof userSchema>;
+
+export type SignupSuccessResponse = z.infer<typeof userSchema>;
 
 export type SignupFailResponse = FailResponse;
 
 export type SignupResponse = Promise<SignupSuccessResponse | SignupFailResponse>;
-
-export type GetUserResponse = Promise<{ user: User }>;
 
 type ProfileImageUrl = string | URL | null;
 
@@ -52,7 +52,7 @@ export type UpdateUserForm = Omit<z.infer<typeof updateUserFormSchema>, 'profile
   profileImageUrl: ProfileImageUrl;
 };
 
-const profileImageUrlSchema = z.instanceof(File).refine((file) => ['image/jpeg', 'image/jpg', 'image/png', 'image/svg+xml'].includes(file.type), {
+const profileImageUrlSchema = z.instanceof(File).refine((file) => ['image/jpeg', 'image/jpg', 'image/png', 'image/svg+xml', 'image/ico'].includes(file.type), {
   message: '지원되지 않는 이미지 파일입니다.',
 });
 
@@ -64,6 +64,8 @@ export interface CreateProfileImageForm {
   image: File;
 }
 
-export type CreateProfileImageSuccessResponse = {
-  profileImageUrl: Exclude<ProfileImageUrl, null>;
-};
+export const profileImageUrlResponseSchema = z.object({
+  profileImageUrl: z.union([z.string(), z.instanceof(URL)]),
+});
+
+export type ProfileImageUrlResponse = z.infer<typeof profileImageUrlResponseSchema>;
