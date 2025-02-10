@@ -11,7 +11,7 @@ export default function Checkbox({ errorMessage, register }: { errorMessage?: st
         />
         <span className='text-gray-70'>이용약관에 동의합니다.</span>
       </label>
-      {errorMessage && <span className='text-md text-red'>{errorMessage}</span>}
+      {<span className='h-6 text-md text-red'>{errorMessage}</span>}
     </div>
   );
 }

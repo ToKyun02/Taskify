@@ -42,7 +42,7 @@ export default function SignupForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-6'>
+    <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-1'>
       <Field label='이메일' type='email' placeholder={SIGNUP_FORM_PLACEHOLDER.EMAIL} register={register('email')} errorMessage={errors.email?.message} />
       <Field label='닉네임' type='text' placeholder={SIGNUP_FORM_PLACEHOLDER.NICKNAME} register={register('nickname')} errorMessage={errors.nickname?.message} />
       <Field
