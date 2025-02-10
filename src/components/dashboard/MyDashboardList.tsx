@@ -53,12 +53,12 @@ export default function MyDashboardList({ onAdd }: MyDashboardListProps) {
         ))}
       </ul>
 
-      {data?.totalCount && (
+      {totalCount > 0 && (
         <div className='flex items-center justify-end gap-4'>
           <span className='text-md text-gray-70'>
             {totalPage} 페이지중 {page}
           </span>
-          <PaginationControls canGoPrev={hasPrev} canGoNext={hasNext} handlePrev={handlePrev} handleNext={handleNext} totalPages={data.totalCount || 0} alwaysShow />
+          <PaginationControls canGoPrev={hasPrev} canGoNext={hasNext} handlePrev={handlePrev} handleNext={handleNext} totalPages={totalCount} alwaysShow />
         </div>
       )}
     </div>
