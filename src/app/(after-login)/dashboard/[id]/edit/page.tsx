@@ -8,7 +8,7 @@ import { getErrorMessage } from '@/utils/errorMessage';
 import DetailModify from '@/components/dashboard/DetailModify';
 import DetailMembers from '@/components/dashboard/DetailMembers';
 import DetailInvited from '@/components/dashboard/DetailInvited';
-import Link from 'next/link';
+import GoBackLink from '@/components/ui/Link/GoBackLink';
 
 export default function DashboardEditPage() {
   const router = useRouter();
@@ -29,9 +29,8 @@ export default function DashboardEditPage() {
 
   return (
     <div className='p-10'>
-      {/* TODO : 돌아가기 공용 컴포넌트로 교체 필요 */}
       <div className='mb-8'>
-        <Link href={`/dashboard/${id}`}>돌아가기</Link>
+        <GoBackLink href={`/dashboard/${id}`} />
       </div>
       <div className='grid w-full max-w-[620px] gap-4'>
         {/* 대시보드 정보 */}
@@ -44,7 +43,6 @@ export default function DashboardEditPage() {
         <DetailInvited />
 
         {/* 대시보드 삭제 */}
-        {/* TODO : 대시보드 공용 버튼 교체 필요 */}
         <Button variant='outline' onClick={handleDelete}>
           대시보드 삭제하기
         </Button>
