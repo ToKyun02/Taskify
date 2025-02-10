@@ -8,7 +8,7 @@ import { LOGIN_FORM_PLACEHOLDER } from '@/constants/auth';
 import { loginSchema, LoginFormData } from '@/apis/auth/types';
 import { login } from '@/apis/auth';
 import { useRouter } from 'next/navigation';
-import useAuthStore from '@/hooks/useAuthStore';
+import useAlert from '@/hooks/useAlert';
 
 export default function LoginForm() {
   const {
@@ -25,17 +25,14 @@ export default function LoginForm() {
   });
 
   const router = useRouter();
-  const { setAccessToken } = useAuthStore();
+  const alert = useAlert();
 
   const onSubmit = async (loginFormData: LoginFormData) => {
     const response = await login(loginFormData);
-    // TODO: 디버깅 용으로 alert로 구현했습니다. 모달 기능 구현 후 로직 수정 예정입니다.
     if ('message' in response) {
       alert(response.message);
     } else {
-      alert('로그인이 완료되었습니다!');
-      setAccessToken(response.accessToken);
-      router.replace('/mydashboard');
+      alert('로그인이 완료되었습니다!', () => router.replace('/mydashboard'));
     }
   };
 
