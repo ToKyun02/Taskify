@@ -4,11 +4,12 @@ import { useForm } from 'react-hook-form';
 import { Input } from '@/components/ui/Field/Input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { passwordSchema, PutPasswordFormData } from '@/apis/auth/types';
-import { putPassword } from '@/apis/auth';
+import { logout, putPassword } from '@/apis/auth';
 import useAlert from '@/hooks/useAlert';
 import { isError } from 'es-toolkit/compat';
 import { isAxiosError } from 'axios';
 import SubmitButton from '@/components/auth/SubmitButton';
+import { useRouter } from 'next/navigation';
 
 export default function PasswordEdit() {
   const {
@@ -27,6 +28,7 @@ export default function PasswordEdit() {
   });
 
   const alert = useAlert();
+  const router = useRouter();
 
   const onSubmit = async (putPasswordFormData: PutPasswordFormData) => {
     try {
@@ -34,8 +36,17 @@ export default function PasswordEdit() {
       alert('비밀번호가 변경되었습니다!');
       reset();
     } catch (error) {
-      if (isAxiosError(error)) alert(error.response?.data?.message ?? '알 수 없는 오류가 발생했습니다.');
-      else alert(isError(error) ? error.message : String(error));
+      if (isAxiosError(error)) {
+        if (error?.status === 401) {
+          alert('세션이 만료되어 로그인 페이지로 이동합니다.', async () => {
+            await logout();
+            router.replace('/login');
+          });
+          return;
+        }
+
+        alert(error.response?.data?.message ?? '알 수 없는 오류가 발생했습니다.');
+      } else alert(isError(error) ? error.message : String(error));
     }
   };
 
