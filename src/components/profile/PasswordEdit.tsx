@@ -1,14 +1,14 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { Input } from '../ui/Field/Input';
+import { Input } from '@/components/ui/Field/Input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { passwordSchema, PutPasswordFormData } from '@/apis/auth/types';
 import { putPassword } from '@/apis/auth';
 import useAlert from '@/hooks/useAlert';
 import { isError } from 'es-toolkit/compat';
 import { isAxiosError } from 'axios';
-import SubmitButton from '../auth/SubmitButton';
+import SubmitButton from '@/components/auth/SubmitButton';
 
 export default function PasswordEdit() {
   const {
@@ -34,7 +34,7 @@ export default function PasswordEdit() {
       alert('비밀번호가 변경되었습니다!');
       reset();
     } catch (error) {
-      if (isAxiosError(error)) alert(error.response?.data?.message ?? '알 수 없는 오류 발생');
+      if (isAxiosError(error)) alert(error.response?.data?.message ?? '알 수 없는 오류가 발생했습니다.');
       else alert(isError(error) ? error.message : String(error));
     }
   };
