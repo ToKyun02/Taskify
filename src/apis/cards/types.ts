@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 const IMAGE_URL = 'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/taskify/task_image/';
 
-const taskBaseSchema = z.object({
+const cardBaseSchema = z.object({
   dashboardId: z.number(),
   columnId: z.number(),
   title: z.string(),
@@ -20,7 +20,7 @@ const taskBaseSchema = z.object({
     }),
 });
 
-export const taskSchema = taskBaseSchema.extend({
+export const cardSchema = cardBaseSchema.extend({
   id: z.number(),
   assignee: z.object({
     id: z.number(),
@@ -32,23 +32,23 @@ export const taskSchema = taskBaseSchema.extend({
   updatedAt: z.union([z.string(), z.date()]),
 });
 
-export type Task = z.infer<typeof taskSchema>;
+export type Card = z.infer<typeof cardSchema>;
 
-export const taskFormSchema = taskBaseSchema.extend({
+export const cardFormSchema = cardBaseSchema.extend({
   assigneeUserId: z.number(),
 });
 
-export type TaskForm = z.infer<typeof taskFormSchema>;
+export type CardForm = z.infer<typeof cardFormSchema>;
 
-export const tasksResponseSchema = z.object({
+export const cardsResponseSchema = z.object({
   cursorId: z.number().nullable(),
   totalCount: z.number(),
-  cards: z.array(taskSchema),
+  cards: z.array(cardSchema),
 });
 
-export type TasksResponse = z.infer<typeof tasksResponseSchema>;
+export type CardsResponse = z.infer<typeof cardsResponseSchema>;
 
-export const getTasksParamsSchema = z.object({
+export const getCardsParamsSchema = z.object({
   cards: z.object({
     size: z.number().optional(),
     cursorId: z.number().optional(),
@@ -56,4 +56,10 @@ export const getTasksParamsSchema = z.object({
   }),
 });
 
-export type TasksParams = z.infer<typeof getTasksParamsSchema>;
+export type GetCardsParams = z.infer<typeof getCardsParamsSchema>;
+
+export const putCardFormSchema = cardFormSchema.extend({
+  cardId: z.number(),
+});
+
+export type PutCardForm = z.infer<typeof putCardFormSchema>;
