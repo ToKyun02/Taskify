@@ -11,7 +11,6 @@ interface TodoCardProps {
 
 export default function TodoCard({ card }: TodoCardProps) {
   const formattedDate = formatDate(card.createdAt);
-  console.log(card.id);
 
   return (
     <div className='flex w-full flex-col gap-1 rounded-md border border-gray-30 bg-white px-3 py-[5px] md:flex-row md:gap-2.5 lg:w-[314px] lg:flex-col'>
