@@ -11,6 +11,8 @@ import { Input } from '@/components/ui/Field';
 import Button from '../ui/Button/Button';
 import { useColumnMutation } from '@/apis/columns/queries';
 import { getErrorMessage } from '@/utils/errorMessage';
+import xIcon from '@/assets/icons/x.svg';
+import Image from 'next/image';
 
 export default function AddColumnBtn({ dashboardId }: { dashboardId: number }) {
   const {
@@ -54,7 +56,10 @@ export default function AddColumnBtn({ dashboardId }: { dashboardId: number }) {
       <DashboardButton variant='column' onClick={() => modalRef.current?.open()} />
       <Modal ref={modalRef}>
         <ModalContent>
-          <ModalHeader>새 컬럼 생성</ModalHeader>
+          <ModalHeader className='flex justify-between'>
+            <span>새 컬럼 생성</span>
+            <Image src={xIcon} alt='컬럼 생성 취소 아이콘' width={24} height={24} onClick={() => handleReset()} className='cursor-pointer' />
+          </ModalHeader>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Input label='이름' error={errors.title?.message} placeholder='컬럼 이름을 입력해주세요' {...register('title')} />
             <ModalFooter>

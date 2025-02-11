@@ -12,6 +12,7 @@ import { Input } from '@/components/ui/Field';
 import { getErrorMessage } from '@/utils/errorMessage';
 import useAlert from '@/hooks/useAlert';
 import { useColumnMutation } from '@/apis/columns/queries';
+import xIcon from '@/assets/icons/x.svg';
 
 export default function ColumnSettingBtn({ column }: { column: Column }) {
   const {
@@ -75,7 +76,10 @@ export default function ColumnSettingBtn({ column }: { column: Column }) {
       {/* 컬럼 수정 모달 */}
       <Modal ref={updateModalRef}>
         <ModalContent>
-          <ModalHeader>컬럼 관리</ModalHeader>
+          <ModalHeader className='flex justify-between'>
+            <span>컬럼 관리</span>
+            <Image src={xIcon} alt='컬럼 관리 취소 아이콘' width={24} height={24} onClick={() => handleReset()} className='cursor-pointer' />
+          </ModalHeader>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Input label='이름' error={errors.title?.message} placeholder='컬럼 이름을 입력해주세요' {...register('title')} />
             <ModalFooter>
