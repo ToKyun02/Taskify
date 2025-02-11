@@ -15,6 +15,7 @@ import {
   dashboardInvitationSchema,
   CancelInviteDashboardRequest,
 } from './types';
+import { safeResponse } from '@/utils/network/safeResponse';
 
 /**
  * dashboards 목록 조회
@@ -31,11 +32,7 @@ export const getDashboards = async (params: GetDashboardsRequest) => {
     },
   });
 
-  const result = dashboardsSchema.safeParse(response.data);
-  if (!result.success) {
-    throw new Error('서버에서 받은 데이터가 예상과 다릅니다.');
-  }
-  return result.data;
+  return safeResponse(response.data, dashboardsSchema);
 };
 
 /**
@@ -45,11 +42,7 @@ export const getDashboards = async (params: GetDashboardsRequest) => {
 export const getDashboardDetails = async (id: Dashboard['id']) => {
   const response = await axiosClientHelper.get<Dashboard>(`/dashboards/${id}`);
 
-  const result = dashboardSchema.safeParse(response.data);
-  if (!result.success) {
-    throw new Error('서버에서 받은 데이터가 예상과 다릅니다.');
-  }
-  return result.data;
+  return safeResponse(response.data, dashboardSchema);
 };
 
 /**
@@ -60,11 +53,7 @@ export const getDashboardDetails = async (id: Dashboard['id']) => {
 export const createDashboard = async (params: CreateDashboardRequest) => {
   const response = await axiosClientHelper.post<Dashboard>('/dashboards', params);
 
-  const result = dashboardSchema.safeParse(response.data);
-  if (!result.success) {
-    throw new Error('서버에서 받은 데이터가 예상과 다릅니다.');
-  }
-  return result.data;
+  return safeResponse(response.data, dashboardSchema);
 };
 
 /**
@@ -75,11 +64,7 @@ export const updateDashboard = async (params: UpdateDashboardRequest) => {
   const { id, ...reset } = params;
   const response = await axiosClientHelper.put<Dashboard>(`/dashboards/${id}`, reset);
 
-  const result = dashboardSchema.safeParse(response.data);
-  if (!result.success) {
-    throw new Error('서버에서 받은 데이터가 예상과 다릅니다.');
-  }
-  return result.data;
+  return safeResponse(response.data, dashboardSchema);
 };
 
 /**
@@ -104,11 +89,7 @@ export const getDashboardInvitations = async (params: GetDashboardInvitationsReq
     },
   });
 
-  const result = dashboardInvitationsSchema.safeParse(response.data);
-  if (!result.success) {
-    throw new Error('서버에서 받은 데이터가 예상과 다릅니다.');
-  }
-  return result.data;
+  return safeResponse(response.data, dashboardInvitationsSchema);
 };
 
 /**
@@ -119,11 +100,7 @@ export const inviteDashboard = async (params: InviteDashboardRequest) => {
   const { id, email } = params;
   const response = await axiosClientHelper.post<DashboardInvitation>(`/dashboards/${id}/invitations`, { email });
 
-  const result = dashboardInvitationSchema.safeParse(response.data);
-  if (!result.success) {
-    throw new Error('서버에서 받은 데이터가 예상과 다릅니다.');
-  }
-  return result.data;
+  return safeResponse(response.data, dashboardInvitationSchema);
 };
 
 /**

@@ -1,6 +1,7 @@
 import axiosClientHelper from '@/utils/network/axiosClientHelper';
 import { GetMyInvitationsRequest, MyInvitations, myInvitationsSchema, RespondToInvitationRequest } from './types';
 import { DashboardInvitation, dashboardInvitationSchema } from '../dashboards/types';
+import { safeResponse } from '@/utils/network/safeResponse';
 
 /**
  * 내가 받은 초대 목록 조회
@@ -16,11 +17,7 @@ export const getMyInvitations = async (params: GetMyInvitationsRequest) => {
     },
   });
 
-  const result = myInvitationsSchema.safeParse(response.data);
-  if (!result.success) {
-    throw new Error('서버에서 받은 데이터가 예상과 다릅니다.');
-  }
-  return result.data;
+  return safeResponse(response.data, myInvitationsSchema);
 };
 
 /**
@@ -31,9 +28,5 @@ export const respondToInvitation = async (params: RespondToInvitationRequest) =>
   const { invitationId, inviteAccepted } = params;
   const response = await axiosClientHelper.put<DashboardInvitation>(`/invitations/${invitationId}`, { inviteAccepted });
 
-  const result = dashboardInvitationSchema.safeParse(response.data);
-  if (!result.success) {
-    throw new Error('서버에서 받은 데이터가 예상과 다릅니다.');
-  }
-  return result.data;
+  return safeResponse(response.data, dashboardInvitationSchema);
 };

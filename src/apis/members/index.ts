@@ -1,5 +1,6 @@
 import axiosClientHelper from '@/utils/network/axiosClientHelper';
 import { DeleteMemberRequest, GetMembersRequest, Members, membersSchema } from './types';
+import { safeResponse } from '@/utils/network/safeResponse';
 
 /**
  * 대시보드 멤버 목록 조회
@@ -15,11 +16,7 @@ export const getMembers = async (params: GetMembersRequest) => {
     },
   });
 
-  const result = membersSchema.safeParse(response.data);
-  if (!result.success) {
-    throw new Error('서버에서 받은 데이터가 예상과 다릅니다.');
-  }
-  return result.data;
+  return safeResponse(response.data, membersSchema);
 };
 
 /**
