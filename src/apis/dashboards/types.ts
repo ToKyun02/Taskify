@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { DASHBOARD_FORM_ERROR_MESSAGE, DASHBOARD_FORM_VALID_LENGTH } from '@/constants/dashboard';
 import { DEFAULT_COLORS } from '@/constants/colors';
+import { userSchema } from '@/apis/users/types';
 
 // base pagination params 타입 (필요시 공용으로 추출)
 export type BasePaginationParams = {
@@ -44,13 +45,6 @@ export const dashboardFormSchema = z.object({
   color: z.enum(DEFAULT_COLORS),
 });
 export type DashboardFormType = z.infer<typeof dashboardFormSchema>;
-
-// TODO : 임시 유저 스키마(추후 /apis/auth 쪽에서 작성된 schema 임포트 필요)
-export const userSchema = z.object({
-  id: z.number(),
-  email: z.string().email(),
-  nickname: z.string(),
-});
 
 export const invitationUserSchema = userSchema.pick({
   id: true,
