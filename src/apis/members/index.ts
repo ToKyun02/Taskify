@@ -1,23 +1,33 @@
 import axiosClientHelper from '@/utils/network/axiosClientHelper';
-import { MembersParams, MembersRespons, membersResponseSchema } from './types';
+import { DeleteMemberRequest, GetMembersRequest, Members, membersSchema } from './types';
 
-export const getMembers = async ({ page, size, dashboardId }: MembersParams) => {
-  const response = await axiosClientHelper.get<MembersRespons>('/members', {
+/**
+ * 대시보드 멤버 목록 조회
+ * https://sp-taskify-api.vercel.app/docs/#/Members/Find
+ */
+export const getMembers = async (params: GetMembersRequest) => {
+  const { page = 1, size = 20, dashboardId } = params;
+  const response = await axiosClientHelper.get<Members>('/members', {
     params: {
-      size: size || 20,
-      page: page || 1,
+      size,
+      page,
       dashboardId,
     },
   });
 
-  const result = membersResponseSchema.safeParse(response.data);
+  const result = membersSchema.safeParse(response.data);
   if (!result.success) {
     throw new Error('서버에서 받은 데이터가 예상과 다릅니다.');
   }
   return result.data;
 };
 
-export const deleteMember = async (memberId: number) => {
+/**
+ * 대시보드 멤버 삭제
+ * https://sp-taskify-api.vercel.app/docs/#/Members/Delete
+ */
+export const deleteMember = async (params: DeleteMemberRequest) => {
+  const { memberId } = params;
   const response = await axiosClientHelper.delete<void>(`/members/${memberId}`);
   return response.data;
 };

@@ -6,7 +6,7 @@ import { Card, CardTitle } from '@/components/ui/Card/Card';
 import { ModalHandle } from '@/components/ui/Modal/Modal';
 import InviteDashboard from './InviteDashboard';
 import { useParams } from 'next/navigation';
-import { useDashboardInvitationsQuery, useDashboardMutation } from '@/apis/dashboards/queries';
+import { useCancelInviteDashboard, useDashboardInvitationsQuery } from '@/apis/dashboards/queries';
 import { getErrorMessage } from '@/utils/errorMessage';
 import useAlert from '@/hooks/useAlert';
 import { Table, TableBody, TableCell, TableCol, TableColGroup, TableHead, TableHeadCell, TableRow } from '@/components/ui/Table/Table';
@@ -18,8 +18,8 @@ const PAGE_SIZE = 5;
 export default function DetailInvited() {
   const { id } = useParams<{ id: string }>();
   const [page, setPage] = useState(1);
-  const { data, error, isLoading } = useDashboardInvitationsQuery(Number(id), page, PAGE_SIZE);
-  const { cancel } = useDashboardMutation();
+  const { data, error, isFetching } = useDashboardInvitationsQuery({ id: Number(id), page, size: PAGE_SIZE });
+  const { mutateAsync: cancel } = useCancelInviteDashboard();
   const alert = useAlert();
   const inviteModalRef = useRef<ModalHandle | null>(null);
 
@@ -59,13 +59,6 @@ export default function DetailInvited() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {isLoading && (
-            <TableRow>
-              <TableCell colSpan={2}>
-                <div className='p-4 text-center'>초대목록을 가져오는 중입니다.</div>
-              </TableCell>
-            </TableRow>
-          )}
           {notAllowed && (
             <TableRow>
               <TableCell colSpan={2}>
@@ -73,6 +66,26 @@ export default function DetailInvited() {
               </TableCell>
             </TableRow>
           )}
+
+          {isFetching ? (
+            <TableRow>
+              <TableCell colSpan={2}>
+                <div className='p-4 text-center'>초대목록을 가져오는 중입니다.</div>
+              </TableCell>
+            </TableRow>
+          ) : (
+            data?.invitations.map((item) => (
+              <TableRow key={item.id}>
+                <TableCell>{item.invitee.email}</TableCell>
+                <TableCell>
+                  <Button variant='outline' size='sm' onClick={() => cancelInvite(item.id)}>
+                    취소
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))
+          )}
+
           {data?.invitations.length === 0 && (
             <TableRow>
               <TableCell colSpan={2}>
@@ -80,16 +93,6 @@ export default function DetailInvited() {
               </TableCell>
             </TableRow>
           )}
-          {data?.invitations.map((item) => (
-            <TableRow key={item.id}>
-              <TableCell>{item.invitee.email}</TableCell>
-              <TableCell>
-                <Button variant='outline' size='sm' onClick={() => cancelInvite(item.id)}>
-                  취소
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
         </TableBody>
       </Table>
       <Button className='w-full' onClick={() => inviteModalRef.current?.open()}>

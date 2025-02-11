@@ -2,14 +2,8 @@ import { z } from 'zod';
 import { DASHBOARD_FORM_ERROR_MESSAGE, DASHBOARD_FORM_VALID_LENGTH } from '@/constants/dashboard';
 import { DEFAULT_COLORS } from '@/constants/colors';
 import { userSchema } from '@/apis/users/types';
+import { BasePagination, NavigationMethod } from '@/types/common';
 
-// base pagination params 타입 (필요시 공용으로 추출)
-export type BasePaginationParams = {
-  page?: number;
-  size?: number;
-};
-
-// dashboard 항목 타입
 export const dashboardSchema = z.object({
   id: z.number(),
   title: z.string(),
@@ -19,24 +13,20 @@ export const dashboardSchema = z.object({
   createdByMe: z.boolean(),
   userId: z.number(),
 });
-export type Dashboard = z.infer<typeof dashboardSchema>;
 
-// dashboard 리스트 응답 타입
-export const dashboardsResponseSchema = z.object({
+export const dashboardsSchema = z.object({
   cursorId: z.number().nullable(),
   totalCount: z.number(),
   dashboards: z.array(dashboardSchema),
 });
-export type DashboardsResponse = z.infer<typeof dashboardsResponseSchema>;
 
-// dashboard get params 타입
-export type NavigationMethod = 'infiniteScroll' | 'pagination';
-export type GetDashboardsParams = BasePaginationParams & {
+export type Dashboard = z.infer<typeof dashboardSchema>;
+export type Dashboards = z.infer<typeof dashboardsSchema>;
+export type GetDashboardsRequest = Partial<BasePagination> & {
   cursorId?: number;
   navigationMethod: NavigationMethod;
 };
 
-// dashboard 작성 스키마
 export const dashboardFormSchema = z.object({
   title: z
     .string()
@@ -45,36 +35,43 @@ export const dashboardFormSchema = z.object({
   color: z.enum(DEFAULT_COLORS),
 });
 export type DashboardFormType = z.infer<typeof dashboardFormSchema>;
+export type CreateDashboardRequest = DashboardFormType;
+export type UpdateDashboardRequest = Partial<DashboardFormType> & {
+  id: Dashboard['id'];
+};
 
 export const invitationUserSchema = userSchema.pick({
   id: true,
   email: true,
   nickname: true,
 });
-export const invitationDashboardSchema = dashboardSchema.pick({ id: true, title: true });
-
-// dashbaord invitation 타입
 export const dashboardInvitationSchema = z.object({
   id: z.number(),
   inviter: invitationUserSchema,
   invitee: invitationUserSchema,
   teamId: z.string(),
-  dashboard: invitationDashboardSchema,
+  dashboard: dashboardSchema.pick({ id: true, title: true }),
   inviteAccepted: z.boolean().nullable(),
   createdAt: z.string(),
   updatedAt: z.string(),
 });
-export type DashboardInvitation = z.infer<typeof dashboardInvitationSchema>;
-
-// dashboard invitations 리스트 응답 타입
-export const dashboardInvitationsResponseSchema = z.object({
+export const dashboardInvitationsSchema = z.object({
   totalCount: z.number(),
   invitations: z.array(dashboardInvitationSchema),
 });
-export type DashboardInvitationsResponse = z.infer<typeof dashboardInvitationsResponseSchema>;
 
-// invitation 스키마
+export type DashboardInvitation = z.infer<typeof dashboardInvitationSchema>;
+export type DashboardInvitations = z.infer<typeof dashboardInvitationsSchema>;
+export type GetDashboardInvitationsRequest = Partial<BasePagination> & {
+  id: Dashboard['id'];
+};
+
 export const inviteDashboardFormSchema = z.object({
   email: z.string().email({ message: DASHBOARD_FORM_ERROR_MESSAGE.EMAIL.INVALID }),
 });
-export type InviteDashboardType = z.infer<typeof inviteDashboardFormSchema>;
+export type InviteDashboardFormType = z.infer<typeof inviteDashboardFormSchema>;
+export type InviteDashboardRequest = InviteDashboardFormType & { id: Dashboard['id'] };
+export type CancelInviteDashboardRequest = {
+  dashboardId: Dashboard['id'];
+  invitationId: DashboardInvitation['id'];
+};

@@ -2,7 +2,7 @@
 
 import Button from '../ui/Button/Button';
 import { useEffect, useState } from 'react';
-import { useInvitationMutation, useMyInvitationsQuery } from '@/apis/invitations/queries';
+import { useRespondToInvitaion, useMyInvitationsQuery } from '@/apis/invitations/queries';
 import { useInView } from 'react-intersection-observer';
 import useDebounce from '@/hooks/useDebounce';
 import { Card, CardTitle } from '@/components/ui/Card/Card';
@@ -11,15 +11,18 @@ import { SearchInput } from '../ui/Field';
 import useAlert from '@/hooks/useAlert';
 import { getErrorMessage } from '@/utils/errorMessage';
 import { Table, TableBody, TableCell, TableCol, TableColGroup, TableHead, TableHeadCell, TableRow } from '@/components/ui/Table/Table';
+import { RespondToInvitationRequest } from '@/apis/invitations/types';
+
+const PAGE_SIZE = 10;
 
 export default function MyInvitedDashboardList() {
   const [searchKeyword, setSearchKeyword] = useState('');
   const debouncedKeyword = useDebounce(searchKeyword);
 
-  const { data, fetchNextPage, hasNextPage } = useMyInvitationsQuery(10, debouncedKeyword);
+  const { data, fetchNextPage, hasNextPage } = useMyInvitationsQuery({ size: PAGE_SIZE, title: debouncedKeyword });
   const invitations = data?.pages.flatMap((page) => page.invitations) ?? [];
   const [ref, inView] = useInView();
-  const { accept } = useInvitationMutation();
+  const { mutateAsync: accept } = useRespondToInvitaion();
   const alert = useAlert();
 
   useEffect(() => {
@@ -31,10 +34,10 @@ export default function MyInvitedDashboardList() {
   const hasNoInvitations = invitations.length === 0 && !searchKeyword;
   const hasNoSearchResults = invitations.length === 0 && searchKeyword.length > 0;
 
-  const handleAccept = async ({ id, flag }: { id: number; flag: boolean }) => {
+  const handleAccept = async ({ invitationId, inviteAccepted }: RespondToInvitationRequest) => {
     try {
-      await accept({ id, flag });
-      alert(flag ? '수락했습니다.' : '거절했습니다.');
+      await accept({ invitationId, inviteAccepted });
+      alert(inviteAccepted ? '수락했습니다.' : '거절했습니다.');
     } catch (error) {
       const message = getErrorMessage(error);
       alert(message);
@@ -74,10 +77,10 @@ export default function MyInvitedDashboardList() {
                       <TableCell label='초대자'>{item.inviter.nickname}</TableCell>
                       <TableCell>
                         <div className='flex w-full gap-2'>
-                          <Button size='sm' onClick={() => handleAccept({ id: item.id, flag: true })}>
+                          <Button size='sm' onClick={() => handleAccept({ invitationId: item.id, inviteAccepted: true })}>
                             수락
                           </Button>
-                          <Button variant='outline' size='sm' onClick={() => handleAccept({ id: item.id, flag: false })}>
+                          <Button variant='outline' size='sm' onClick={() => handleAccept({ invitationId: item.id, inviteAccepted: false })}>
                             거절
                           </Button>
                         </div>

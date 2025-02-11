@@ -1,7 +1,7 @@
 'use client';
 
 import { useParams, useRouter } from 'next/navigation';
-import { useDashboardMutation } from '@/apis/dashboards/queries';
+import { useRemoveDashboard } from '@/apis/dashboards/queries';
 import Button from '@/components/ui/Button/Button';
 import useAlert from '@/hooks/useAlert';
 import { getErrorMessage } from '@/utils/errorMessage';
@@ -10,7 +10,7 @@ export default function DetailDelete() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
   const alert = useAlert();
-  const { remove } = useDashboardMutation();
+  const { mutateAsync: remove } = useRemoveDashboard();
 
   const handleDelete = async () => {
     try {

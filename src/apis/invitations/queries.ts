@@ -2,35 +2,31 @@
 
 import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getMyInvitations, respondToInvitation } from '.';
+import { GetMyInvitationsRequest, RespondToInvitationRequest } from './types';
 
-export const useMyInvitationsQuery = (size: number, title: string) => {
+export const useMyInvitationsQuery = (params: GetMyInvitationsRequest) => {
   return useInfiniteQuery({
-    queryKey: ['myInvitations', size, title],
+    queryKey: ['myInvitations', params],
     queryFn: ({ pageParam }) =>
       getMyInvitations({
+        ...params,
         cursorId: pageParam,
-        size,
-        title,
       }),
     getNextPageParam: (lastPage) => lastPage.cursorId || undefined,
     initialPageParam: 0,
   });
 };
 
-export const useInvitationMutation = () => {
+export const useRespondToInvitaion = () => {
   const queryClient = useQueryClient();
 
-  const accept = useMutation({
-    mutationFn: ({ id, flag }: { id: number; flag: boolean }) => {
-      return respondToInvitation(id, { inviteAccepted: flag });
+  return useMutation({
+    mutationFn: (params: RespondToInvitationRequest) => {
+      return respondToInvitation(params);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['myInvitations'] });
       queryClient.invalidateQueries({ queryKey: ['dashboards'] });
     },
   });
-
-  return {
-    accept: accept.mutateAsync,
-  };
 };
