@@ -51,7 +51,7 @@ export default function AddColumnBtn({ dashboardId }: { dashboardId: number }) {
   const isDisabled = !isDirty || !isValid || isSubmitting;
 
   return (
-    <li className='flex flex-col gap-4 border-b border-r-0 p-6 lg:min-h-[calc(100dvh-70px)] lg:border-b-0 lg:border-r'>
+    <li className='flex flex-col gap-4 border-b p-6 lg:min-h-[calc(100dvh-70px)] lg:border-b-0'>
       <div className='lg:h-7' />
       <DashboardButton variant='column' onClick={() => modalRef.current?.open()} />
       <Modal ref={modalRef}>

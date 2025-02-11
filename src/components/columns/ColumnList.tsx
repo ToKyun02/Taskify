@@ -12,7 +12,7 @@ export default function ColumnList() {
 
   return (
     <ul className='flex flex-col lg:flex-row'>
-      {isLoading && Array.from({ length: 5 }, (_, index) => <SkeletionItem key={index} />)}
+      {isLoading && Array.from({ length: 3 }, (_, index) => <SkeletionItem key={index} />)}
       {data?.data.map((column) => (
         <li key={column.id} className='flex flex-col gap-4 border-b border-r-0 p-6 lg:min-h-[calc(100dvh-70px)] lg:border-b-0 lg:border-r'>
           <ColumnItem column={column} />
@@ -24,5 +24,19 @@ export default function ColumnList() {
 }
 
 export function SkeletionItem() {
-  return <p>로딩 중</p>;
+  return (
+    <li className='flex animate-pulse flex-col gap-4 border-b border-r-0 p-6 lg:min-h-[calc(100dvh-70px)] lg:border-b-0 lg:border-r'>
+      <div className='flex h-7 items-center justify-between'>
+        <div className='flex items-center gap-2'>
+          <div className='h-3 w-3 rounded-full bg-gray-300' />
+          <div className='h-5 w-56 rounded bg-gray-300' />
+          <div className='h-6 w-6 rounded bg-gray-300' />
+        </div>
+        <div className='ml-4 h-5 w-5 rounded-full bg-gray-300' />
+      </div>
+      <div className='flex h-12 w-full items-center justify-center rounded bg-gray-200'>
+        <div className='h-6 w-6 rounded bg-gray-300' />
+      </div>
+    </li>
+  );
 }
