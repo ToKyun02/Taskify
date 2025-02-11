@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import Button from '@/components/ui/Button/Button';
-import TodoCard from '@/components/dashboard/TodoCard';
 
 export default async function DashboardDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const id = (await params).id;
@@ -11,7 +10,6 @@ export default async function DashboardDetailPage({ params }: { params: Promise<
         <Link href={`/dashboard/${id}/edit`}>
           <Button>수정하기</Button>
         </Link>
-        <TodoCard />
       </div>
     </div>
   );
