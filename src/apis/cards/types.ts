@@ -57,9 +57,3 @@ export const getCardsParamsSchema = z.object({
 });
 
 export type GetCardsParams = z.infer<typeof getCardsParamsSchema>;
-
-export const putCardFormSchema = cardFormSchema.extend({
-  cardId: z.number(),
-});
-
-export type PutCardForm = z.infer<typeof putCardFormSchema>;
