@@ -1,52 +1,43 @@
-'use client';
-
-import { useParams, useRouter } from 'next/navigation';
-import { useDashboardMutation } from '@/apis/dashboards/queries';
-import Button from '@/components/ui/Button/Button';
-import useAlert from '@/hooks/useAlert';
-import { getErrorMessage } from '@/utils/errorMessage';
 import DetailModify from '@/components/dashboard/DetailModify';
 import DetailMembers from '@/components/dashboard/DetailMembers';
 import DetailInvited from '@/components/dashboard/DetailInvited';
 import GoBackLink from '@/components/ui/Link/GoBackLink';
 
-export default function DashboardEditPage() {
-  const router = useRouter();
-  const alert = useAlert();
-  const { id } = useParams<{ id: string }>();
-  const { remove } = useDashboardMutation();
+import DetailDelete from '@/components/dashboard/DetailDelete';
+import { Suspense } from 'react';
+import axiosServerHelper from '@/utils/network/axiosServerHelper';
+import { redirect } from 'next/navigation';
+import { Dashboard } from '@/apis/dashboards/types';
 
-  const handleDelete = async () => {
-    try {
-      await remove(Number(id));
-      alert('삭제했습니다.');
-      router.push(`/mydashboard`);
-    } catch (error) {
-      const message = getErrorMessage(error);
-      alert(message);
-    }
-  };
+export default async function DashboardEditPage({ params }: { params: Promise<{ id: string }> }) {
+  const id = (await params).id;
+  const response = await axiosServerHelper<Dashboard>(`/dashboards/${id}`);
+  const { createdByMe } = response.data;
+
+  if (!createdByMe) {
+    redirect('/mydashboard');
+  }
 
   return (
     <div className='p-10'>
       <div className='mb-8'>
         <GoBackLink href={`/dashboard/${id}`} />
       </div>
-      <div className='grid w-full max-w-[620px] gap-4'>
-        {/* 대시보드 정보 */}
-        <DetailModify />
+      <Suspense fallback={<div>loading...</div>}>
+        <div className='grid w-full max-w-[620px] gap-4'>
+          {/* 대시보드 정보 */}
+          <DetailModify />
 
-        {/* 구성원 리스트 */}
-        <DetailMembers />
+          {/* 구성원 리스트 */}
+          <DetailMembers />
 
-        {/* 초대내역 */}
-        <DetailInvited />
+          {/* 초대내역 */}
+          <DetailInvited />
 
-        {/* 대시보드 삭제 */}
-        <Button variant='outline' onClick={handleDelete}>
-          대시보드 삭제하기
-        </Button>
-      </div>
+          {/* 대시보드 삭제 */}
+          <DetailDelete />
+        </div>
+      </Suspense>
     </div>
   );
 }
