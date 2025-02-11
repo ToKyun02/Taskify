@@ -74,7 +74,7 @@ export default function DetailMembers() {
           {data?.members.length === 0 && (
             <TableRow>
               <TableCell colSpan={2}>
-                <div className='p-4 text-center'>초대 내역이 없습니다.</div>
+                <div className='p-4 text-center'>구성원이 없습니다.</div>
               </TableCell>
             </TableRow>
           )}
