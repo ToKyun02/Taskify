@@ -31,7 +31,7 @@ export default function AddColumnBtn({ dashboardId }: { dashboardId: number }) {
 
   const handleReset = () => {
     reset();
-    if (modalRef && 'current' in modalRef) modalRef.current?.close();
+    modalRef.current?.close();
   };
 
   const onSubmit = async (formData: ColumnForm) => {
