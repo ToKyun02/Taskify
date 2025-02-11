@@ -11,11 +11,7 @@ export const postCard = async (cardForm: CardForm) => {
 };
 
 export const getCards = async (params: GetCardsParams) => {
-  const response = await axiosClientHelper.get<CardsResponse>('/cards', {
-    params: {
-      ...params.cards,
-    },
-  });
+  const response = await axiosClientHelper.get<CardsResponse>('/cards', { params });
   const result = cardsResponseSchema.safeParse(response.data);
   if (!result.success) throw new Error(RESPONSE_INVALID_MESSAGE);
   return result.data;

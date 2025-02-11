@@ -49,11 +49,9 @@ export const cardsResponseSchema = z.object({
 export type CardsResponse = z.infer<typeof cardsResponseSchema>;
 
 export const getCardsParamsSchema = z.object({
-  cards: z.object({
-    size: z.number().optional(),
-    cursorId: z.number().optional(),
-    columnId: z.number(),
-  }),
+  size: z.number().optional(),
+  cursorId: z.number().optional(),
+  columnId: z.number(),
 });
 
 export type GetCardsParams = z.infer<typeof getCardsParamsSchema>;
