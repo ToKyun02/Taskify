@@ -1,19 +1,18 @@
 'use client';
 
-import { useRef } from 'react';
-import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '@/components/ui/Modal/Modal';
-import Image from 'next/image';
-import Setting from '@/assets/icons/setting.svg';
-import Button from '@/components/ui/Button/Button';
-import { useForm } from 'react-hook-form';
-import { Column, ColumnForm, columnFormSchema } from '@/apis/columns/types';
+import { ColumnForm, columnFormSchema } from '@/apis/columns/types';
+import DashboardButton from '@/components/ui/Button/DashboardButton';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Input } from '@/components/ui/Field';
-import { getErrorMessage } from '@/utils/errorMessage';
+import { useForm } from 'react-hook-form';
+import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '@/components/ui/Modal/Modal';
+import { useRef } from 'react';
 import useAlert from '@/hooks/useAlert';
+import { Input } from '@/components/ui/Field';
+import Button from '../ui/Button/Button';
 import { useColumnMutation } from '@/apis/columns/queries';
+import { getErrorMessage } from '@/utils/errorMessage';
 
-export default function ColumnSettingBtn({ column }: { column: Column }) {
+export default function AddColumnBtn({ dashboardId }: { dashboardId: number }) {
   const {
     handleSubmit,
     register,
@@ -23,30 +22,23 @@ export default function ColumnSettingBtn({ column }: { column: Column }) {
     resolver: zodResolver(columnFormSchema),
     mode: 'onChange',
     defaultValues: {
-      title: column.title,
+      title: '',
     },
   });
   const modalRef = useRef<ModalHandle>(null);
-  const { update } = useColumnMutation(column.dashboardId);
+  const { create } = useColumnMutation(dashboardId);
   const alert = useAlert();
 
   const handleReset = () => {
-    reset({
-      title: column.title,
-    });
+    reset();
     if (modalRef && 'current' in modalRef) modalRef.current?.close();
-  };
-
-  // TODO: 컬럼 삭제 핸들러 구현 예정
-  const onClick = () => {
-    modalRef.current?.close();
   };
 
   const onSubmit = async (formData: ColumnForm) => {
     try {
-      await update({ id: column.id, formData });
+      await create(formData);
       handleReset();
-      alert('수정이 완료되었습니다!');
+      alert('컬럼이 생성되었습니다!');
     } catch (error) {
       const message = getErrorMessage(error);
       handleReset();
@@ -57,24 +49,25 @@ export default function ColumnSettingBtn({ column }: { column: Column }) {
   const isDisabled = !isDirty || !isValid || isSubmitting;
 
   return (
-    <div className='cursor-pointer'>
-      <Image src={Setting} alt='관리 버튼' width={18} height={18} onClick={() => modalRef.current?.open()} />
+    <li className='flex flex-col gap-4 border-b border-r-0 p-6 lg:min-h-[calc(100dvh-70px)] lg:border-b-0 lg:border-r'>
+      <div className='lg:h-7' />
+      <DashboardButton variant='column' onClick={() => modalRef.current?.open()} />
       <Modal ref={modalRef}>
         <ModalContent>
-          <ModalHeader>컬럼 관리</ModalHeader>
+          <ModalHeader>새 컬럼 생성</ModalHeader>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Input label='이름' error={errors.title?.message} placeholder='컬럼 이름을 입력해주세요' {...register('title')} />
             <ModalFooter>
-              <Button type='button' variant='outline' onClick={onClick}>
-                삭제
+              <Button type='button' variant='outline' onClick={() => handleReset()}>
+                취소
               </Button>
               <Button type='submit' disabled={isDisabled}>
-                {isSubmitting ? '수정중' : '수정'}
+                {isSubmitting ? '생성중' : '생성'}
               </Button>
             </ModalFooter>
           </form>
         </ModalContent>
       </Modal>
-    </div>
+    </li>
   );
 }

@@ -3,10 +3,12 @@
 import { useColumnsQuery } from '@/apis/columns/queries';
 import { useParams } from 'next/navigation';
 import ColumnItem from './ColumnItem';
+import AddColumnBtn from './AddColumnBtn';
 
 export default function ColumnList() {
   const params = useParams();
-  const { data, isLoading } = useColumnsQuery(Number(params.id));
+  const dashbaordId = Number(params.id);
+  const { data, isLoading } = useColumnsQuery(dashbaordId);
 
   return (
     <ul className='flex flex-col lg:flex-row'>
@@ -16,6 +18,7 @@ export default function ColumnList() {
           <ColumnItem column={column} />
         </li>
       ))}
+      <AddColumnBtn dashboardId={dashbaordId} />
     </ul>
   );
 }
