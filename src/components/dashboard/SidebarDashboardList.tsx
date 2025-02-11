@@ -2,13 +2,17 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import PaginationControls from '@/components/pagination/PaginationControls';
-import MyDashboardCard from '@/components/dashboard/MyDashboardCard';
+import Image from 'next/image';
+import { cn } from '@/utils/helper';
 import { useDashboardsQuery } from '@/apis/dashboards/queries';
+import PaginationControls from '@/components/pagination/PaginationControls';
+import Dot from '@/components/ui/Dot/Dot';
+import crown from '@/assets/icons/crown.svg';
+import menu from '@/assets/icons/hamburger.svg';
 
 const ITEMS_PER_PAGE = 15;
 
-export default function SidebarDashboardList() {
+export default function SidebarDashboardList({ open, onToggle }: { open: boolean; onToggle: () => void }) {
   const [page, setPage] = useState(1);
   const { data, isLoading } = useDashboardsQuery(page, ITEMS_PER_PAGE);
 
@@ -25,22 +29,45 @@ export default function SidebarDashboardList() {
   };
 
   return (
-    <div className='flex-1 overflow-y-auto [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar]:w-1'>
-      <div className='mb-8'>
-        <ul className='flex flex-col gap-4'>
+    <div className='flex flex-1 flex-col overflow-y-auto [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar]:w-1'>
+      <div className='px-1 lg:px-3'>
+        <ul className='mb-20'>
           {isLoading && [...Array(8)].map((item, index) => <SkeletionItem key={index} />)}
 
           {data?.dashboards.map((item) => (
             <li key={item.id}>
-              <Link href={`/dashboard/${item.id}`}>
-                <MyDashboardCard title={item.title} color={item.color} createdByMe={item.createdByMe} variant='sidebar' />
+              <Link href={`/dashboard/${item.id}`} className='y-2 flex h-12 min-w-0 items-center gap-3 rounded-lg px-4 hover:bg-violet-10 hover:text-violet-20 md:px-1'>
+                <div className='flex h-full w-6 flex-shrink-0 items-center justify-center'>
+                  <Dot color={item.color} />
+                </div>
+
+                <span className={cn('hidden overflow-hidden text-ellipsis whitespace-nowrap text-md md:block', open && 'block')}>{item.title}</span>
+
+                {item.createdByMe && (
+                  <figure className={cn('flex-0 hidden h-8 w-8 items-center justify-center md:flex', open && 'flex')}>
+                    <Image src={crown} alt='crown' className='h-auto w-4' />
+                  </figure>
+                )}
               </Link>
             </li>
           ))}
         </ul>
       </div>
 
-      <PaginationControls canGoPrev={hasPrev} canGoNext={hasNext} handlePrev={handlePrev} handleNext={handleNext} totalPages={totalPage} alwaysShow className='hidden md:flex' />
+      <div className='absolute bottom-0 left-0 flex h-16 w-full items-center justify-end border-t bg-white px-4 shadow-[0_-10px_20px_rgba(0,0,0,0.03)]'>
+        <button className='absolute left-4 top-1/2 flex h-8 w-8 -translate-y-1/2 flex-col items-center justify-center gap-1 rounded-lg hover:bg-violet-10 md:hidden' onClick={onToggle}>
+          <Image src={menu} alt='menu' />
+        </button>
+        <PaginationControls
+          canGoPrev={hasPrev}
+          canGoNext={hasNext}
+          handlePrev={handlePrev}
+          handleNext={handleNext}
+          totalPages={totalPage}
+          alwaysShow
+          className={cn('hidden md:flex', open && 'flex')}
+        />
+      </div>
     </div>
   );
 }
@@ -48,8 +75,8 @@ export default function SidebarDashboardList() {
 export function SkeletionItem() {
   return (
     <li>
-      <div className='flex h-10 animate-pulse items-center'>
-        <span className='h-4 w-[80%] rounded-md bg-gray-20'></span>
+      <div className='flex h-10 animate-pulse items-center px-3'>
+        <span className='h-4 w-full rounded-md bg-gray-20'></span>
       </div>
     </li>
   );
