@@ -15,15 +15,17 @@ export default function ProfileEdit() {
   const [currentEmail, setCurrentEmail] = useState('');
   const [currentNickname, setCurrentNickname] = useState('');
   const [profileImageUrl, setProfileImageUrl] = useState<string>('');
+  const [initialProfileImageUrl, setInitialProfileImageUrl] = useState<string>('');
   const [isFormChanged, setIsFormChanged] = useState(false);
+  const [imageRemoved, setImageRemoved] = useState(false);
 
   const alert = useAlert();
 
-  // react-hook-form
   const {
     register,
     handleSubmit,
     setValue,
+    reset,
     control,
     formState: { errors, isSubmitting, isValid },
   } = useForm<UpdateUserForm>({
@@ -38,9 +40,9 @@ export default function ProfileEdit() {
   const watchedNickname = useWatch({ control, name: 'nickname' });
 
   useEffect(() => {
-    const changed = !!profileImageFile || (watchedNickname !== '' && watchedNickname !== currentNickname);
+    const changed = !!profileImageFile || imageRemoved || (watchedNickname !== '' && watchedNickname !== currentNickname);
     setIsFormChanged(changed);
-  }, [profileImageFile, watchedNickname, currentNickname]);
+  }, [profileImageFile, imageRemoved, watchedNickname, currentNickname]);
 
   useEffect(() => {
     async function fetchUser() {
@@ -48,8 +50,10 @@ export default function ProfileEdit() {
         const user = await getUser();
         setCurrentEmail(user.email);
         setCurrentNickname(user.nickname);
-        setProfileImageUrl(user.profileImageUrl || '');
-        setValue('profileImageUrl', user.profileImageUrl || '');
+        const url = user.profileImageUrl || '';
+        setProfileImageUrl(url);
+        setInitialProfileImageUrl(url);
+        setValue('profileImageUrl', url);
       } catch (error) {
         alert('유저 정보를 불러오는 중 오류가 발생하였습니다.');
         console.error(error);
@@ -57,6 +61,24 @@ export default function ProfileEdit() {
     }
     fetchUser();
   }, [setValue, alert]);
+
+  const handleImageChange = (file: File | undefined) => {
+    if (!file) {
+      if (profileImageFile) {
+        setProfileImageFile(null);
+        setProfileImageUrl(initialProfileImageUrl);
+        setValue('profileImageUrl', initialProfileImageUrl);
+        setImageRemoved(false);
+      } else {
+        setProfileImageUrl('');
+        setValue('profileImageUrl', '');
+        setImageRemoved(true);
+      }
+    } else {
+      setProfileImageFile(file);
+      setImageRemoved(false);
+    }
+  };
 
   const handleSave = async (data: UpdateUserForm) => {
     let imageUrl = profileImageUrl;
@@ -68,13 +90,22 @@ export default function ProfileEdit() {
       const newNickname = data.nickname.trim() !== '' ? data.nickname : currentNickname;
       const updateData: UpdateUserForm = {
         nickname: newNickname,
-        profileImageUrl: imageUrl === '' ? null : imageUrl,
+        profileImageUrl: imageRemoved ? null : imageUrl === '' ? null : imageUrl,
       };
       await updateUser(updateData);
       alert('프로필이 성공적으로 업데이트되었습니다.');
-    } catch (error) {
+      setCurrentNickname(newNickname);
+      if (imageRemoved) {
+        setProfileImageUrl('');
+        setValue('profileImageUrl', '');
+        setInitialProfileImageUrl('');
+      }
+      reset();
+      setIsFormChanged(false);
+      setImageRemoved(false);
+    } catch (_error) {
       alert('프로필 업데이트 중 오류가 발생하였습니다.');
-      console.error(error);
+      console.error(_error);
     }
   };
 
@@ -83,12 +114,12 @@ export default function ProfileEdit() {
       <span className='mb-4 text-2lg font-semibold sm:mb-6 sm:text-xl'>프로필</span>
       <div className='flex flex-col md:flex-row'>
         {/* 프로필 이미지 업로드 */}
-        <ImageUpload value={profileImageFile || profileImageUrl} onChange={(file) => setProfileImageFile(file ?? null)} onBlur={() => {}} className='mb-4 w-[100px] md:mr-6 md:w-[182px]' />
+        <div className='mb-4 w-[100px] md:mr-6 md:w-[182px]'>
+          <ImageUpload value={imageRemoved ? undefined : profileImageFile || profileImageUrl} onChange={handleImageChange} onBlur={() => {}} className='w-full' />
+        </div>
         {/* 프로필 수정 폼 */}
         <form onSubmit={handleSubmit(handleSave)} className='w-[252px] md:w-[276px] lg:w-[400px]'>
-          {/* 이메일 */}
           <Input label='이메일' placeholder={currentEmail} readOnly className='mb-4 w-full' />
-          {/* 닉네임 */}
           <Input label='닉네임' placeholder={currentNickname} {...register('nickname')} error={errors.nickname?.message} className='mb-4 w-full' />
           <SubmitButton isValid={isValid && isFormChanged} isSubmitting={isSubmitting} text='저장' className='w-full' />
         </form>
