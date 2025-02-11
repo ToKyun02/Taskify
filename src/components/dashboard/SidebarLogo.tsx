@@ -1,13 +1,15 @@
-import Image from 'next/image';
-import logo from '@/assets/images/sidebar_logo.png';
-import logo_ci from '@/assets/images/logo_ci.png';
 import Link from 'next/link';
+import Image from 'next/image';
+import LogoText from '@/assets/images/logo_ci.svg';
+import LogoSymbol from '@/assets/images/logo_bi.svg';
 
 export default function SidebarLogo() {
   return (
-    <Link href='/' className='mb-[38px] flex justify-center md:mb-14 md:justify-start'>
-      <Image src={logo} width={108} height={33} alt='logo' className='hidden md:flex' />
-      <Image src={logo_ci} width={23} height={25} alt='logo' className='h-[25px] w-[23px] md:hidden' />
-    </Link>
+    <div className='flex h-16 items-center justify-start pl-5 md:px-5'>
+      <Link href='/' className='flex items-center'>
+        <Image src={LogoSymbol} alt='logo' />
+        <Image src={LogoText} alt='logo' className='hidden md:block' />
+      </Link>
+    </div>
   );
 }
