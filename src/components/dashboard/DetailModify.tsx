@@ -10,6 +10,7 @@ import { Dashboard, dashboardFormSchema, DashboardFormType } from '@/apis/dashbo
 import { getErrorMessage } from '@/utils/errorMessage';
 import Button from '@/components/ui/Button/Button';
 import useAlert from '@/hooks/useAlert';
+import { useRouter } from 'next/navigation';
 
 export default function DetailModify({ data }: { data: Dashboard }) {
   const {
@@ -28,6 +29,7 @@ export default function DetailModify({ data }: { data: Dashboard }) {
   });
   const { mutateAsync: update } = useUpdateDashboard();
   const alert = useAlert();
+  const router = useRouter();
 
   const onSubmit = async (formData: DashboardFormType) => {
     try {
@@ -37,6 +39,7 @@ export default function DetailModify({ data }: { data: Dashboard }) {
         color: formData.color,
       });
       alert('수정했습니다.');
+      router.refresh();
     } catch (error) {
       const message = getErrorMessage(error);
       alert(message);
