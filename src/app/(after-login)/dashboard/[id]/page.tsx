@@ -1,15 +1,10 @@
-import Link from 'next/link';
-import Button from '@/components/ui/Button/Button';
+import ColumnList from '@/components/columns/ColumnList';
 
-export default async function DashboardDetailPage({ params }: { params: Promise<{ id: string }> }) {
-  const id = (await params).id;
-
+export default function DashboardDetailPage() {
   return (
     <div className='p-10'>
-      <div>
-        <Link href={`/dashboard/${id}/edit`}>
-          <Button>수정하기</Button>
-        </Link>
+      <div className='mb-8'>
+        <ColumnList />
       </div>
     </div>
   );
