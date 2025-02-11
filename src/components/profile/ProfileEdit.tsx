@@ -1,116 +1,97 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
-import PlusIC from '@/assets/icons/plus.svg';
-import CloseIC from '@/assets/icons/x.svg';
+import { useEffect, useState } from 'react';
+import { useForm, useWatch } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { getUser, updateUser, createProfileImage } from '@/apis/users/index';
+import { UpdateUserForm, updateUserFormSchema } from '@/apis/users/types';
+import { Input } from '@/components/ui/Field/Input';
+import SubmitButton from '@/components/auth/SubmitButton';
+import { ImageUpload } from '@/components/ui/Field/ImageUpload';
+import useAlert from '@/hooks/useAlert';
 
-interface ProfileEditProps {
-  currentEmail: string;
-  currentNickname: string;
-}
+export default function ProfileEdit() {
+  const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
+  const [currentEmail, setCurrentEmail] = useState('');
+  const [currentNickname, setCurrentNickname] = useState('');
+  const [profileImageUrl, setProfileImageUrl] = useState<string>('');
+  const [isFormChanged, setIsFormChanged] = useState(false);
 
-export default function ProfileEdit({ currentEmail, currentNickname }: ProfileEditProps) {
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const [nickname, setNickname] = useState('');
-  const [nicknameValid, setNicknameValid] = useState(true);
-  const [isChanged, setIsChanged] = useState(false);
+  const alert = useAlert();
 
-  // 닉네임 유효성 검사 (최소 2자)
-  const validateNickname = (value: string) => {
-    setNicknameValid(value.length >= 2);
-  };
+  // react-hook-form
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    control,
+    formState: { errors, isSubmitting, isValid },
+  } = useForm<UpdateUserForm>({
+    resolver: zodResolver(updateUserFormSchema),
+    mode: 'onChange',
+    defaultValues: {
+      nickname: '',
+      profileImageUrl: '',
+    },
+  });
 
-  // 프로필 이미지 변경
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setPreviewImage(imageUrl);
+  const watchedNickname = useWatch({ control, name: 'nickname' });
+
+  useEffect(() => {
+    const changed = !!profileImageFile || (watchedNickname !== '' && watchedNickname !== currentNickname);
+    setIsFormChanged(changed);
+  }, [profileImageFile, watchedNickname, currentNickname]);
+
+  useEffect(() => {
+    async function fetchUser() {
+      try {
+        const user = await getUser();
+        setCurrentEmail(user.email);
+        setCurrentNickname(user.nickname);
+        setProfileImageUrl(user.profileImageUrl || '');
+        setValue('profileImageUrl', user.profileImageUrl || '');
+      } catch (error) {
+        alert('유저 정보를 불러오는 중 오류가 발생하였습니다.');
+        console.error(error);
+      }
+    }
+    fetchUser();
+  }, [setValue, alert]);
+
+  const handleSave = async (data: UpdateUserForm) => {
+    let imageUrl = profileImageUrl;
+    try {
+      if (profileImageFile) {
+        const uploadResponse = await createProfileImage({ image: profileImageFile });
+        imageUrl = uploadResponse.profileImageUrl.toString();
+      }
+      const newNickname = data.nickname.trim() !== '' ? data.nickname : currentNickname;
+      const updateData: UpdateUserForm = {
+        nickname: newNickname,
+        profileImageUrl: imageUrl === '' ? null : imageUrl,
+      };
+      await updateUser(updateData);
+      alert('프로필이 성공적으로 업데이트되었습니다.');
+    } catch (error) {
+      alert('프로필 업데이트 중 오류가 발생하였습니다.');
+      console.error(error);
     }
   };
 
-  // 프로필 이미지 삭제
-  const handleImageReset = () => {
-    setPreviewImage(null);
-  };
-
-  useEffect(() => {
-    const hasChanged = nickname.trim() !== '' || previewImage !== null;
-    setIsChanged(hasChanged);
-  }, [nickname, previewImage]);
-
-  const handleSave = () => {
-    if (!isChanged || !nicknameValid) return;
-
-    const updatedData: { nickname?: string; profileImage?: string } = {};
-    if (nickname.trim() !== '') updatedData.nickname = nickname;
-    if (previewImage !== null) updatedData.profileImage = previewImage;
-
-    // ToDo : API 연동 시 여기에 axios.post 요청 추가
-    alert(`저장된 데이터: \n${JSON.stringify(updatedData, null, 2)}`);
-  };
-
   return (
-    <div className='flex h-fit w-fit flex-col rounded-lg bg-white p-[16px] sm:p-[24px]'>
-      <span className='mb-[40px] text-2lg font-semibold sm:mb-[24px] sm:text-[24px]'>프로필</span>
-      <div className='sm:flex'>
+    <div className='flex h-fit w-fit flex-col rounded-lg bg-white p-4 sm:p-6'>
+      <span className='mb-4 text-2lg font-semibold sm:mb-6 sm:text-xl'>프로필</span>
+      <div className='flex flex-col md:flex-row'>
         {/* 프로필 이미지 업로드 */}
-        <div className='relative mb-[40px] sm:mr-[42px]'>
-          <label htmlFor='image-upload' className='relative flex h-[100px] w-[100px] cursor-pointer items-center justify-center rounded-md bg-gray-10 sm:h-[182px] sm:w-[182px]'>
-            {previewImage ? (
-              <Image src={previewImage} alt='Profile Preview' width={100} height={100} className='h-full w-full rounded-lg object-cover' />
-            ) : (
-              <Image src={PlusIC} alt='프로필 이미지 추가' width={12} height={12} />
-            )}
-          </label>
-          <input type='file' id='image-upload' className='hidden' accept='image/*' onChange={handleImageChange} />
-          {previewImage && (
-            <button onClick={handleImageReset} className='absolute left-[5px] top-[5px] flex h-[22px] w-[22px] items-center justify-center rounded-full bg-white hover:bg-gray-20'>
-              <Image src={CloseIC} alt='이미지 제거' width={12} height={12} />
-            </button>
-          )}
-        </div>
-        {/* 입력 필드 */}
-        <div>
-          {/* 이메일 입력 (readonly) */}
-          <div className='mb-[16px] flex flex-col gap-[8px]'>
-            <label className='text-[14px] text-gray-70 sm:text-[16px]'>이메일</label>
-            <input
-              type='email'
-              value={currentEmail}
-              readOnly
-              className='h-[50px] w-[252px] cursor-not-allowed rounded-lg border border-gray-30 bg-gray-10 pl-[16px] text-[16px] text-gray-50 sm:w-[276px] lg:w-[400px]'
-            />
-          </div>
-          {/* 닉네임 입력 */}
-          <div className='mb-[24px] flex flex-col gap-[8px]'>
-            <label className='text-[14px] text-gray-70 sm:text-[16px]'>닉네임</label>
-            <input
-              type='text'
-              value={nickname}
-              placeholder={currentNickname}
-              className={`h-[50px] w-[252px] rounded-lg border pl-[16px] text-[16px] text-gray-60 placeholder:text-gray-40 sm:w-[276px] lg:w-[400px] ${
-                nicknameValid
-                  ? 'border-gray-30 focus:border-violet-20 focus:outline focus:outline-1 focus:outline-violet-20'
-                  : 'border-red focus:border-red focus:outline focus:outline-1 focus:outline-red'
-              }`}
-              onChange={(e) => {
-                setNickname(e.target.value);
-                validateNickname(e.target.value);
-              }}
-            />
-            {!nicknameValid && <span className='text-sm text-red'>닉네임은 최소 2자 이상이어야 합니다.</span>}
-          </div>
-          {/* 저장 버튼 */}
-          <button
-            className={`h-[54px] w-[252px] rounded-lg text-white sm:w-[276px] lg:w-[400px] ${isChanged && nicknameValid ? 'cursor-pointer bg-violet-20' : 'cursor-not-allowed bg-gray-30'}`}
-            disabled={!isChanged || !nicknameValid}
-            onClick={handleSave}
-          >
-            저장
-          </button>
-        </div>
+        <ImageUpload value={profileImageFile || profileImageUrl} onChange={(file) => setProfileImageFile(file ?? null)} onBlur={() => {}} className='mb-4 w-[100px] md:mr-6 md:w-[182px]' />
+        {/* 프로필 수정 폼 */}
+        <form onSubmit={handleSubmit(handleSave)} className='w-[252px] md:w-[276px] lg:w-[400px]'>
+          {/* 이메일 */}
+          <Input label='이메일' placeholder={currentEmail} readOnly className='mb-4 w-full' />
+          {/* 닉네임 */}
+          <Input label='닉네임' placeholder={currentNickname} {...register('nickname')} error={errors.nickname?.message} className='mb-4 w-full' />
+          <SubmitButton isValid={isValid && isFormChanged} isSubmitting={isSubmitting} text='저장' className='w-full' />
+        </form>
       </div>
     </div>
   );
