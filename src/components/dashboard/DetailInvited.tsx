@@ -1,3 +1,5 @@
+'use client';
+
 import { useRef, useState } from 'react';
 import Button from '@/components/ui/Button/Button';
 import { Card, CardTitle } from '@/components/ui/Card/Card';
