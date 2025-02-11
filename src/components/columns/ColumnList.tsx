@@ -9,16 +9,14 @@ export default function ColumnList() {
   const { data, isLoading } = useColumnsQuery(Number(params.id));
 
   return (
-    <div>
-      <ul>
-        {isLoading && Array.from({ length: 5 }, (_, index) => <SkeletionItem key={index} />)}
-        {data?.data.map((column) => (
-          <li key={column.id}>
-            <ColumnItem column={column} />
-          </li>
-        ))}
-      </ul>
-    </div>
+    <ul className='flex flex-col lg:flex-row'>
+      {isLoading && Array.from({ length: 5 }, (_, index) => <SkeletionItem key={index} />)}
+      {data?.data.map((column) => (
+        <li key={column.id} className='flex flex-col gap-4 border-b border-r-0 p-6 lg:min-h-[calc(100dvh-70px)] lg:border-b-0 lg:border-r'>
+          <ColumnItem column={column} />
+        </li>
+      ))}
+    </ul>
   );
 }
 
