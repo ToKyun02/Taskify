@@ -26,7 +26,7 @@ export default async function DashboardEditPage({ params }: { params: Promise<{ 
       <Suspense fallback={<div>loading...</div>}>
         <div className='grid w-full max-w-[620px] gap-4'>
           {/* 대시보드 정보 */}
-          <DetailModify />
+          <DetailModify data={response.data} />
 
           {/* 구성원 리스트 */}
           <DetailMembers />
