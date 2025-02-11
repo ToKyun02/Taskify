@@ -32,5 +32,5 @@ export const getCard = async (cardId: number) => {
 };
 
 export const deleteCard = async (cardId: number) => {
-  await axiosClientHelper.delete<Card>(`/cards/${cardId}`);
+  await axiosClientHelper.delete<void>(`/cards/${cardId}`);
 };
