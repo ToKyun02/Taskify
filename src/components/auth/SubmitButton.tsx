@@ -2,6 +2,7 @@ interface SubmitButtonProps {
   isValid: boolean;
   text: string;
   isSubmitting: boolean;
+  className?: string;
 }
 
 function BouncingLoader() {
@@ -14,11 +15,11 @@ function BouncingLoader() {
   );
 }
 
-export default function SubmitButton({ isValid, text, isSubmitting }: SubmitButtonProps) {
+export default function SubmitButton({ isValid, text, isSubmitting, className = '' }: SubmitButtonProps) {
   return (
     <button
       disabled={!isValid || isSubmitting}
-      className={`rounded-lg ${isValid && !isSubmitting ? 'cursor-pointer bg-violet-20' : 'cursor-not-allowed bg-gray-40'} py-3 text-2lg font-medium text-white`}
+      className={`rounded-lg py-3 text-2lg font-medium text-white ${isValid && !isSubmitting ? 'cursor-pointer bg-violet-20' : 'cursor-not-allowed bg-gray-40'} ${className}`}
     >
       {!isSubmitting ? text : <BouncingLoader />}
     </button>
