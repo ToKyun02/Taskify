@@ -15,7 +15,7 @@ export default function DetailDelete() {
   const handleDelete = async () => {
     try {
       await remove(Number(id));
-      alert('삭제했습니다.');
+      await alert('삭제했습니다.');
       router.push(`/mydashboard`);
     } catch (error) {
       const message = getErrorMessage(error);
