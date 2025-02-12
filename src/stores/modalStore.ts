@@ -8,7 +8,7 @@ export type DialogType = 'alert' | 'confirm';
 export type DialogState = {
   isOpen: boolean;
   message: string;
-  type?: 'alert' | 'confirm';
+  type?: DialogType;
   buttons?: Partial<DialogButtonsType>;
   callback?: () => void;
   resolvePromise?: () => void;
