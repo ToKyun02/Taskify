@@ -1,18 +1,18 @@
 'use client';
 
 import { useRef } from 'react';
-import Image from 'next/image';
-import HeaderButton from './HeaderButton';
-import Setting from '@/assets/icons/setting.svg';
-import AddBox from '@/assets/icons/add_box.svg';
 import { useParams } from 'next/navigation';
+import Image from 'next/image';
+import useMediaQuery from '@/hooks/useMediaQuery';
 import { useDashboardQuery } from '@/apis/dashboards/queries';
-import crown from '@/assets/icons/crown.svg';
 import { useMembersQuery } from '@/apis/members/queries';
 import StackAvatars from '@/components/ui/Avatar/StackAvatars';
 import { ModalHandle } from '@/components/ui/Modal/Modal';
-import InviteDashboard from '../dashboard/InviteDashboard';
-import useMediaQuery from '@/hooks/useMediaQuery';
+import InviteDashboard from '@/components/dashboard/InviteDashboard';
+import HeaderButton from '@/components/dashboard-header/HeaderButton';
+import Setting from '@/assets/icons/setting.svg';
+import AddBox from '@/assets/icons/add_box.svg';
+import crown from '@/assets/icons/crown.svg';
 
 export default function DashboardInfo() {
   const { id } = useParams();
