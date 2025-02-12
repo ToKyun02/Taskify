@@ -60,7 +60,7 @@ export default function ProfileEdit() {
       }
     }
     fetchUser();
-  }, [setValue, alert]);
+  }, []);
 
   const handleImageChange = (file: File | undefined) => {
     if (!file) {
