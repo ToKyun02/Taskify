@@ -68,7 +68,7 @@ export default function ProfileEdit() {
         setProfileImageFile(null);
         setProfileImageUrl(initialProfileImageUrl);
         setValue('profileImageUrl', initialProfileImageUrl);
-        setImageRemoved(false);
+        setImageRemoved(true);
       } else {
         setProfileImageUrl('');
         setValue('profileImageUrl', '');
