@@ -1,13 +1,15 @@
 'use client';
 
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { deleteCard, getCard, getCards, postCard, putCard } from '.';
 import { Card, CardForm, GetCardsParams } from './types';
 
 export const useCardsQuery = (params: GetCardsParams) => {
-  return useQuery({
+  return useInfiniteQuery({
     queryKey: ['cards', params.columnId],
-    queryFn: () => getCards(params),
+    queryFn: ({ pageParam }) => getCards({ ...params, cursorId: pageParam }),
+    getNextPageParam: (lastPage) => lastPage.cursorId || undefined,
+    initialPageParam: 0,
   });
 };
 
