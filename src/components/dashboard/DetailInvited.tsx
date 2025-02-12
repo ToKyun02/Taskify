@@ -9,6 +9,7 @@ import { useParams } from 'next/navigation';
 import { useCancelInviteDashboard, useDashboardInvitationsQuery } from '@/apis/dashboards/queries';
 import { getErrorMessage } from '@/utils/errorMessage';
 import useAlert from '@/hooks/useAlert';
+import useConfirm from '@/hooks/useConfirm';
 import { Table, TableBody, TableCell, TableCol, TableColGroup, TableHead, TableHeadCell, TableRow } from '@/components/ui/Table/Table';
 import PaginationWithCounter from '@/components/pagination/PaginationWithCounter';
 import { isAxiosError } from 'axios';
@@ -21,9 +22,13 @@ export default function DetailInvited() {
   const { data, error, isFetching } = useDashboardInvitationsQuery({ id: Number(id), page, size: PAGE_SIZE });
   const { mutateAsync: cancel } = useCancelInviteDashboard();
   const alert = useAlert();
+  const confirm = useConfirm();
   const inviteModalRef = useRef<ModalHandle | null>(null);
 
   const cancelInvite = async (invitationId: number) => {
+    const result = await confirm('정말 초대를 취소 할까요?.');
+    if (!result) return;
+
     try {
       await cancel({ dashboardId: Number(id), invitationId });
       alert('초대를 취소했습니다.');
