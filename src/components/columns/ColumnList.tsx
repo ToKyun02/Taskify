@@ -24,7 +24,7 @@ export default function ColumnList() {
           </li>
         ))
       )}
-      <AddColumnBtn dashboardId={dashbaordId} />
+      <AddColumnBtn dashboardId={dashbaordId} columns={data?.data} />
     </ul>
   );
 }
