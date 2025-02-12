@@ -2,90 +2,92 @@
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { cancelDashboardInvitation, createDashboard, deleteDashboard, getDashboardDetails, getDashboardInvitations, getDashboards, inviteDashboard, updateDashboard } from '.';
-import { DashboardFormType } from './types';
-import { DEFAULT_COLOR } from '@/constants/colors';
+import { CancelInviteDashboardRequest, CreateDashboardRequest, Dashboard, GetDashboardInvitationsRequest, GetDashboardsRequest, InviteDashboardRequest, UpdateDashboardRequest } from './types';
 
-export const useDashboardsQuery = (page: number, size: number) => {
+export const useDashboardsQuery = (params: GetDashboardsRequest) => {
   return useQuery({
-    queryKey: ['dashboards', page, size],
-    queryFn: () =>
-      getDashboards({
-        page,
-        size,
-        navigationMethod: 'pagination',
-      }),
+    queryKey: ['dashboards', params],
+    queryFn: () => getDashboards(params),
   });
 };
 
-export const useDashboardQuery = (id: number) => {
+export const useDashboardQuery = (id: Dashboard['id']) => {
   return useQuery({
     queryKey: ['dashboard', id],
     queryFn: () => getDashboardDetails(id),
   });
 };
 
-export const useDashboardInvitationsQuery = (id: number, page: number, size: number) => {
+export const useDashboardInvitationsQuery = (params: GetDashboardInvitationsRequest) => {
   return useQuery({
-    queryKey: ['dashboard', id, 'invitations', page, size],
-    queryFn: () => getDashboardInvitations(id, { page, size }),
+    queryKey: ['invitations', params.id],
+    queryFn: () => getDashboardInvitations(params),
   });
 };
 
-export const useDashboardMutation = () => {
+export const useCreateDashboard = () => {
   const queryClient = useQueryClient();
 
-  const create = useMutation({
-    mutationFn: (data: DashboardFormType) => {
+  return useMutation({
+    mutationFn: (data: CreateDashboardRequest) => {
       return createDashboard(data);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['dashboards'] });
     },
   });
+};
 
-  const update = useMutation({
-    mutationFn: ({ id, title, color }: { id: number; title: string; color: DEFAULT_COLOR }) => {
-      return updateDashboard(id, { title, color });
+export const useUpdateDashboard = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (params: UpdateDashboardRequest) => {
+      return updateDashboard(params);
     },
     onSuccess: ({ id }) => {
       queryClient.invalidateQueries({ queryKey: ['dashboards'] });
       queryClient.invalidateQueries({ queryKey: ['dashboard', id] });
     },
   });
+};
 
-  const remove = useMutation({
-    mutationFn: (id: number) => {
+export const useRemoveDashboard = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: Dashboard['id']) => {
       return deleteDashboard(id);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['dashboards'] });
     },
   });
+};
 
-  const invite = useMutation({
-    mutationFn: ({ id, email }: { id: number; email: string }) => {
-      return inviteDashboard(id, { email });
+export const useInviteDashboard = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (params: InviteDashboardRequest) => {
+      return inviteDashboard(params);
     },
     onSuccess: (_, { id }) => {
       queryClient.invalidateQueries({ queryKey: ['myInvitations'] });
-      queryClient.invalidateQueries({ queryKey: ['dashboard', id, 'invitations'] });
+      queryClient.invalidateQueries({ queryKey: ['invitations', id] });
     },
   });
+};
 
-  const cancel = useMutation({
-    mutationFn: ({ dashboardId, invitationId }: { dashboardId: number; invitationId: number }) => {
-      return cancelDashboardInvitation(dashboardId, invitationId);
+export const useCancelInviteDashboard = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (params: CancelInviteDashboardRequest) => {
+      return cancelDashboardInvitation(params);
     },
     onSuccess: (_, { dashboardId }) => {
-      queryClient.invalidateQueries({ queryKey: ['dashboard', dashboardId, 'invitations'] });
+      queryClient.invalidateQueries({ queryKey: ['invitations', dashboardId] });
     },
   });
-
-  return {
-    create: create.mutateAsync,
-    update: update.mutateAsync,
-    remove: remove.mutateAsync,
-    invite: invite.mutateAsync,
-    cancel: cancel.mutateAsync,
-  };
 };

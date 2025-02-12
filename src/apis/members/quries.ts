@@ -1,31 +1,23 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { deleteMember, getMembers } from '.';
+import { DeleteMemberRequest, GetMembersRequest } from './types';
 
-export const useMembersQuery = (page: number, size: number, dashboardId: number) => {
+export const useMembersQuery = (params: GetMembersRequest) => {
   return useQuery({
-    queryKey: ['members', dashboardId, page, size],
-    queryFn: () =>
-      getMembers({
-        page,
-        size,
-        dashboardId,
-      }),
+    queryKey: ['members', params.dashboardId],
+    queryFn: () => getMembers(params),
   });
 };
 
-export const useMembersMutation = () => {
+export const useRemoveMember = () => {
   const queryClient = useQueryClient();
 
-  const remove = useMutation({
-    mutationFn: ({ memberId }: { memberId: number; dashboardId: number }) => {
-      return deleteMember(memberId);
+  return useMutation({
+    mutationFn: (params: DeleteMemberRequest) => {
+      return deleteMember(params);
     },
     onSuccess: (_, { dashboardId }) => {
       queryClient.invalidateQueries({ queryKey: ['members', dashboardId] });
     },
   });
-
-  return {
-    remove: remove.mutateAsync,
-  };
 };

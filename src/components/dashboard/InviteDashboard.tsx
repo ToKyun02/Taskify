@@ -6,8 +6,8 @@ import useAlert from '@/hooks/useAlert';
 import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '@/components/ui/Modal/Modal';
 import { Input } from '@/components/ui/Field';
 import Button from '@/components/ui/Button/Button';
-import { inviteDashboardFormSchema, InviteDashboardType } from '@/apis/dashboards/types';
-import { useDashboardMutation } from '@/apis/dashboards/queries';
+import { inviteDashboardFormSchema, InviteDashboardFormType } from '@/apis/dashboards/types';
+import { useInviteDashboard } from '@/apis/dashboards/queries';
 import { getErrorMessage } from '@/utils/errorMessage';
 
 const InviteDashboard = forwardRef<ModalHandle>((props, ref) => {
@@ -16,7 +16,7 @@ const InviteDashboard = forwardRef<ModalHandle>((props, ref) => {
     register,
     reset,
     formState: { errors, isValid, isSubmitting },
-  } = useForm<InviteDashboardType>({
+  } = useForm<InviteDashboardFormType>({
     resolver: zodResolver(inviteDashboardFormSchema),
     mode: 'onBlur',
     defaultValues: {
@@ -24,7 +24,7 @@ const InviteDashboard = forwardRef<ModalHandle>((props, ref) => {
     },
   });
   const { id } = useParams<{ id: string }>();
-  const { invite } = useDashboardMutation();
+  const { mutateAsync: invite } = useInviteDashboard();
   const alert = useAlert();
 
   const handleReset = () => {
@@ -34,7 +34,7 @@ const InviteDashboard = forwardRef<ModalHandle>((props, ref) => {
     }
   };
 
-  const onSubmit = async (formData: InviteDashboardType) => {
+  const onSubmit = async (formData: InviteDashboardFormType) => {
     try {
       await invite({ id: Number(id), email: formData.email });
       alert('초대했습니다.');

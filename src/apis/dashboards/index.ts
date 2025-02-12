@@ -1,93 +1,114 @@
 import axiosClientHelper from '@/utils/network/axiosClientHelper';
 import {
-  BasePaginationParams,
   Dashboard,
-  DashboardFormType,
   DashboardInvitation,
-  DashboardInvitationsResponse,
   dashboardSchema,
-  DashboardsResponse,
-  dashboardsResponseSchema,
-  GetDashboardsParams,
-  InviteDashboardType,
+  dashboardsSchema,
+  CreateDashboardRequest,
+  UpdateDashboardRequest,
+  GetDashboardInvitationsRequest,
+  GetDashboardsRequest,
+  Dashboards,
+  DashboardInvitations,
+  dashboardInvitationsSchema,
+  InviteDashboardRequest,
+  dashboardInvitationSchema,
+  CancelInviteDashboardRequest,
 } from './types';
+import { safeResponse } from '@/utils/network/safeResponse';
 
-// dashboard 목록 조회
-export const getDashboards = async ({ cursorId, page, size, navigationMethod }: GetDashboardsParams) => {
-  const response = await axiosClientHelper.get<DashboardsResponse>('/dashboards', {
+/**
+ * dashboards 목록 조회
+ * https://sp-taskify-api.vercel.app/docs/#/Dashboards/Find
+ */
+export const getDashboards = async (params: GetDashboardsRequest) => {
+  const { cursorId, page = 1, size = 10, navigationMethod } = params;
+  const response = await axiosClientHelper.get<Dashboards>('/dashboards', {
     params: {
       cursorId,
-      page: page || 1,
-      size: size || 10,
+      page,
+      size,
       navigationMethod,
     },
   });
 
-  const result = dashboardsResponseSchema.safeParse(response.data);
-  if (!result.success) {
-    throw new Error('서버에서 받은 데이터가 예상과 다릅니다.');
-  }
-  return result.data;
+  return safeResponse(response.data, dashboardsSchema);
 };
 
-// dashboard 생성
-export const createDashboard = async (data: DashboardFormType) => {
-  const response = await axiosClientHelper.post<Dashboard>('/dashboards', data);
-
-  const result = dashboardSchema.safeParse(response.data);
-  if (!result.success) {
-    throw new Error('서버에서 받은 데이터가 예상과 다릅니다.');
-  }
-  return result.data;
-};
-
-// dashboard 상세 조회
-export const getDashboardDetails = async (id: number) => {
+/**
+ * dashboard 상세 조회
+ * https://sp-taskify-api.vercel.app/docs/#/Dashboards/Get
+ */
+export const getDashboardDetails = async (id: Dashboard['id']) => {
   const response = await axiosClientHelper.get<Dashboard>(`/dashboards/${id}`);
 
-  const result = dashboardSchema.safeParse(response.data);
-  if (!result.success) {
-    throw new Error('서버에서 받은 데이터가 예상과 다릅니다.');
-  }
-  return result.data;
+  return safeResponse(response.data, dashboardSchema);
 };
 
-// dashboard 수정
-export const updateDashboard = async (id: number, data: DashboardFormType) => {
-  const response = await axiosClientHelper.put<Dashboard>(`/dashboards/${id}`, data);
+/**
+ * dashboard 생성
+ * https://sp-taskify-api.vercel.app/docs/#/Dashboards/Create
+ */
 
-  const result = dashboardSchema.safeParse(response.data);
-  if (!result.success) {
-    throw new Error('서버에서 받은 데이터가 예상과 다릅니다.');
-  }
-  return result.data;
+export const createDashboard = async (params: CreateDashboardRequest) => {
+  const response = await axiosClientHelper.post<Dashboard>('/dashboards', params);
+
+  return safeResponse(response.data, dashboardSchema);
 };
 
-// dashboard 삭제
-export const deleteDashboard = async (id: number) => {
+/**
+ * dashboard 수정
+ * https://sp-taskify-api.vercel.app/docs/#/Dashboards/Update
+ */
+export const updateDashboard = async (params: UpdateDashboardRequest) => {
+  const { id, ...reset } = params;
+  const response = await axiosClientHelper.put<Dashboard>(`/dashboards/${id}`, reset);
+
+  return safeResponse(response.data, dashboardSchema);
+};
+
+/**
+ * dashboard 삭제
+ * https://sp-taskify-api.vercel.app/docs/#/Dashboards/Delete
+ */
+export const deleteDashboard = async (id: Dashboard['id']) => {
   const response = await axiosClientHelper.delete<void>(`/dashboards/${id}`);
   return response.data;
 };
 
-// dashboard 초대 불러오기
-export const getDashboardInvitations = async (id: number, { page, size }: BasePaginationParams) => {
-  const response = await axiosClientHelper.get<DashboardInvitationsResponse>(`/dashboards/${id}/invitations`, {
+/**
+ * dashboard 초대 불러오기
+ * https://sp-taskify-api.vercel.app/docs/#/Dashboards/GetInvitations
+ */
+export const getDashboardInvitations = async (params: GetDashboardInvitationsRequest) => {
+  const { id, page = 1, size = 10 } = params;
+  const response = await axiosClientHelper.get<DashboardInvitations>(`/dashboards/${id}/invitations`, {
     params: {
-      page: page || 1,
-      size: size || 10,
+      page,
+      size,
     },
   });
-  return response.data;
+
+  return safeResponse(response.data, dashboardInvitationsSchema);
 };
 
-// dashboard 초대
-export const inviteDashboard = async (id: number, data: InviteDashboardType) => {
-  const response = await axiosClientHelper.post<DashboardInvitation>(`/dashboards/${id}/invitations`, data);
-  return response.data;
+/**
+ * dashboard 초대
+ * https://sp-taskify-api.vercel.app/docs/#/Dashboards/CreateInvitation
+ */
+export const inviteDashboard = async (params: InviteDashboardRequest) => {
+  const { id, email } = params;
+  const response = await axiosClientHelper.post<DashboardInvitation>(`/dashboards/${id}/invitations`, { email });
+
+  return safeResponse(response.data, dashboardInvitationSchema);
 };
 
-// dashboard 초대 취소
-export const cancelDashboardInvitation = async (id: number, invitationId: number) => {
-  const response = await axiosClientHelper.delete<void>(`/dashboards/${id}/invitations/${invitationId}`);
+/**
+ * dashboard 초대 취소
+ * https://sp-taskify-api.vercel.app/docs/#/Dashboards/DeleteInvitation
+ */
+export const cancelDashboardInvitation = async (params: CancelInviteDashboardRequest) => {
+  const { dashboardId, invitationId } = params;
+  const response = await axiosClientHelper.delete<void>(`/dashboards/${dashboardId}/invitations/${invitationId}`);
   return response.data;
 };

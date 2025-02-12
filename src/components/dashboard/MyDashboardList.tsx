@@ -15,7 +15,11 @@ const ITEMS_PER_PAGE = 5;
 
 export default function MyDashboardList({ onAdd }: MyDashboardListProps) {
   const [page, setPage] = useState(1);
-  const { data, isLoading } = useDashboardsQuery(page, ITEMS_PER_PAGE);
+  const { data, isFetching } = useDashboardsQuery({
+    page,
+    size: ITEMS_PER_PAGE,
+    navigationMethod: 'pagination',
+  });
 
   return (
     <div className='grid gap-3'>
@@ -24,15 +28,15 @@ export default function MyDashboardList({ onAdd }: MyDashboardListProps) {
           <DashboardButton variant='createDashboard' onClick={onAdd} />
         </li>
 
-        {isLoading && [...Array(5)].map((item, index) => <SkeletionItem key={index} />)}
-
-        {data?.dashboards.map((item) => (
-          <li key={item.id}>
-            <Link href={`/dashboard/${item.id}`}>
-              <MyDashboardCard variant='card' title={item.title} color={item.color} createdByMe={item.createdByMe} />
-            </Link>
-          </li>
-        ))}
+        {isFetching
+          ? [...Array(5)].map((item, index) => <SkeletionItem key={index} />)
+          : data?.dashboards.map((item) => (
+              <li key={item.id}>
+                <Link href={`/dashboard/${item.id}`}>
+                  <MyDashboardCard variant='card' title={item.title} color={item.color} createdByMe={item.createdByMe} />
+                </Link>
+              </li>
+            ))}
       </ul>
 
       <PaginationWithCounter //

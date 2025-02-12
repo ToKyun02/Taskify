@@ -2,7 +2,7 @@
 
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useDashboardMutation } from '@/apis/dashboards/queries';
+import { useUpdateDashboard } from '@/apis/dashboards/queries';
 import { Card, CardTitle } from '@/components/ui/Card/Card';
 import { Input } from '@/components/ui/Field';
 import ColorPicker from '@/components/ui/Chip/ColorPicker';
@@ -10,6 +10,7 @@ import { Dashboard, dashboardFormSchema, DashboardFormType } from '@/apis/dashbo
 import { getErrorMessage } from '@/utils/errorMessage';
 import Button from '@/components/ui/Button/Button';
 import useAlert from '@/hooks/useAlert';
+import { useRouter } from 'next/navigation';
 
 export default function DetailModify({ data }: { data: Dashboard }) {
   const {
@@ -26,8 +27,9 @@ export default function DetailModify({ data }: { data: Dashboard }) {
       color: data.color,
     },
   });
-  const { update } = useDashboardMutation();
+  const { mutateAsync: update } = useUpdateDashboard();
   const alert = useAlert();
+  const router = useRouter();
 
   const onSubmit = async (formData: DashboardFormType) => {
     try {
@@ -37,6 +39,7 @@ export default function DetailModify({ data }: { data: Dashboard }) {
         color: formData.color,
       });
       alert('수정했습니다.');
+      router.refresh();
     } catch (error) {
       const message = getErrorMessage(error);
       alert(message);

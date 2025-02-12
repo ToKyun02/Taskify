@@ -7,7 +7,7 @@ import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '@/co
 import Button from '@/components/ui/Button/Button';
 import { Input } from '@/components/ui/Field';
 import ColorPicker from '@/components/ui/Chip/ColorPicker';
-import { useDashboardMutation } from '@/apis/dashboards/queries';
+import { useCreateDashboard } from '@/apis/dashboards/queries';
 import { dashboardFormSchema, DashboardFormType } from '@/apis/dashboards/types';
 import { DEFAULT_COLORS } from '@/constants/colors';
 import { getErrorMessage } from '@/utils/errorMessage';
@@ -27,7 +27,7 @@ const CreateDashboard = forwardRef<ModalHandle>((props, ref) => {
       color: DEFAULT_COLORS[0],
     },
   });
-  const { create } = useDashboardMutation();
+  const { mutateAsync: create } = useCreateDashboard();
   const alert = useAlert();
   const router = useRouter();
 

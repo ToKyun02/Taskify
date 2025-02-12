@@ -1,22 +1,19 @@
 import { z } from 'zod';
-import { dashboardInvitationSchema } from '../dashboards/types';
+import { DashboardInvitation, dashboardInvitationSchema } from '../dashboards/types';
+import { BaseCursor } from '@/types/common';
 
-export type BaseCursorParams = {
-  cursorId?: number;
-  size?: number;
-};
-
-export type MyInvitationsParams = BaseCursorParams & {
+export type GetMyInvitationsRequest = Partial<BaseCursor> & {
   title: string;
 };
 
-export const myInvitationsResponseSchema = z.object({
+export const myInvitationsSchema = z.object({
   cursorId: z.number().nullable(),
   invitations: z.array(dashboardInvitationSchema),
 });
-export type MyInvitationsResponse = z.infer<typeof myInvitationsResponseSchema>;
+export type MyInvitations = z.infer<typeof myInvitationsSchema>;
 
 export const respondToInvitationSchema = z.object({
   inviteAccepted: z.boolean(),
 });
 export type RespondToInvitation = z.infer<typeof respondToInvitationSchema>;
+export type RespondToInvitationRequest = RespondToInvitation & { invitationId: DashboardInvitation['id'] };
