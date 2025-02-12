@@ -23,11 +23,11 @@ export function DialogContainer() {
         <div className='mt-10 flex justify-center gap-2'>
           {type === 'confirm' && (
             <Button size='sm' variant='outline' onClick={handleCancel}>
-              {buttons?.cancel ?? '취소'}
+              {buttons.cancel}
             </Button>
           )}
           <Button size='sm' onClick={handleConfirm}>
-            {buttons?.ok ?? '확인'}
+            {buttons.ok}
           </Button>
         </div>
       </div>
