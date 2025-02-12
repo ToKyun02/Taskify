@@ -28,7 +28,7 @@ import { HTMLAttributes, useState } from 'react';
 
 const avatarVariants = cva(
   //prettier-ignore
-  'relative inline-flex items-center justify-center aspect-square rounded-full overflow-hidden border-2 border-white leading-none',
+  'relative inline-flex bg-white items-center justify-center aspect-square rounded-full overflow-hidden border-2 border-white leading-none',
   {
     variants: {
       size: {
@@ -46,7 +46,7 @@ const avatarVariants = cva(
 
 interface AvatarProps extends HTMLAttributes<HTMLDivElement>, VariantProps<typeof avatarVariants> {
   email: string;
-  profileImageUrl?: string;
+  profileImageUrl?: string | null;
 }
 
 export default function Avatar({ email, profileImageUrl, size, className, ...props }: AvatarProps) {
@@ -59,7 +59,7 @@ export default function Avatar({ email, profileImageUrl, size, className, ...pro
   return (
     <figure className={cn(avatarVariants({ size, className }))} {...props}>
       {!isFallback ? (
-        <Image src={profileImageUrl} alt={email} fill onError={() => setImgError(true)} />
+        <Image src={profileImageUrl} alt={email} fill onError={() => setImgError(true)} className='object-cover' />
       ) : (
         <span className='flex aspect-square w-full items-center justify-center font-semibold uppercase text-white' style={{ backgroundColor: colorCode }}>
           {firstChar}

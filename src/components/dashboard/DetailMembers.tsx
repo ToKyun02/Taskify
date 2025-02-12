@@ -4,7 +4,7 @@ import { isAxiosError } from 'axios';
 import { useState } from 'react';
 import { useParams } from 'next/navigation';
 import useAlert from '@/hooks/useAlert';
-import { useMembersQuery, useRemoveMember } from '@/apis/members/quries';
+import { useMembersQuery, useRemoveMember } from '@/apis/members/queries';
 import { getErrorMessage } from '@/utils/errorMessage';
 import PaginationWithCounter from '@/components/pagination/PaginationWithCounter';
 import { Table, TableBody, TableCell, TableCol, TableColGroup, TableHead, TableHeadCell, TableRow } from '@/components/ui/Table/Table';

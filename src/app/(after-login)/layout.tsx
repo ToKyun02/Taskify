@@ -14,7 +14,7 @@ export default function layout({ children }: PropsWithChildren) {
       <main className='flex-1 overflow-y-auto bg-gray-10 pl-16 md:pl-0'>
         {/* header */}
         <div className='sticky left-16 top-0 z-30 bg-white md:left-0'>
-          <Header showCrown showSetting showMembers showProfile />
+          <Header />
         </div>
 
         {/* content page */}
