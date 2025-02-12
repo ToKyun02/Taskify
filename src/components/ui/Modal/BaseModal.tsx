@@ -1,6 +1,6 @@
 'use client';
 
-import { MouseEvent, PropsWithChildren } from 'react';
+import { MouseEvent, PropsWithChildren, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { motion } from 'motion/react';
 
@@ -20,6 +20,15 @@ const container = {
 };
 
 export default function BaseModal({ isOpen, onClose, children }: PropsWithChildren<BaseModalProps>) {
+  const modalContainerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (modalContainerRef.current && isOpen) {
+      const focusableElement = modalContainerRef.current.querySelectorAll('button ,[href] ,input ,select, textarea')[0] as HTMLElement;
+      focusableElement?.focus();
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   const handleDimClick = (e: MouseEvent) => {
@@ -29,7 +38,14 @@ export default function BaseModal({ isOpen, onClose, children }: PropsWithChildr
   };
 
   return createPortal(
-    <motion.div variants={overlay} initial='hidden' animate='show' className='safe-center fixed bottom-0 left-0 right-0 top-0 z-50 overflow-y-auto bg-black/20 p-8' onClick={handleDimClick}>
+    <motion.div
+      variants={overlay}
+      initial='hidden'
+      animate='show'
+      className='safe-center fixed bottom-0 left-0 right-0 top-0 z-50 overflow-y-auto bg-black/20 p-8'
+      onClick={handleDimClick}
+      ref={modalContainerRef}
+    >
       <motion.div variants={container}>{children}</motion.div>
     </motion.div>,
     document.body!,
