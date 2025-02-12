@@ -38,10 +38,9 @@ export default function PasswordEdit() {
     } catch (error) {
       if (isAxiosError(error)) {
         if (error?.status === 401) {
-          alert('세션이 만료되어 로그인 페이지로 이동합니다.', async () => {
-            await logout();
-            router.replace('/login');
-          });
+          await alert('세션이 만료되어 로그인 페이지로 이동합니다.');
+          await logout();
+          router.replace('/login');
           return;
         }
 
