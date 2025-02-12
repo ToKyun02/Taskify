@@ -14,3 +14,8 @@ export const DASHBOARD_FORM_ERROR_MESSAGE = {
     INVALID: '이메일 형식으로 작성해 주세요',
   },
 } as const;
+
+export const PAGE_TITLE = {
+  mydashboard: '내 대시보드',
+  mypage: '계정관리',
+} as const;
