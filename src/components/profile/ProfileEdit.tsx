@@ -54,9 +54,8 @@ export default function ProfileEdit() {
         setProfileImageUrl(url);
         setInitialProfileImageUrl(url);
         setValue('profileImageUrl', url);
-      } catch (error) {
+      } catch {
         alert('유저 정보를 불러오는 중 오류가 발생하였습니다.');
-        console.error(error);
       }
     }
     fetchUser();
@@ -103,9 +102,8 @@ export default function ProfileEdit() {
       reset();
       setIsFormChanged(false);
       setImageRemoved(false);
-    } catch (_error) {
+    } catch {
       alert('프로필 업데이트 중 오류가 발생하였습니다.');
-      console.error(_error);
     }
   };
 
