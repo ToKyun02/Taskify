@@ -6,7 +6,7 @@ type DialogState = {
   callback?: () => void;
   resolvePromise?: () => void;
 
-  openDialog: ({ message, callback }: { message: string; callback?: () => void }) => Promise<void> | void;
+  openDialog: ({ message, callback }: { message: string; callback?: () => void }) => Promise<void>;
   closeDialog: () => void;
 };
 
