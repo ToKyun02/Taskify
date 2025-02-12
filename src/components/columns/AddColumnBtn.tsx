@@ -1,6 +1,6 @@
 'use client';
 
-import { ColumnForm, columnFormSchema } from '@/apis/columns/types';
+import { ColumnForm, columnFormSchema, ColumnsResponse } from '@/apis/columns/types';
 import DashboardButton from '@/components/ui/Button/DashboardButton';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -13,13 +13,20 @@ import { useColumnMutation } from '@/apis/columns/queries';
 import { getErrorMessage } from '@/utils/errorMessage';
 import xIcon from '@/assets/icons/x.svg';
 import Image from 'next/image';
+import { some } from 'es-toolkit/compat';
 
-export default function AddColumnBtn({ dashboardId }: { dashboardId: number }) {
+interface AddColumnBtnProps {
+  dashboardId: number;
+  columns: ColumnsResponse['data'] | void;
+}
+
+export default function AddColumnBtn({ dashboardId, columns }: AddColumnBtnProps) {
   const {
     handleSubmit,
     register,
     reset,
     formState: { errors, isValid, isSubmitting, isDirty },
+    setError,
   } = useForm<ColumnForm>({
     resolver: zodResolver(columnFormSchema),
     mode: 'onChange',
@@ -27,6 +34,7 @@ export default function AddColumnBtn({ dashboardId }: { dashboardId: number }) {
       title: '',
     },
   });
+
   const modalRef = useRef<ModalHandle>(null);
   const { create } = useColumnMutation(dashboardId);
   const alert = useAlert();
@@ -38,6 +46,14 @@ export default function AddColumnBtn({ dashboardId }: { dashboardId: number }) {
 
   const onSubmit = async (formData: ColumnForm) => {
     try {
+      if (columns) {
+        const isExist = some(columns, { title: formData.title });
+        if (isExist) {
+          setError('title', { message: '중복된 컬럼 이름입니다.' });
+          return;
+        }
+      }
+
       await create(formData);
       handleReset();
       alert('컬럼이 생성되었습니다!');
