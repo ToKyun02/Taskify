@@ -118,8 +118,8 @@ export default function ProfileEdit() {
         {/* 프로필 수정 폼 */}
         <form onSubmit={handleSubmit(handleSave)} className='w-[252px] md:w-[276px] lg:w-[400px]'>
           <Input label='이메일' placeholder={currentEmail} readOnly className='mb-4 w-full' />
-          <Input label='닉네임' placeholder={currentNickname} {...register('nickname')} error={errors.nickname?.message} className='mb-4 w-full' />
-          <SubmitButton isValid={isValid && isFormChanged} isSubmitting={isSubmitting} text='저장' className='w-full' />
+          <Input label='닉네임' placeholder={currentNickname} {...register('nickname')} error={errors.nickname?.message} className='w-full' />
+          <SubmitButton isValid={isValid && isFormChanged} isSubmitting={isSubmitting} text='저장' className='mt-4 w-full' />
         </form>
       </div>
     </div>

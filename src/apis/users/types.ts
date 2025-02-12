@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { SIGNUP_FORM_VALID_LENGTH, SIGNUP_FORM_ERROR_MESSAGE } from '@/constants/auth';
+import { PROFILEEDIT_FORM_VALID_LENGTH, PROFILEEDIT_FORM_ERROR_MESSAGE } from '@/constants/profileEdit';
 
 interface FailResponse {
   message: string;
@@ -44,7 +45,7 @@ export type SignupResponse = Promise<SignupSuccessResponse | SignupFailResponse>
 type ProfileImageUrl = string | URL | null;
 
 export const updateUserFormSchema = z.object({
-  nickname: z.string(),
+  nickname: z.string().max(PROFILEEDIT_FORM_VALID_LENGTH.NICKNAME.MAX, PROFILEEDIT_FORM_ERROR_MESSAGE.NICKNAME.MAX),
   profileImageUrl: z.string(),
 });
 
