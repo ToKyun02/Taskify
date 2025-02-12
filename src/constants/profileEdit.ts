@@ -4,14 +4,12 @@ export const PROFILEEDIT_FORM_PLACEHOLDER = {
 
 export const PROFILEEDIT_FORM_VALID_LENGTH = {
   NICKNAME: {
-    MIN: 1,
     MAX: 10,
   },
 } as const;
 
 export const PROFILEEDIT_FORM_ERROR_MESSAGE = {
   NICKNAME: {
-    MIN: '닉네임을 작성해 주세요',
     MAX: '열 자 이하로 작성해 주세요',
   },
 } as const;
