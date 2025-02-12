@@ -7,6 +7,7 @@ import DashboardButton from '@/components/ui/Button/DashboardButton';
 import { useCardsQuery } from '@/apis/cards/queries';
 import { useInView } from 'react-intersection-observer';
 import { useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import TodoCard from '../dashboard/TodoCard';
 
 const PAGE_SIZE = 5;
@@ -31,9 +32,13 @@ export default function ColumnItem({ column }: ColumnItemProps) {
       <Title column={column} cardCount={totalCount} />
       <DashboardButton variant='addTodo' />
       <div className='flex flex-col gap-4'>
-        {cards.map((card) => (
-          <TodoCard key={card.id} card={card} />
-        ))}
+        <AnimatePresence>
+          {cards.map((card) => (
+            <motion.div key={card.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 1.5 }}>
+              <TodoCard card={card} />
+            </motion.div>
+          ))}
+        </AnimatePresence>
         {isFetching && Array.from({ length: PAGE_SIZE }, (_, i) => <SkeletonCard key={i} />)}
         <div className='h-2' ref={ref} />
       </div>
