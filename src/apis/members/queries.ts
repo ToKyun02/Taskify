@@ -4,7 +4,7 @@ import { DeleteMemberRequest, GetMembersRequest } from './types';
 
 export const useMembersQuery = (params: GetMembersRequest) => {
   return useQuery({
-    queryKey: ['members', params.dashboardId],
+    queryKey: ['members', params],
     queryFn: () => getMembers(params),
   });
 };
@@ -16,8 +16,8 @@ export const useRemoveMember = () => {
     mutationFn: (params: DeleteMemberRequest) => {
       return deleteMember(params);
     },
-    onSuccess: (_, { dashboardId }) => {
-      queryClient.invalidateQueries({ queryKey: ['members', dashboardId] });
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['members'] });
     },
   });
 };
