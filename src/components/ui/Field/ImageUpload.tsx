@@ -58,7 +58,7 @@ export function ImageUpload({ defaultValue, value, onChange, onBlur, label, requ
       <div className={cn('relative aspect-square w-[76px]', className)}>
         <label className='relative flex h-full w-full cursor-pointer items-center justify-center overflow-hidden rounded-md bg-gray-10'>
           {preview ? <Image src={preview} alt='thumbnail' fill sizes='40vw' className='absolute h-full w-full object-cover' /> : <Image src={addIcon} className='h-auto w-[18px]' alt='업로드' />}
-          <input id={id} type='file' accept='image/*' ref={fileRef} onChange={handleChange} className='sr-only' />
+          <input id={id} type='file' accept='image/jpeg, image/png, image/ico, image/jpg' ref={fileRef} onChange={handleChange} className='sr-only' />
         </label>
         {showDeleteButton && (
           <button type='button' className='absolute -right-1 -top-1 flex h-5 w-5 cursor-pointer items-center justify-center rounded-full bg-black' onClick={handleRemove}>

@@ -6,9 +6,11 @@ import Dot from '@/components/ui/Dot/Dot';
 import DashboardButton from '@/components/ui/Button/DashboardButton';
 import { useCardsQuery } from '@/apis/cards/queries';
 import { useInView } from 'react-intersection-observer';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import TodoCard from '../dashboard/TodoCard';
+import { ModalHandle } from '../ui/Modal/Modal';
+import CreateCard from './CreateCard';
 
 const PAGE_SIZE = 5;
 
@@ -22,6 +24,7 @@ export default function ColumnItem({ column }: ColumnItemProps) {
   const totalCount = data?.pages[0]?.totalCount ?? 0;
 
   const [ref, inView] = useInView();
+  const addRef = useRef<ModalHandle>(null);
 
   useEffect(() => {
     if (inView && hasNextPage) fetchNextPage();
@@ -30,7 +33,7 @@ export default function ColumnItem({ column }: ColumnItemProps) {
   return (
     <>
       <Title column={column} cardCount={totalCount} />
-      <DashboardButton variant='addTodo' />
+      <DashboardButton variant='addTodo' onClick={() => addRef.current?.open()} />
       <div className='flex flex-col gap-4'>
         <AnimatePresence>
           {cards.map((card) => (
@@ -42,6 +45,7 @@ export default function ColumnItem({ column }: ColumnItemProps) {
         {isFetching && Array.from({ length: PAGE_SIZE }, (_, i) => <SkeletonCard key={i} />)}
         <div className='h-2' ref={ref} />
       </div>
+      <CreateCard dashboardId={column.dashboardId} columnId={column.id} ref={addRef} />
     </>
   );
 }
