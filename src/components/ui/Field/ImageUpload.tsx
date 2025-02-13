@@ -7,16 +7,18 @@ import deleteIcon from '@/assets/icons/x_white.svg';
 import addIcon from '@/assets/icons/plus.svg';
 
 type ImageUploadProps = BaseField &
-  Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange' | 'onBlur'> & {
-    value: File | string | undefined;
-    onChange: (file: File | undefined) => void;
+  Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange' | 'onBlur' | 'defaultValue'> & {
+    value: File | string | undefined | null;
+    onChange: (file: File | undefined | null) => void;
     onBlur: () => void;
+    defaultValue?: string | null;
   };
 
-export function ImageUpload({ value, onChange, onBlur, label, required, error, className }: ImageUploadProps) {
+export function ImageUpload({ defaultValue, value, onChange, onBlur, label, required, error, className }: ImageUploadProps) {
   const preview = value instanceof File ? URL.createObjectURL(value) : value;
   const fileRef = useRef<HTMLInputElement>(null);
   const id = useId();
+  const showDeleteButton = preview && preview !== defaultValue;
 
   useEffect(() => {
     return () => {
@@ -39,11 +41,11 @@ export function ImageUpload({ value, onChange, onBlur, label, required, error, c
   }
 
   function handleRemove() {
+    onChange(null);
+
     if (fileRef.current) {
       fileRef.current.value = '';
     }
-
-    onChange(undefined);
   }
 
   return (
@@ -58,7 +60,7 @@ export function ImageUpload({ value, onChange, onBlur, label, required, error, c
           {preview ? <Image src={preview} alt='thumbnail' fill sizes='40vw' className='absolute h-full w-full object-cover' /> : <Image src={addIcon} className='h-auto w-[18px]' alt='업로드' />}
           <input id={id} type='file' accept='image/*' ref={fileRef} onChange={handleChange} className='sr-only' />
         </label>
-        {preview && (
+        {showDeleteButton && (
           <button type='button' className='absolute -right-1 -top-1 flex h-5 w-5 cursor-pointer items-center justify-center rounded-full bg-black' onClick={handleRemove}>
             <Image src={deleteIcon} alt='삭제' />
           </button>

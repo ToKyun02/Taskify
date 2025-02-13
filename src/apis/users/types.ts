@@ -42,20 +42,19 @@ export type SignupFailResponse = FailResponse;
 
 export type SignupResponse = Promise<SignupSuccessResponse | SignupFailResponse>;
 
-type ProfileImageUrl = string | URL | null;
+const profileImageUrlSchema = z
+  .instanceof(File)
+  .refine((file) => ['image/jpeg', 'image/jpg', 'image/png', 'image/ico'].includes(file.type), {
+    message: PROFILEEDIT_FORM_ERROR_MESSAGE.IMAGE.TYPE,
+  })
+  .refine((file) => file.size < 2 * 1024 * 1024, { message: `2${PROFILEEDIT_FORM_ERROR_MESSAGE.IMAGE.SIZE}` });
 
 export const updateUserFormSchema = z.object({
   nickname: z.string().max(PROFILEEDIT_FORM_VALID_LENGTH.NICKNAME.MAX, PROFILEEDIT_FORM_ERROR_MESSAGE.NICKNAME.MAX),
-  profileImageUrl: z.string(),
+  profileImageUrl: z.union([z.string().url(), profileImageUrlSchema]).optional().nullable(),
 });
 
-export type UpdateUserForm = Omit<z.infer<typeof updateUserFormSchema>, 'profileImageUrl'> & {
-  profileImageUrl: ProfileImageUrl;
-};
-
-const profileImageUrlSchema = z.instanceof(File).refine((file) => ['image/jpeg', 'image/jpg', 'image/png', 'image/svg+xml', 'image/ico'].includes(file.type), {
-  message: '지원되지 않는 이미지 파일입니다.',
-});
+export type UpdateUserForm = z.infer<typeof updateUserFormSchema>;
 
 export const createProfileImageFormSchema = z.object({
   image: profileImageUrlSchema,
@@ -66,7 +65,7 @@ export interface CreateProfileImageForm {
 }
 
 export const profileImageUrlResponseSchema = z.object({
-  profileImageUrl: z.union([z.string(), z.instanceof(URL)]),
+  profileImageUrl: z.string().url(),
 });
 
 export type ProfileImageUrlResponse = z.infer<typeof profileImageUrlResponseSchema>;
