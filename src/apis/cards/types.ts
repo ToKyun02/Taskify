@@ -30,7 +30,7 @@ export const cardSchema = cardBaseSchema.extend({
 export type Card = z.infer<typeof cardSchema>;
 
 export const cardFormSchema = cardBaseSchema.extend({
-  dueDate: z.date().refine((date) => isValidDate(date), { message: '유효하지 않은 날짜 형식입니다.' }),
+  dueDate: z.date({ message: '날짜를 입력해 주세요' }).refine((date) => isValidDate(date), { message: '유효하지 않은 날짜 형식입니다.' }),
   assigneeUserId: z.number(),
   imageUrl: z
     .instanceof(File)

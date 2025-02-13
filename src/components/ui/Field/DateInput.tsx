@@ -31,7 +31,11 @@ export function DateInput({ label, error, value, onChange, onBlur, placeholder, 
           onChange={onChange}
           onBlur={onBlur}
           className={cn(baseFieldClassName, 'p-4 pl-10', error && baseErrorClassName, className)}
-          dateFormat='yyyy년 MM월 dd일'
+          dateFormat='yyyy. MM. dd HH:mm'
+          minDate={new Date()}
+          showTimeSelect
+          timeFormat='HH:mm'
+          timeIntervals={5}
           placeholderText={placeholder}
           disabled={disabled}
           readOnly={readOnly}
