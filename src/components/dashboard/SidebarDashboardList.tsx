@@ -9,6 +9,7 @@ import PaginationControls from '@/components/pagination/PaginationControls';
 import Dot from '@/components/ui/Dot/Dot';
 import crown from '@/assets/icons/crown.svg';
 import menu from '@/assets/icons/hamburger.svg';
+import { usePathname } from 'next/navigation';
 
 const ITEMS_PER_PAGE = 15;
 
@@ -32,6 +33,8 @@ export default function SidebarDashboardList({ open, onToggle }: { open: boolean
     setPage((prev) => prev + 1);
   };
 
+  const pathname = usePathname();
+
   return (
     <div className='flex flex-1 flex-col overflow-y-auto [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar]:w-1'>
       <div className='px-1 lg:px-3'>
@@ -40,7 +43,14 @@ export default function SidebarDashboardList({ open, onToggle }: { open: boolean
             ? [...Array(8)].map((item, index) => <SkeletionItem key={index} />)
             : data?.dashboards.map((item) => (
                 <li key={item.id}>
-                  <Link href={`/dashboard/${item.id}`} className='y-2 flex h-12 min-w-0 items-center gap-3 rounded-lg px-4 hover:bg-violet-10 hover:text-violet-20 md:px-1'>
+                  <Link
+                    href={`/dashboard/${item.id}`}
+                    className={cn(
+                      'y-2 flex h-12 min-w-0 items-center gap-3 rounded-lg px-4',
+                      pathname === `/dashboard/${item.id}` && 'bg-violet-10 text-violet-20',
+                      'hover:bg-violet-10 hover:text-violet-20 md:px-1',
+                    )}
+                  >
                     <div className='flex h-full w-6 flex-shrink-0 items-center justify-center'>
                       <Dot color={item.color} />
                     </div>
