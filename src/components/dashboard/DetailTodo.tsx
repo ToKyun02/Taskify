@@ -16,6 +16,7 @@ import x_img from '@/assets/icons/x.svg';
 import kebob from '@/assets/icons/kebab.svg';
 import RoundChip from '../ui/Chip/RoundChip';
 import { getErrorMessage } from '@/utils/errorMessage';
+import { formatDate } from '@/utils/formatDate';
 
 interface DetailTodoProps {
   card: Card;
@@ -28,6 +29,8 @@ const DetailTodo = forwardRef<ModalHandle, DetailTodoProps>(({ card }, ref) => {
   const confirm = useConfirm();
   const router = useRouter();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const formattedDueDate = formatDate(card.dueDate);
 
   const handleDeleteCard = async () => {
     const userConfirmed = await confirm('이 카드를 삭제하시겠습니까?', {
@@ -112,7 +115,7 @@ const DetailTodo = forwardRef<ModalHandle, DetailTodoProps>(({ card }, ref) => {
                   </div>
                   <div className='flex flex-col justify-between'>
                     <span className='text-xs font-semibold text-black'>마감일</span>
-                    <span className='text-xs text-gray-70'>{card.dueDate}</span>
+                    <span className='text-xs text-gray-70'>{formattedDueDate}</span>
                   </div>
                 </div>
               </div>
@@ -128,7 +131,7 @@ const DetailTodo = forwardRef<ModalHandle, DetailTodoProps>(({ card }, ref) => {
 
             <span className='text-md'>{card.description}</span>
 
-            {card.imageUrl && card.imageUrl !== NO_IMAGE_BASE_URL && <Image src={card.imageUrl} width={290} height={168} alt={card.title} className='object-cover' />}
+            {card.imageUrl && card.imageUrl !== NO_IMAGE_BASE_URL && <Image src={card.imageUrl} width={400} height={200} alt={card.title} className='object-cover' />}
           </div>
 
           <aside className='hidden flex-shrink-0 md:block'>
@@ -142,7 +145,7 @@ const DetailTodo = forwardRef<ModalHandle, DetailTodoProps>(({ card }, ref) => {
               </div>
               <div className='flex flex-col justify-between'>
                 <span className='text-xs font-semibold text-black'>마감일</span>
-                <span className='text-xs text-gray-70'>{card.dueDate}</span>
+                <span className='text-xs text-gray-70'>{formattedDueDate}</span>
               </div>
             </div>
           </aside>
