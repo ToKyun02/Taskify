@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import LogoCi from '@/assets/images/logo_ci.png';
+import LogoCi from '@/assets/images/logo_ci.svg';
 import { ReactNode } from 'react';
 
 export default function Header({ children }: { children: ReactNode }) {
