@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import LogoText from '@/assets/images/logo_ci.svg';
-import LogoSymbol from '@/assets/images/logo_bi.svg';
+import LogoText from '@/assets/images/logo_bi.svg';
+import LogoSymbol from '@/assets/images/logo_ci.svg';
 
 export default function SidebarLogo() {
   return (
