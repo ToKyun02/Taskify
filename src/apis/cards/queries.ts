@@ -2,7 +2,7 @@
 
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { deleteCard, getCard, getCards, postCard, putCard } from '.';
-import { Card, CardForm, GetCardsParams } from './types';
+import { Card, CardRequest, GetCardsParams } from './types';
 
 export const useCardsQuery = (params: GetCardsParams) => {
   return useInfiniteQuery({
@@ -24,8 +24,8 @@ export const useCreateCard = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (formData: CardForm) => {
-      return postCard(formData);
+    mutationFn: (cardRequest: CardRequest) => {
+      return postCard(cardRequest);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['cards'] });
@@ -37,8 +37,8 @@ export const useUpdateCard = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, formData }: { id: Card['id']; formData: CardForm }) => {
-      return putCard(id, formData);
+    mutationFn: ({ id, cardRequest }: { id: Card['id']; cardRequest: CardRequest }) => {
+      return putCard(id, cardRequest);
     },
     onSuccess: ({ id }: { id: Card['id'] }) => {
       queryClient.invalidateQueries({ queryKey: ['cards'] });
