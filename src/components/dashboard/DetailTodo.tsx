@@ -1,0 +1,133 @@
+'use client';
+
+import { forwardRef } from 'react';
+import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '../ui/Modal/Modal';
+import useAlert from '@/hooks/useAlert';
+import { useRouter } from 'next/navigation';
+import { Card } from '@/apis/cards/types';
+import { deleteCard } from '@/apis/cards';
+import CommentSection from './CommentSection';
+import Image from 'next/image';
+import Avatar from '../ui/Avatar/Avatar';
+import TagChip from '../ui/Chip/TagChip';
+import x_img from '@/assets/icons/x.svg';
+import RoundChip from '../ui/Chip/RoundChip';
+import Dropdown from '../ui/Dropdown/Dropdown';
+
+interface DetailTodoProps {
+  card: Card;
+}
+
+const DetailTodo = forwardRef<ModalHandle, DetailTodoProps>(({ card }, ref) => {
+  const alert = useAlert();
+  const router = useRouter();
+
+  const handleDeleteCard = async () => {
+    if (!confirm('이 카드를 삭제하시겠습니까?')) return;
+    try {
+      await deleteCard(card.id);
+      alert('카드가 삭제되었습니다.');
+      if (ref && 'current' in ref && ref.current) {
+        ref.current.close();
+      }
+      router.push('/dashboard');
+    } catch (err) {
+      alert('카드 정보를 불러오는 중 오류가 발생했습니다.');
+      console.error(err);
+    }
+  };
+
+  const handleEditCard = () => {
+    alert('수정 모달 열기');
+  };
+
+  const handleXClick = () => {
+    if (ref && 'current' in ref) {
+      ref.current?.close();
+    }
+  };
+
+  return (
+    <Modal ref={ref}>
+      <ModalContent>
+        <ModalHeader className='flex justify-end'>
+          <div className='flex gap-4'>
+            <Dropdown
+              type='kebab'
+              options={[
+                { value: 'edit', label: '수정하기' },
+                { value: 'delete', label: '삭제하기' },
+              ]}
+              onSelect={(value) => {
+                if (value === 'edit') {
+                  handleEditCard();
+                } else if (value === 'delete') {
+                  handleDeleteCard();
+                }
+              }}
+            />
+            <Image src={x_img} width={24} height={24} alt='나가기' onClick={handleXClick} className='cursor-pointer' />
+          </div>
+        </ModalHeader>
+        <div className='flex flex-col gap-8 md:flex-row md:items-start'>
+          <div className='flex flex-1 flex-col gap-4'>
+            <div className='flex flex-col gap-4'>
+              <div className='flex flex-col gap-2 text-xl font-bold text-gray-70'>{card.title}</div>
+
+              <div className='md:hidden'>
+                <div className='flex h-[64px] w-[295px] justify-between rounded-lg border border-gray-30 px-4 py-1.5'>
+                  <div className='flex flex-col justify-between'>
+                    <span className='text-xs font-semibold text-black'>담당자</span>
+                    <div className='flex items-center gap-2'>
+                      <Avatar email={card.assignee.nickname} size='sm' />
+                      <span className='text-xs text-gray-70'>{card.assignee.nickname}</span>
+                    </div>
+                  </div>
+                  <div className='flex flex-col justify-between'>
+                    <span className='text-xs font-semibold text-black'>마감일</span>
+                    <span className='text-xs text-gray-70'>{card.dueDate}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className='flex items-center gap-3'>
+                <RoundChip label='To Do' />
+                <div className='h-5 w-[1px] bg-gray-30'></div>
+                {card.tags.map((tag) => (
+                  <TagChip key={tag} label={tag} />
+                ))}
+              </div>
+            </div>
+
+            <span className='text-md'>{card.description}</span>
+
+            <Image src={card.imageUrl || '/placeholder.svg'} width={290} height={168} alt={card.title} className='object-cover' />
+          </div>
+
+          <aside className='hidden flex-shrink-0 md:block'>
+            <div className='flex h-full w-[181px] flex-col gap-4 rounded-lg border border-gray-30 px-4 py-1.5'>
+              <div className='flex flex-col justify-between'>
+                <span className='text-xs font-semibold text-black'>담당자</span>
+                <div className='flex items-center gap-2'>
+                  <Avatar email={card.assignee.nickname} size='sm' />
+                  <span className='text-xs text-gray-70'>{card.assignee.nickname}</span>
+                </div>
+              </div>
+              <div className='flex flex-col justify-between'>
+                <span className='text-xs font-semibold text-black'>마감일</span>
+                <span className='text-xs text-gray-70'>{card.dueDate}</span>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+        <ModalFooter className='flex flex-col'>
+          <CommentSection cardId={card.id} columnId={card.columnId} dashboardId={card.dashboardId} />
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  );
+});
+
+DetailTodo.displayName = 'DetailTodoModal';
+export default DetailTodo;
