@@ -4,3 +4,4 @@ export * from './Textarea';
 export * from './ImageUpload';
 export * from './DateInput';
 export * from './SearchInput';
+export * from './AssignInput';

@@ -24,7 +24,7 @@ export default function TodoCard({ card }: TodoCardProps) {
         className='flex w-full cursor-pointer flex-col gap-1 rounded-md border border-gray-30 bg-white px-3 py-[5px] md:flex-row md:gap-2.5 lg:w-[314px] lg:flex-col'
         onClick={() => detailTodoModalRef.current?.open()}
       >
-        {card.imageUrl && <Image src={card.imageUrl} alt={card.title} className='w-full md:w-[120px] lg:w-full' width={200} height={100} />}
+        {card.imageUrl && <Image src={card.imageUrl} alt={card.title} className='w-full md:w-[120px] lg:w-full' width={400} height={200} />}
         <div className='flex flex-col gap-1.5 md:flex-1 md:flex-row lg:flex-col lg:gap-2'>
           <div className='flex flex-col gap-1.5 md:flex-none lg:gap-2.5'>
             <span className='text-md font-medium text-gray-70 lg:text-lg'>{card.title}</span>
@@ -39,7 +39,7 @@ export default function TodoCard({ card }: TodoCardProps) {
               <Image src={calendar} width={10} height={11} alt='캘린더' />
               <span className='text-xs font-medium text-gray-50'>{formattedDate}</span>
             </div>
-            <Avatar email={card.assignee.nickname} size='sm' />
+            <Avatar email={card.assignee.nickname} size='sm' profileImageUrl={card.assignee.profileImageUrl} />
           </div>
         </div>
       </div>

@@ -37,7 +37,7 @@ export const cardImageFormSchema = z.object({
 export type CardImageForm = z.infer<typeof cardImageFormSchema>;
 
 export const cardImageResponseSchema = z.object({
-  imageUrl: z.union([z.string(), z.instanceof(URL)]),
+  imageUrl: z.string(),
 });
 
 export type CardImageResponse = z.infer<typeof cardImageResponseSchema>;
