@@ -45,7 +45,7 @@ export default function Profile() {
       ) : (
         data && (
           <div ref={menuRef} className='group relative flex cursor-pointer items-center gap-3 leading-none' onClick={() => setIsMenuOpen((prev) => !prev)}>
-            <Avatar email={data.email} className='transition-shadow group-hover:shadow-sm group-hover:shadow-slate-400' />
+            <Avatar email={data.email} profileImageUrl={data.profileImageUrl} className='transition-shadow group-hover:shadow-sm group-hover:shadow-slate-400' />
             <span className='hidden font-medium md:block'>{data.nickname}</span>
 
             {isMenuOpen && (
