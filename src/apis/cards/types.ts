@@ -20,7 +20,7 @@ export const cardSchema = cardBaseSchema.extend({
   assignee: z.object({
     id: z.number(),
     nickname: z.string(),
-    profileImageUrl: z.union([z.string(), z.null(), z.instanceof(URL)]),
+    profileImageUrl: z.union([z.string(), z.null()]),
   }),
   teamId: z.string(),
   createdAt: z.union([z.string(), z.date()]),
@@ -31,7 +31,7 @@ export type Card = z.infer<typeof cardSchema>;
 
 export const cardFormSchema = cardBaseSchema.extend({
   dueDate: z.date({ message: '날짜를 입력해 주세요' }).refine((date) => isValidDate(date), { message: '유효하지 않은 날짜 형식입니다.' }),
-  assigneeUserId: z.number(),
+  assigneeUserId: z.number().refine((id) => id, { message: '담당자를 지정해 주세요' }),
   imageUrl: z
     .instanceof(File)
     .refine((file) => ['image/jpeg', 'image/jpg', 'image/png', 'image/x-icon'].includes(file.type), {
