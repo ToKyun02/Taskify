@@ -37,7 +37,8 @@ export default function SignupForm() {
     if ('message' in response) {
       alert(response.message);
     } else {
-      alert('가입이 완료되었습니다!', () => router.replace('/login'));
+      await alert('가입이 완료되었습니다!');
+      router.replace('/login');
     }
   };
 

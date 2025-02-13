@@ -4,6 +4,7 @@ import { isAxiosError } from 'axios';
 import { useState } from 'react';
 import { useParams } from 'next/navigation';
 import useAlert from '@/hooks/useAlert';
+import useConfirm from '@/hooks/useConfirm';
 import { useMembersQuery, useRemoveMember } from '@/apis/members/queries';
 import { getErrorMessage } from '@/utils/errorMessage';
 import PaginationWithCounter from '@/components/pagination/PaginationWithCounter';
@@ -20,8 +21,12 @@ export default function DetailMembers() {
   const { data, error, isFetching } = useMembersQuery({ page, size: PAGE_SIZE, dashboardId: Number(id) });
   const { mutateAsync: remove } = useRemoveMember();
   const alert = useAlert();
+  const confirm = useConfirm();
 
   const removeMember = async (memberId: number) => {
+    const result = await confirm('정말 맴버를 삭제 할까요?');
+    if (!result) return;
+
     try {
       await remove({ memberId, dashboardId: Number(id) });
       alert('맴버를 삭제했습니다.');
