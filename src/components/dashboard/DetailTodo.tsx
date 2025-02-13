@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { Card } from '@/apis/cards/types';
 import { deleteCard } from '@/apis/cards';
 import CommentSection from './CommentSection';
+import useConfirm from '@/hooks/useConfirm';
 import Image from 'next/image';
 import Avatar from '../ui/Avatar/Avatar';
 import TagChip from '../ui/Chip/TagChip';
@@ -23,11 +24,19 @@ const NO_IMAGE_BASE_URL = 'https://sprint-fe-project.s3.ap-northeast-2.amazonaws
 
 const DetailTodo = forwardRef<ModalHandle, DetailTodoProps>(({ card }, ref) => {
   const alert = useAlert();
+  const confirm = useConfirm();
   const router = useRouter();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleDeleteCard = async () => {
-    if (!confirm('이 카드를 삭제하시겠습니까?')) return;
+    const userConfirmed = await confirm('이 카드를 삭제하시겠습니까?', {
+      buttons: {
+        ok: '삭제',
+        cancel: '취소',
+      },
+    });
+
+    if (!userConfirmed) return; // 취소 버튼을 누르면 진행 중단
     try {
       await deleteCard(card.id);
       alert('카드가 삭제되었습니다.');

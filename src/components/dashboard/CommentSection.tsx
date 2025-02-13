@@ -1,3 +1,5 @@
+'use client';
+
 import { deleteComment, getComments, postComment, putComment } from '@/apis/comments';
 import { Comment, CommentForm } from '@/apis/comments/types';
 import useAlert from '@/hooks/useAlert';
@@ -7,6 +9,7 @@ import Avatar from '../ui/Avatar/Avatar';
 import Button from '../ui/Button/Button';
 import { Textarea } from '../ui/Field';
 import { getErrorMessage } from '@/utils/errorMessage';
+import useConfirm from '@/hooks/useConfirm';
 
 interface CommentSectionProps {
   cardId: number;
@@ -16,6 +19,7 @@ interface CommentSectionProps {
 
 export default function CommentSection({ cardId, columnId, dashboardId }: CommentSectionProps) {
   const alert = useAlert();
+  const confirm = useConfirm();
   const [comments, setComments] = useState<Comment[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [content, setContent] = useState('');
@@ -69,7 +73,14 @@ export default function CommentSection({ cardId, columnId, dashboardId }: Commen
   }
 
   async function handleDeleteComment(commentId: number) {
-    if (!confirm('댓글을 삭제하시겠습니까?')) return;
+    const userConfirmed = await confirm('이 카드를 삭제하시겠습니까?', {
+      buttons: {
+        ok: '삭제',
+        cancel: '취소',
+      },
+    });
+
+    if (!userConfirmed) return;
     try {
       await deleteComment(commentId);
       setComments((prev) => prev.filter((c) => c.id !== commentId));
@@ -81,6 +92,7 @@ export default function CommentSection({ cardId, columnId, dashboardId }: Commen
 
   return (
     <div className='flex flex-col gap-4'>
+      {/* [1] 댓글 입력 영역 */}
       <div className='relative'>
         <Textarea label='댓글' value={content} onChange={(e) => setContent(e.target.value)} />
         <Button variant='outline' size='sm' className='absolute bottom-2 right-2' onClick={handleSubmitComment}>
