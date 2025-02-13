@@ -25,7 +25,6 @@ const DetailTodo = forwardRef<ModalHandle, DetailTodoProps>(({ card }, ref) => {
   const alert = useAlert();
   const router = useRouter();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  console.log(card.imageUrl);
 
   const handleDeleteCard = async () => {
     if (!confirm('이 카드를 삭제하시겠습니까?')) return;
