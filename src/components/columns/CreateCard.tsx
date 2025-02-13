@@ -5,7 +5,7 @@ import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '../u
 import { Controller, useForm } from 'react-hook-form';
 import { CardForm, cardFormSchema } from '@/apis/cards/types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { DateInput, ImageUpload, Input, TagInput, Textarea } from '../ui/Field';
+import { AssignInput, DateInput, ImageUpload, Input, TagInput, Textarea } from '../ui/Field';
 import Button from '../ui/Button/Button';
 import { useCreateCard } from '@/apis/cards/queries';
 import useAlert from '@/hooks/useAlert';
@@ -33,7 +33,7 @@ const CreateCard = forwardRef<ModalHandle, CreateCardProps>(({ dashboardId, colu
     defaultValues: {
       dashboardId,
       columnId,
-      assigneeUserId: 5159,
+      assigneeUserId: 0,
       title: '',
       description: '',
       dueDate: undefined,
@@ -78,14 +78,15 @@ const CreateCard = forwardRef<ModalHandle, CreateCardProps>(({ dashboardId, colu
         <form onSubmit={handleSubmit(onSubmit)}>
           <input type='hidden' {...register('dashboardId')} />
           <input type='hidden' {...register('columnId')} />
-          {/* TODO: 담당자 Input 구현 후 수정 예정 */}
-          <input type='hidden' {...register('assigneeUserId')} />
-
+          <Controller
+            name='assigneeUserId'
+            control={control}
+            render={({ field }) => {
+              return <AssignInput label='담당자' error={errors.assigneeUserId?.message} required {...field} />;
+            }}
+          />
           <Input label='제목' error={errors.title?.message} placeholder='제목을 입력해 주세요' required {...register('title')} />
-
           <Textarea label='설명' error={errors.description?.message} placeholder='설명을 입력해 주세요' required {...register('description')} />
-
-          {/* TODO: Date Input 수정 예정 */}
           <Controller
             name='dueDate'
             control={control}
@@ -116,7 +117,6 @@ const CreateCard = forwardRef<ModalHandle, CreateCardProps>(({ dashboardId, colu
             </Button>
           </ModalFooter>
         </form>
-        <ModalContent />
       </ModalContent>
     </Modal>
   );
