@@ -1,7 +1,8 @@
 'use client';
 
-import { forwardRef } from 'react';
+import { forwardRef, useState } from 'react';
 import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '../ui/Modal/Modal';
+import { motion } from 'motion/react';
 import useAlert from '@/hooks/useAlert';
 import { useRouter } from 'next/navigation';
 import { Card } from '@/apis/cards/types';
@@ -11,16 +12,20 @@ import Image from 'next/image';
 import Avatar from '../ui/Avatar/Avatar';
 import TagChip from '../ui/Chip/TagChip';
 import x_img from '@/assets/icons/x.svg';
+import kebob from '@/assets/icons/kebab.svg';
 import RoundChip from '../ui/Chip/RoundChip';
-import Dropdown from '../ui/Dropdown/Dropdown';
 
 interface DetailTodoProps {
   card: Card;
 }
 
+const NO_IMAGE_BASE_URL = 'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/taskify/task_image/';
+
 const DetailTodo = forwardRef<ModalHandle, DetailTodoProps>(({ card }, ref) => {
   const alert = useAlert();
   const router = useRouter();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  console.log(card.imageUrl);
 
   const handleDeleteCard = async () => {
     if (!confirm('이 카드를 삭제하시겠습니까?')) return;
@@ -50,24 +55,37 @@ const DetailTodo = forwardRef<ModalHandle, DetailTodoProps>(({ card }, ref) => {
   return (
     <Modal ref={ref}>
       <ModalContent>
-        <ModalHeader className='flex justify-end'>
+        <ModalHeader className='relative flex justify-end'>
           <div className='flex gap-4'>
-            <Dropdown
-              type='kebab'
-              options={[
-                { value: 'edit', label: '수정하기' },
-                { value: 'delete', label: '삭제하기' },
-              ]}
-              onSelect={(value) => {
-                if (value === 'edit') {
-                  handleEditCard();
-                } else if (value === 'delete') {
-                  handleDeleteCard();
-                }
-              }}
-            />
+            <Image src={kebob} width={3} height={24} alt='메뉴' className='cursor-pointer' onClick={() => setIsDropdownOpen((prev) => !prev)} />
             <Image src={x_img} width={24} height={24} alt='나가기' onClick={handleXClick} className='cursor-pointer' />
           </div>
+          {isDropdownOpen && (
+            <motion.ul initial={{ scale: 0.8, y: -20 }} animate={{ scale: 1, y: 0 }} className='absolute right-0 top-[calc(100%+6px)] z-10 w-28 rounded-md border border-gray-30 bg-white p-[4px]'>
+              <li>
+                <button
+                  onClick={() => {
+                    setIsDropdownOpen(false);
+                    handleEditCard();
+                  }}
+                  className='flex h-10 w-full items-center justify-center rounded-md text-md hover:bg-violet-10 hover:font-medium hover:text-violet-20'
+                >
+                  수정하기
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => {
+                    setIsDropdownOpen(false);
+                    handleDeleteCard();
+                  }}
+                  className='flex h-10 w-full items-center justify-center rounded-md text-md hover:bg-violet-10 hover:font-medium hover:text-violet-20'
+                >
+                  삭제하기
+                </button>
+              </li>
+            </motion.ul>
+          )}
         </ModalHeader>
         <div className='flex flex-col gap-8 md:flex-row md:items-start'>
           <div className='flex flex-1 flex-col gap-4'>
@@ -101,7 +119,7 @@ const DetailTodo = forwardRef<ModalHandle, DetailTodoProps>(({ card }, ref) => {
 
             <span className='text-md'>{card.description}</span>
 
-            <Image src={card.imageUrl || '/placeholder.svg'} width={290} height={168} alt={card.title} className='object-cover' />
+            {card.imageUrl && card.imageUrl !== NO_IMAGE_BASE_URL && <Image src={card.imageUrl} width={290} height={168} alt={card.title} className='object-cover' />}
           </div>
 
           <aside className='hidden flex-shrink-0 md:block'>
