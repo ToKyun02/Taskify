@@ -46,7 +46,7 @@ const avatarVariants = cva(
 
 interface AvatarProps extends HTMLAttributes<HTMLDivElement>, VariantProps<typeof avatarVariants> {
   email: string;
-  profileImageUrl?: string | null | URL;
+  profileImageUrl?: string | null;
 }
 
 export default function Avatar({ email, profileImageUrl, size, className, ...props }: AvatarProps) {

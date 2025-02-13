@@ -136,7 +136,7 @@ const DetailTodo = forwardRef<ModalHandle, DetailTodoProps>(({ card }, ref) => {
               <div className='flex flex-col justify-between'>
                 <span className='text-xs font-semibold text-black'>담당자</span>
                 <div className='flex items-center gap-2'>
-                  <Avatar email={card.assignee.nickname} size='sm' profileImageUrl={card.assignee.profileImageUrl} />
+                  <Avatar email={card.assignee.nickname} size='sm' profileImageUrl={card.assignee.profileImageUrl?.toString() ?? null} />
                   <span className='text-xs text-gray-70'>{card.assignee.nickname}</span>
                 </div>
               </div>
