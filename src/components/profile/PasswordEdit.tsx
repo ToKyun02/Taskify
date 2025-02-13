@@ -1,22 +1,24 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+import { useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
-import { Input } from '@/components/ui/Field/Input';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { isAxiosError } from 'axios';
+import { Input } from '@/components/ui/Field/Input';
 import { passwordSchema, PutPasswordFormData } from '@/apis/auth/types';
 import { logout, putPassword } from '@/apis/auth';
 import useAlert from '@/hooks/useAlert';
-import { isError } from 'es-toolkit/compat';
-import { isAxiosError } from 'axios';
-import SubmitButton from '@/components/auth/SubmitButton';
-import { useRouter } from 'next/navigation';
+import { Card, CardTitle } from '@/components//ui/Card/Card';
+import Button from '@/components/ui/Button/Button';
+import { getErrorMessage } from '@/utils/errorMessage';
 
 export default function PasswordEdit() {
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isValid, isSubmitting },
+    formState: { errors, isValid, isDirty, isSubmitting },
   } = useForm({
     resolver: zodResolver(passwordSchema),
     mode: 'onBlur',
@@ -29,6 +31,7 @@ export default function PasswordEdit() {
 
   const alert = useAlert();
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const onSubmit = async (putPasswordFormData: PutPasswordFormData) => {
     try {
@@ -36,28 +39,52 @@ export default function PasswordEdit() {
       alert('비밀번호가 변경되었습니다!');
       reset();
     } catch (error) {
-      if (isAxiosError(error)) {
-        if (error?.status === 401) {
-          await alert('세션이 만료되어 로그인 페이지로 이동합니다.');
-          await logout();
-          router.replace('/login');
-          return;
-        }
-
-        alert(error.response?.data?.message ?? '알 수 없는 오류가 발생했습니다.');
-      } else alert(isError(error) ? error.message : String(error));
+      if (isAxiosError(error) && error?.status === 401) {
+        await alert('세션이 만료되어 로그인 페이지로 이동합니다.');
+        await logout();
+        queryClient.invalidateQueries();
+        router.replace('/login');
+      } else {
+        const message = getErrorMessage(error);
+        alert(message);
+      }
     }
   };
 
+  const isDisabled = !isDirty || !isValid || isSubmitting;
+
   return (
-    <div className='flex flex-col gap-4 rounded-2xl bg-white p-6'>
-      <h2 className='text-2lg font-bold text-gray-70 md:text-2xl'>비밀번호 변경</h2>
+    <Card>
+      <CardTitle>비밀번호 변경</CardTitle>
       <form onSubmit={handleSubmit(onSubmit)} className='grid gap-6'>
-        <Input label='현재 비밀번호' placeholder='비밀번호 입력' error={errors.password?.message} required {...register('password')} type='password' />
-        <Input label='새 비밀번호' placeholder='새 비밀번호 입력' error={errors.newPassword?.message} required {...register('newPassword')} type='password' />
-        <Input label='새 비밀번호 확인' placeholder='새 비밀번호 입력' error={errors.newPasswordConfirm?.message} required {...register('newPasswordConfirm')} type='password' />
-        <SubmitButton isValid={isValid} isSubmitting={isSubmitting} text='변경' />
+        <Input //
+          type='password'
+          label='현재 비밀번호'
+          placeholder='비밀번호 입력'
+          error={errors.password?.message}
+          required
+          {...register('password')}
+        />
+        <Input //
+          type='password'
+          label='새 비밀번호'
+          placeholder='새 비밀번호 입력'
+          error={errors.newPassword?.message}
+          required
+          {...register('newPassword')}
+        />
+        <Input //
+          type='password'
+          label='새 비밀번호 확인'
+          placeholder='새 비밀번호 입력'
+          error={errors.newPasswordConfirm?.message}
+          required
+          {...register('newPasswordConfirm')}
+        />
+        <Button type='submit' disabled={isDisabled}>
+          변경
+        </Button>
       </form>
-    </div>
+    </Card>
   );
 }
