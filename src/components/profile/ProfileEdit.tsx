@@ -1,127 +1,122 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useForm, useWatch } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
+import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { getUser, updateUser, createProfileImage } from '@/apis/users/index';
-import { UpdateUserForm, updateUserFormSchema } from '@/apis/users/types';
-import { Input } from '@/components/ui/Field/Input';
-import SubmitButton from '@/components/auth/SubmitButton';
-import { ImageUpload } from '@/components/ui/Field/ImageUpload';
 import useAlert from '@/hooks/useAlert';
+import { UpdateUserForm, updateUserFormSchema, User } from '@/apis/users/types';
+import { useUpdateUser } from '@/apis/users/queries';
+import { createProfileImage } from '@/apis/users';
+import { Input } from '@/components/ui/Field/Input';
+import { ImageUpload } from '@/components/ui/Field/ImageUpload';
+import Button from '@/components/ui/Button/Button';
+import { Card, CardTitle } from '@/components//ui/Card/Card';
+import { getErrorMessage } from '@/utils/errorMessage';
 
-export default function ProfileEdit() {
-  const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
-  const [currentEmail, setCurrentEmail] = useState('');
-  const [currentNickname, setCurrentNickname] = useState('');
-  const [profileImageUrl, setProfileImageUrl] = useState<string>('');
-  const [initialProfileImageUrl, setInitialProfileImageUrl] = useState<string>('');
-  const [isFormChanged, setIsFormChanged] = useState(false);
-  const [imageRemoved, setImageRemoved] = useState(false);
+type ProfileEditProps = {
+  user: User;
+};
 
-  const alert = useAlert();
-
+export default function ProfileEdit({ user }: ProfileEditProps) {
   const {
     register,
     handleSubmit,
-    setValue,
     reset,
+    setValue,
     control,
-    formState: { errors, isSubmitting, isValid },
+    formState: { errors, isSubmitting, isValid, isDirty },
   } = useForm<UpdateUserForm>({
     resolver: zodResolver(updateUserFormSchema),
     mode: 'onChange',
     defaultValues: {
-      nickname: '',
-      profileImageUrl: '',
+      nickname: user.nickname,
+      profileImageUrl: user.profileImageUrl,
     },
   });
+  const router = useRouter();
+  const alert = useAlert();
+  const { mutateAsync: update } = useUpdateUser();
 
-  const watchedNickname = useWatch({ control, name: 'nickname' });
-
-  useEffect(() => {
-    const changed = !!profileImageFile || imageRemoved || (watchedNickname !== '' && watchedNickname !== currentNickname);
-    setIsFormChanged(changed);
-  }, [profileImageFile, imageRemoved, watchedNickname, currentNickname]);
-
-  useEffect(() => {
-    async function fetchUser() {
-      try {
-        const user = await getUser();
-        setCurrentEmail(user.email);
-        setCurrentNickname(user.nickname);
-        const url = user.profileImageUrl || '';
-        setProfileImageUrl(url);
-        setInitialProfileImageUrl(url);
-        setValue('profileImageUrl', url);
-      } catch {
-        alert('유저 정보를 불러오는 중 오류가 발생하였습니다.');
-      }
-    }
-    fetchUser();
-  }, []);
-
-  const handleImageChange = (file: File | undefined) => {
-    if (!file) {
-      if (profileImageFile) {
-        setProfileImageFile(null);
-        setProfileImageUrl(initialProfileImageUrl);
-        setValue('profileImageUrl', initialProfileImageUrl);
-        setImageRemoved(true);
-      } else {
-        setProfileImageUrl('');
-        setValue('profileImageUrl', '');
-        setImageRemoved(true);
-      }
-    } else {
-      setProfileImageFile(file);
-      setImageRemoved(false);
-    }
+  const resetProfileImage = () => {
+    setValue('profileImageUrl', null, {
+      shouldDirty: true,
+    });
   };
 
-  const handleSave = async (data: UpdateUserForm) => {
-    let imageUrl = profileImageUrl;
+  const onSubmit = async (formData: UpdateUserForm) => {
     try {
-      if (profileImageFile) {
-        const uploadResponse = await createProfileImage({ image: profileImageFile });
-        imageUrl = uploadResponse.profileImageUrl.toString();
+      const updatedFormData = { ...formData };
+      if (formData.profileImageUrl instanceof File) {
+        const uploadedUrl = await createProfileImage({ image: formData.profileImageUrl });
+        updatedFormData.profileImageUrl = uploadedUrl.profileImageUrl;
       }
-      const newNickname = data.nickname.trim() !== '' ? data.nickname : currentNickname;
-      const updateData: UpdateUserForm = {
-        nickname: newNickname,
-        profileImageUrl: imageRemoved ? null : imageUrl === '' ? null : imageUrl,
-      };
-      await updateUser(updateData);
-      alert('프로필이 성공적으로 업데이트되었습니다.');
-      setCurrentNickname(newNickname);
-      if (imageRemoved) {
-        setProfileImageUrl('');
-        setValue('profileImageUrl', '');
-        setInitialProfileImageUrl('');
-      }
-      reset();
-      setIsFormChanged(false);
-      setImageRemoved(false);
-    } catch {
-      alert('프로필 업데이트 중 오류가 발생하였습니다.');
+
+      const data = await update(updatedFormData);
+      reset({
+        nickname: data.nickname,
+        profileImageUrl: data.profileImageUrl,
+      });
+
+      alert('수정했습니다.');
+      router.refresh();
+    } catch (error) {
+      const message = getErrorMessage(error);
+      alert(message);
     }
   };
+
+  const isDisabled = !isDirty || !isValid || isSubmitting;
 
   return (
-    <div className='flex h-fit w-fit flex-col rounded-lg bg-white p-4 sm:p-6'>
-      <span className='mb-4 text-2lg font-semibold sm:mb-6 sm:text-xl'>프로필</span>
-      <div className='flex flex-col md:flex-row'>
-        {/* 프로필 이미지 업로드 */}
-        <div className='mb-4 w-[100px] md:mr-6 md:w-[182px]'>
-          <ImageUpload value={imageRemoved ? undefined : profileImageFile || profileImageUrl} onChange={handleImageChange} onBlur={() => {}} className='w-full' />
+    <Card>
+      <CardTitle>프로필</CardTitle>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className='flex w-full flex-col gap-10 md:flex-row'>
+          <div className='w-full max-w-44'>
+            <Controller
+              name='profileImageUrl'
+              control={control}
+              render={({ field, fieldState }) => {
+                return (
+                  <>
+                    <ImageUpload //
+                      error={errors.profileImageUrl?.message}
+                      className='w-full'
+                      defaultValue={user.profileImageUrl}
+                      {...field}
+                    />
+                    {field.value && !fieldState.isDirty && (
+                      <div className='mt-3 flex items-center'>
+                        <Button type='button' variant='outline' size='sm' className='font-normal text-gray-50' onClick={resetProfileImage}>
+                          프로필 이미지 초기화
+                        </Button>
+                      </div>
+                    )}
+                  </>
+                );
+              }}
+            />
+          </div>
+          <div className='grid flex-1 gap-6'>
+            <Input //
+              label='이메일'
+              placeholder='대시보드 이름을 입력해주세요'
+              defaultValue={user.email}
+              readOnly
+            />
+
+            <Input //
+              label='닉네임'
+              placeholder={'닉네임을 입력해주세요'}
+              error={errors.nickname?.message}
+              {...register('nickname')}
+            />
+            <Button type='submit' disabled={isDisabled}>
+              저장
+            </Button>
+          </div>
         </div>
-        {/* 프로필 수정 폼 */}
-        <form onSubmit={handleSubmit(handleSave)} className='w-[252px] md:w-[276px] lg:w-[400px]'>
-          <Input label='이메일' placeholder={currentEmail} readOnly className='mb-4 w-full' />
-          <Input label='닉네임' placeholder={currentNickname} {...register('nickname')} error={errors.nickname?.message} className='w-full' />
-          <SubmitButton isValid={isValid && isFormChanged} isSubmitting={isSubmitting} text='저장' className='mt-4 w-full' />
-        </form>
-      </div>
-    </div>
+      </form>
+    </Card>
   );
 }
