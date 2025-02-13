@@ -15,6 +15,7 @@ import TagChip from '../ui/Chip/TagChip';
 import x_img from '@/assets/icons/x.svg';
 import kebob from '@/assets/icons/kebab.svg';
 import RoundChip from '../ui/Chip/RoundChip';
+import { getErrorMessage } from '@/utils/errorMessage';
 
 interface DetailTodoProps {
   card: Card;
@@ -45,8 +46,8 @@ const DetailTodo = forwardRef<ModalHandle, DetailTodoProps>(({ card }, ref) => {
       }
       router.push('/dashboard');
     } catch (err) {
-      alert('카드 정보를 불러오는 중 오류가 발생했습니다.');
-      console.error(err);
+      const message = getErrorMessage(err);
+      alert(message);
     }
   };
 
@@ -135,7 +136,7 @@ const DetailTodo = forwardRef<ModalHandle, DetailTodoProps>(({ card }, ref) => {
               <div className='flex flex-col justify-between'>
                 <span className='text-xs font-semibold text-black'>담당자</span>
                 <div className='flex items-center gap-2'>
-                  <Avatar email={card.assignee.nickname} size='sm' />
+                  <Avatar email={card.assignee.nickname} size='sm' profileImageUrl={card.assignee.profileImageUrl} />
                   <span className='text-xs text-gray-70'>{card.assignee.nickname}</span>
                 </div>
               </div>
