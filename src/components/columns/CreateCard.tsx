@@ -75,7 +75,7 @@ const CreateCard = forwardRef<ModalHandle, CreateCardProps>(({ dashboardId, colu
     <Modal ref={ref}>
       <ModalContent>
         <ModalHeader>할 일 생성</ModalHeader>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-4'>
           <input type='hidden' {...register('dashboardId')} />
           <input type='hidden' {...register('columnId')} />
           <Controller

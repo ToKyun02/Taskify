@@ -10,8 +10,12 @@ import PaginationWithCounter from '@/components/pagination/PaginationWithCounter
 import { AnimatePresence, motion } from 'motion/react';
 import Image from 'next/image';
 import XIcon from '@/assets/icons/x.svg';
+import Avatar from '../Avatar/Avatar';
+import { Member } from '@/apis/members/types';
 
 const PAGE_SIZE = 5;
+
+const SCROLL_BAR_CLASS_NAME = '[&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar]:w-1';
 
 type AssignInputProps = BaseField &
   Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange'> & {
@@ -24,7 +28,7 @@ export function AssignInput({ onChange, label, required, error, className }: Ass
   const dashboardId = Number(params.id);
   const [page, setPage] = useState(1);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [selectedNickname, setSelectedNickname] = useState(''); // nickname 상태 추가
+  const [selectedMember, setSelectedMember] = useState<Member>();
   const { data } = useMembersQuery({ dashboardId, page, size: PAGE_SIZE });
   const id = useId();
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -33,13 +37,12 @@ export function AssignInput({ onChange, label, required, error, className }: Ass
     setIsDropdownOpen((prev) => !prev);
   };
 
-  const handleSelectItem = (assignId: number, nickname: string) => {
-    onChange(assignId);
-    setSelectedNickname(nickname);
+  const handleSelectItem = (member: Member) => {
+    onChange(member.userId);
+    setSelectedMember(member);
     setIsDropdownOpen(false);
   };
 
-  // 외부 클릭 감지
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -60,16 +63,18 @@ export function AssignInput({ onChange, label, required, error, className }: Ass
           {label}
         </BaseLabel>
       )}
-      <div ref={dropdownRef} className={cn(baseFieldClassName, 'relative flex h-auto min-h-[50px] flex-wrap items-center gap-2 px-4 py-2', error && baseErrorClassName, className)}>
-        <input
-          type='text'
-          id={id}
-          value={selectedNickname}
-          readOnly
-          onClick={handleInputClick}
-          placeholder='담당자를 지정해 주세요'
-          className={cn('flex flex-1 text-black focus-visible:outline-none', className)}
-        />
+      <div ref={dropdownRef} className={cn(baseFieldClassName, 'relative flex h-auto min-h-[50px] items-center gap-2 px-4 py-2', error && baseErrorClassName, className)}>
+        <div onClick={handleInputClick} className='flex items-center gap-2'>
+          {selectedMember?.userId && <Avatar email={selectedMember.email} profileImageUrl={selectedMember.profileImageUrl} className='h-8 w-8' />}
+          <input
+            type='text'
+            id={id}
+            value={selectedMember?.nickname || ''}
+            readOnly
+            placeholder='담당자를 지정해 주세요'
+            className={cn('flex flex-1 text-black focus-visible:outline-none', className)}
+          />
+        </div>
 
         <AnimatePresence>
           {isDropdownOpen && (
@@ -78,7 +83,7 @@ export function AssignInput({ onChange, label, required, error, className }: Ass
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.2 }}
-              className='absolute left-0 right-0 top-0 h-[270px] divide-y divide-gray-200 overflow-y-hidden rounded-md border border-gray-40 bg-white p-2 shadow-lg'
+              className={cn(SCROLL_BAR_CLASS_NAME, 'absolute -left-1 -right-1 top-0 h-[270px] divide-y divide-gray-200 overflow-y-scroll rounded-md border border-gray-40 bg-white p-2 shadow-lg')}
             >
               <li className='mb-2 flex h-10 items-center justify-between px-2'>
                 <div className='flex items-center gap-4'>
@@ -88,9 +93,10 @@ export function AssignInput({ onChange, label, required, error, className }: Ass
 
                 <Image src={XIcon} alt='취소 버튼' width={24} height={24} className='cursor-pointer' onClick={() => setIsDropdownOpen(false)} />
               </li>
-              {data?.members.map((item) => (
-                <li key={item.id} className='h-10 cursor-pointer p-2 hover:bg-gray-100' onClick={() => handleSelectItem(item.userId, item.nickname)}>
-                  {item.nickname}
+              {data?.members.map((member) => (
+                <li key={member.id} className='flex h-16 cursor-pointer items-center gap-2 p-2 hover:bg-gray-100' onClick={() => handleSelectItem(member)}>
+                  <Avatar email={member.email} profileImageUrl={member.profileImageUrl} />
+                  <span className='text-gray-70'>{member.nickname}</span>
                 </li>
               ))}
             </motion.ul>
