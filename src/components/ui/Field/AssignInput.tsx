@@ -64,7 +64,7 @@ export function AssignInput({ onChange, label, required, error, className }: Ass
         </BaseLabel>
       )}
       <div ref={dropdownRef} className={cn(baseFieldClassName, 'relative flex h-auto min-h-[50px] items-center gap-2 px-4 py-2', error && baseErrorClassName, className)}>
-        <div onClick={handleInputClick} className='flex items-center gap-2'>
+        <div onClick={handleInputClick} className='flex w-full items-center gap-2'>
           {selectedMember?.userId && <Avatar email={selectedMember.email} profileImageUrl={selectedMember.profileImageUrl} className='h-8 w-8' />}
           <input
             type='text'
