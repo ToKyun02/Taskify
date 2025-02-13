@@ -25,6 +25,7 @@ export function DateInput({ label, error, value, onChange, onBlur, placeholder, 
       )}
       <div className='relative grid'>
         <Image src={calendarIcon} alt='날짜선택' className={cn('pointer-events-none absolute left-4 top-1/2 z-20 h-auto w-4 -translate-y-1/2 opacity-50', value && 'opacity-100')} />
+        {/* TODO: DatePicker 스타일링 및 locale 설정 예정 */}
         <DatePicker //
           id={id}
           selected={value}
