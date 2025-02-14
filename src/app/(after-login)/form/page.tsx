@@ -66,7 +66,7 @@ export default function FormPage() {
 
   return (
     <div className='p-10'>
-      <div className='rounded-md bg-white p-10'>
+      <div className='max-w-screen-md rounded-md bg-white p-10'>
         <div className='mb-10 grid gap-3'>
           {/* input sample : controlled */}
           <Input
