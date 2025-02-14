@@ -36,8 +36,18 @@ export default function ColumnItem({ column }: ColumnItemProps) {
       <DashboardButton variant='addTodo' onClick={() => addRef.current?.open()} />
       <div className='flex flex-col gap-4'>
         <AnimatePresence>
-          {cards.map((card) => (
-            <motion.div key={card.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 1.5 }}>
+          {cards.map((card, index) => (
+            <motion.div
+              key={card.id}
+              layout
+              initial={{ opacity: 0, y: 0 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{
+                opacity: { duration: 1 },
+                y: { delay: index * 0.5 },
+              }}
+            >
               <TodoCard card={card} />
             </motion.div>
           ))}

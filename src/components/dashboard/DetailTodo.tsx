@@ -4,9 +4,7 @@ import { forwardRef, useState } from 'react';
 import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '../ui/Modal/Modal';
 import { motion } from 'motion/react';
 import useAlert from '@/hooks/useAlert';
-import { useRouter } from 'next/navigation';
 import { Card } from '@/apis/cards/types';
-import { deleteCard } from '@/apis/cards';
 import CommentSection from './CommentSection';
 import useConfirm from '@/hooks/useConfirm';
 import Image from 'next/image';
@@ -18,6 +16,7 @@ import RoundChip from '../ui/Chip/RoundChip';
 import { getErrorMessage } from '@/utils/errorMessage';
 import { formatDate } from '@/utils/formatDate';
 import { useColumnsQuery } from '@/apis/columns/queries';
+import { useRemoveCard } from '@/apis/cards/queries';
 
 interface DetailTodoProps {
   card: Card;
@@ -29,8 +28,8 @@ const NO_IMAGE_BASE_URL = 'https://sprint-fe-project.s3.ap-northeast-2.amazonaws
 const DetailTodo = forwardRef<ModalHandle, DetailTodoProps>(({ card, onEdit }, ref) => {
   const alert = useAlert();
   const confirm = useConfirm();
-  const router = useRouter();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { mutateAsync: remove } = useRemoveCard();
 
   const formattedDueDate = formatDate(card.dueDate);
 
@@ -48,12 +47,11 @@ const DetailTodo = forwardRef<ModalHandle, DetailTodoProps>(({ card, onEdit }, r
 
     if (!userConfirmed) return; // 취소 버튼을 누르면 진행 중단
     try {
-      await deleteCard(card.id);
+      await remove(card.id);
       alert('카드가 삭제되었습니다.');
       if (ref && 'current' in ref && ref.current) {
-        ref.current.close();
+        ref?.current?.close();
       }
-      router.push('/dashboard');
     } catch (err) {
       const message = getErrorMessage(err);
       alert(message);
