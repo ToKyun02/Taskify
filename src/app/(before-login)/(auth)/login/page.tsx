@@ -2,6 +2,26 @@ import Link from 'next/link';
 import LoginForm from '@/components/auth/LoginForm';
 import Header from '@/components/auth/Header';
 
+export const metadata = {
+  title: 'Taskify - 로그인',
+  description: 'Taskify에 로그인하고, 함께 일정을 공유하며 더 나은 하루를 시작해 보세요.',
+  keywords: ['일정', '공유', '커뮤니티', '할 일', 'Taskify'],
+  openGraph: {
+    title: 'Taskify - 로그인',
+    description: 'Taskify에 로그인하고, 함께 일정을 공유하며 더 나은 하루를 시작해 보세요.',
+    url: 'https://taskify-lab.vercel.app',
+    type: 'website',
+    images: [
+      {
+        url: 'https://taskify-lab.vercel.app/meta.png',
+        width: 1200,
+        height: 630,
+        alt: 'Taskify 로그인 이미지',
+      },
+    ],
+  },
+};
+
 export default function Login() {
   return (
     <>

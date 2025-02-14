@@ -48,6 +48,26 @@ const SNS_LIST: IconLinkItem[] = [
   },
 ];
 
+export const metadata = {
+  title: 'Taskify',
+  description: 'Taskify는 가족, 회사, 친구들과 함께 일정을 쉽고 즐겁게 관리할 수 있는 서비스입니다.',
+  keywords: ['일정', '공유', '커뮤니티', '할 일', 'Taskify'],
+  openGraph: {
+    title: 'Taskify',
+    description: 'Taskify는 가족, 회사, 친구들과 함께 일정을 쉽고 즐겁게 관리할 수 있는 서비스입니다.',
+    url: 'https://taskify-lab.vercel.app/',
+    type: 'website',
+    images: [
+      {
+        url: 'https://taskify-lab.vercel.app/meta.png',
+        width: 1200,
+        height: 630,
+        alt: 'Taskify 랜딩 페이지 이미지',
+      },
+    ],
+  },
+};
+
 export default function layout({ children }: PropsWithChildren) {
   return (
     <SmoothScroll>
