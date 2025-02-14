@@ -24,13 +24,5 @@ export const middleware = async (request: NextRequest) => {
 };
 
 export const config = {
-  matcher: [
-    {
-      source: '/:path*',
-      missing: [
-        { type: 'header', key: 'next-router-prefetch' },
-        { type: 'header', key: 'purpose', value: 'prefetch' },
-      ],
-    },
-  ],
+  matcher: ['/:path*'],
 };
