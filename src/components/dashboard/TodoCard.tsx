@@ -9,6 +9,7 @@ import calendar from '@/assets/icons/calendar.svg';
 import { useRef } from 'react';
 import { ModalHandle } from '../ui/Modal/Modal';
 import DetailTodo from '@/components/dashboard/DetailTodo';
+import TodoEditModal from './TodoEditModal';
 
 interface TodoCardProps {
   card: Card;
@@ -16,7 +17,13 @@ interface TodoCardProps {
 
 export default function TodoCard({ card }: TodoCardProps) {
   const detailTodoModalRef = useRef<ModalHandle>(null);
+  const editModalRef = useRef<ModalHandle>(null);
   const formattedDate = formatDate(card.dueDate);
+
+  const handleOpenEditModal = () => {
+    detailTodoModalRef.current?.close();
+    editModalRef.current?.open();
+  };
 
   return (
     <>
@@ -44,7 +51,8 @@ export default function TodoCard({ card }: TodoCardProps) {
         </div>
       </div>
 
-      <DetailTodo ref={detailTodoModalRef} card={card} />
+      <DetailTodo ref={detailTodoModalRef} card={card} onEdit={handleOpenEditModal} />
+      <TodoEditModal ref={editModalRef} card={card} />
     </>
   );
 }

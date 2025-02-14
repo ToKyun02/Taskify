@@ -20,11 +20,12 @@ import { formatDate } from '@/utils/formatDate';
 
 interface DetailTodoProps {
   card: Card;
+  onEdit: () => void;
 }
 
 const NO_IMAGE_BASE_URL = 'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/taskify/task_image/';
 
-const DetailTodo = forwardRef<ModalHandle, DetailTodoProps>(({ card }, ref) => {
+const DetailTodo = forwardRef<ModalHandle, DetailTodoProps>(({ card, onEdit }, ref) => {
   const alert = useAlert();
   const confirm = useConfirm();
   const router = useRouter();
@@ -55,7 +56,7 @@ const DetailTodo = forwardRef<ModalHandle, DetailTodoProps>(({ card }, ref) => {
   };
 
   const handleEditCard = () => {
-    alert('수정 모달 열기');
+    onEdit();
   };
 
   const handleXClick = () => {
