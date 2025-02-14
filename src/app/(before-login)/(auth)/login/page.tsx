@@ -9,7 +9,7 @@ export const metadata = {
   openGraph: {
     title: 'Taskify - 로그인',
     description: 'Taskify에 로그인하고, 함께 일정을 공유하며 더 나은 하루를 시작해 보세요.',
-    url: 'https://taskify-lab.vercel.app',
+    url: 'https://taskify-lab.vercel.app/login',
     type: 'website',
     images: [
       {
