@@ -1,44 +1,81 @@
-import { forwardRef, useState } from 'react';
+import { forwardRef } from 'react';
 import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '../ui/Modal/Modal';
-import { Card } from '@/apis/cards/types';
-import { AssignInput, DateInput, ImageUpload, TagInput } from '../ui/Field';
+import { Card, CardForm, cardFormSchema } from '@/apis/cards/types';
+import { AssignInput, DateInput, ImageUpload, Input, TagInput } from '../ui/Field';
 import { useColumnsQuery } from '@/apis/columns/queries';
 import StatusDropdown from '../ui/Dropdown/StatusDropdown';
 import { Textarea } from '../ui/Field';
 import Button from '../ui/Button/Button';
+import useAlert from '@/hooks/useAlert';
+import { Controller, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useUpdateCard } from '@/apis/cards/queries';
+import { postCardImage } from '@/apis/columns';
+import convertDateFormat from '@/utils/convertDateFormat';
+import { getErrorMessage } from '@/utils/errorMessage';
+
+const DEFAULT_POST_IMAGE = {
+  imageUrl: 'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/taskify/task_image/no_image.png',
+} as const;
 
 interface TodoEditModalProps {
   card: Card;
 }
 
 const TodoEditModal = forwardRef<ModalHandle, TodoEditModalProps>(({ card }, ref) => {
-  const { data } = useColumnsQuery(card.dashboardId);
-  const columns = data?.data ?? [];
+  const alert = useAlert();
+  const { data: columnData } = useColumnsQuery(card.dashboardId);
+  const columns = columnData?.data ?? [];
 
-  const [dueDate, setDueDate] = useState<Date | null>(card.dueDate ? new Date(card.dueDate) : null);
+  const {
+    handleSubmit,
+    register,
+    control,
+    formState: { errors, isValid, isSubmitting },
+  } = useForm<CardForm>({
+    resolver: zodResolver(cardFormSchema),
+    mode: 'onBlur',
+    defaultValues: {
+      dashboardId: card.dashboardId,
+      columnId: card.columnId,
+      assigneeUserId: card.assignee?.id || 0,
+      title: card.title,
+      description: card.description,
+      dueDate: card.dueDate ? new Date(card.dueDate) : undefined,
+      tags: card.tags || [],
+      imageUrl: undefined,
+    },
+  });
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [assignId, setAssignId] = useState<number>(card.assignee?.id || 0);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { mutateAsync: updateCard } = useUpdateCard();
 
-  const defaultColumn = columns.find((c) => c.id === card.columnId);
-  const [selectedColumn, setSelectedColumn] = useState(defaultColumn);
+  const onSubmit = async (data: CardForm) => {
+    try {
+      let finalImageUrl = card.imageUrl ?? DEFAULT_POST_IMAGE.imageUrl;
+      if (data.imageUrl instanceof File) {
+        const { imageUrl } = await postCardImage(data.columnId, {
+          image: data.imageUrl,
+        });
+        finalImageUrl = imageUrl;
+      }
 
-  const [tags, setTags] = useState<string[]>(card.tags || []);
+      await updateCard({
+        id: card.id,
+        cardRequest: {
+          ...data,
+          dueDate: convertDateFormat(data.dueDate),
+          imageUrl: finalImageUrl,
+        },
+      });
 
-  const [imageValue, setImageValue] = useState<File | string | null>(card.imageUrl || null);
-
-  const handleImageChange = (file: File | null | undefined) => {
-    setImageValue(file ?? null);
-  };
-
-  const handleStatusChange = (columnId: number) => {
-    const newColumn = columns.find((c) => c.id === columnId);
-    if (newColumn) {
-      setSelectedColumn(newColumn);
+      alert('카드가 성공적으로 수정되었습니다.');
+      if (ref && 'current' in ref) {
+        ref.current?.close(); // 모달 닫기
+      }
+    } catch (err) {
+      const message = getErrorMessage(err);
+      alert(message);
     }
-    setIsDropdownOpen(false);
   };
 
   return (
@@ -47,25 +84,49 @@ const TodoEditModal = forwardRef<ModalHandle, TodoEditModalProps>(({ card }, ref
         <ModalHeader>
           <h3 className='text-lg font-bold text-gray-70'>할 일 수정</h3>
         </ModalHeader>
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className='flex flex-col gap-8'>
             <div className='flex flex-col gap-8 md:flex-row'>
-              <StatusDropdown columns={columns} selectedColumn={selectedColumn} onChange={handleStatusChange} />
-              <AssignInput label='담당자' value={card.assignee.id} onChange={(id) => setAssignId(id)} />
-            </div>
-            <Textarea label='설명' />
-            <DateInput label='마감일' value={dueDate ?? new Date()} onChange={(newValue) => setDueDate(newValue)} placeholder='마감일을 설정해주세요' />
-            <TagInput label='태그' value={tags} onChange={(newTags) => setTags(newTags)} placeholder='태그를 입력 후 엔터를 누르세요' />
+              <Controller
+                name='columnId'
+                control={control}
+                render={({ field }) => {
+                  const selected = columns.find((col) => col.id === field.value);
+                  return <StatusDropdown columns={columns} selectedColumn={selected} onChange={(columnId) => field.onChange(columnId)} />;
+                }}
+              />
 
-            <ImageUpload label='이미지' defaultValue={card.imageUrl ?? ''} value={imageValue} onChange={handleImageChange} onBlur={() => {}} className='h-[76px] w-[76px]' />
+              <Controller name='assigneeUserId' control={control} render={({ field }) => <AssignInput className='w-full' label='담당자' error={errors.assigneeUserId?.message} {...field} />} />
+            </div>
+            <Input label='제목' error={errors.title?.message} placeholder='제목을 입력해 주세요' required {...register('title')} />
+
+            <Textarea label='설명' error={errors.description?.message} placeholder='설명을 입력해 주세요' required {...register('description')} />
+
+            <Controller name='dueDate' control={control} render={({ field }) => <DateInput label='마감일' error={errors.dueDate?.message} placeholder='날짜를 입력해주세요' required {...field} />} />
+
+            <Controller name='tags' control={control} render={({ field }) => <TagInput label='태그' error={errors.tags?.message} placeholder='입력 후 Enter' {...field} />} />
+
+            <Controller name='imageUrl' control={control} render={({ field }) => <ImageUpload label='이미지' error={errors.imageUrl?.message} defaultValue={card.imageUrl ?? ''} {...field} />} />
           </div>
+
+          <ModalFooter>
+            <Button
+              type='button'
+              variant='outline'
+              size='lg'
+              onClick={() => {
+                if (ref && 'current' in ref) {
+                  ref.current?.close();
+                }
+              }}
+            >
+              취소
+            </Button>
+            <Button type='submit' size='lg' disabled={!isValid || isSubmitting}>
+              {isSubmitting ? '수정중...' : '수정'}
+            </Button>
+          </ModalFooter>
         </form>
-        <ModalFooter>
-          <Button variant='outline' size='lg'>
-            취소
-          </Button>
-          <Button size='lg'>수정</Button>
-        </ModalFooter>
       </ModalContent>
     </Modal>
   );
