@@ -7,7 +7,6 @@ import SubmitButton from '@/components/auth/SubmitButton';
 import { LOGIN_FORM_PLACEHOLDER } from '@/constants/auth';
 import { loginSchema, LoginFormData } from '@/apis/auth/types';
 import { login } from '@/apis/auth';
-import { useRouter } from 'next/navigation';
 import useAlert from '@/hooks/useAlert';
 
 export default function LoginForm() {
@@ -24,7 +23,6 @@ export default function LoginForm() {
     },
   });
 
-  const router = useRouter();
   const alert = useAlert();
 
   const onSubmit = async (loginFormData: LoginFormData) => {
@@ -33,7 +31,7 @@ export default function LoginForm() {
       alert(response.message);
     } else {
       await alert('로그인이 완료되었습니다!');
-      router.replace('/mydashboard');
+      window.location.reload();
     }
   };
 
