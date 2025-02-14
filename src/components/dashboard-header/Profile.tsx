@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useQueryClient } from '@tanstack/react-query';
 import { motion } from 'motion/react';
 import { useGetUser } from '@/apis/users/queries';
@@ -14,7 +13,6 @@ export default function Profile() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { data, isFetching } = useGetUser();
   const alert = useAlert();
-  const router = useRouter();
   const menuRef = useRef<HTMLDivElement | null>(null);
   const queryClient = useQueryClient();
 
@@ -22,7 +20,7 @@ export default function Profile() {
     await axiosClientHelper.post('/auth/logout');
     await alert('로그아웃 했습니다.');
     queryClient.invalidateQueries();
-    router.replace('/');
+    window.location.reload();
   };
 
   useEffect(() => {
