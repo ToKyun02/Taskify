@@ -1,10 +1,13 @@
 import { Page, PageInner } from '@/components/layout/Page';
+import { CardSkeleton } from '@/components/ui/Card/Card';
+import { GoBackSkeleton } from '@/components/ui/Link/GoBackLink';
 
 export default function loading() {
   return (
     <Page>
       <PageInner>
-        <span className='text-md text-gray-40'>대시보드 정보를 불러오는 중입니다.</span>
+        <GoBackSkeleton />
+        <CardSkeleton count={3} />
       </PageInner>
     </Page>
   );
