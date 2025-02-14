@@ -1,3 +1,4 @@
+import { Page, PageInner } from '@/components/layout/Page';
 import DetailModify from '@/components/dashboard/DetailModify';
 import DetailMembers from '@/components/dashboard/DetailMembers';
 import DetailInvited from '@/components/dashboard/DetailInvited';
@@ -18,23 +19,26 @@ export default async function DashboardEditPage({ params }: { params: Promise<{ 
   }
 
   return (
-    <div className='p-10'>
-      <div className='mb-8'>
-        <GoBackLink href={`/dashboard/${id}`} />
-      </div>
-      <div className='grid w-full max-w-[620px] gap-4'>
-        {/* 대시보드 정보 */}
-        <DetailModify data={dashboardDetail} />
+    <Page>
+      <PageInner>
+        <div className='mb-8'>
+          <GoBackLink href={`/dashboard/${id}`} />
+        </div>
 
-        {/* 구성원 리스트 */}
-        <DetailMembers />
+        <div className='grid gap-4'>
+          {/* 대시보드 정보 */}
+          <DetailModify data={dashboardDetail} />
 
-        {/* 초대내역 */}
-        <DetailInvited />
+          {/* 구성원 리스트 */}
+          <DetailMembers />
 
-        {/* 대시보드 삭제 */}
-        <DetailDelete />
-      </div>
-    </div>
+          {/* 초대내역 */}
+          <DetailInvited />
+
+          {/* 대시보드 삭제 */}
+          <DetailDelete />
+        </div>
+      </PageInner>
+    </Page>
   );
 }

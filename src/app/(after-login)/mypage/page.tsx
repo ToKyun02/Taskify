@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation';
 import { User, userSchema } from '@/apis/users/types';
+import { Page, PageInner } from '@/components/layout/Page';
 import PasswordEdit from '@/components/profile/PasswordEdit';
 import ProfileEdit from '@/components/profile/ProfileEdit';
 import GoBackLink from '@/components/ui/Link/GoBackLink';
@@ -15,17 +16,19 @@ export default async function MyPage() {
   }
 
   return (
-    <div className='p-10'>
-      <div className='mb-8'>
-        <GoBackLink href='/mydashboard' />
-      </div>
-      <div className='grid w-full max-w-[620px] gap-4'>
-        {/* 프로필 수정 */}
-        <ProfileEdit user={userData} />
+    <Page>
+      <PageInner>
+        <div className='mb-8'>
+          <GoBackLink href='/mydashboard' />
+        </div>
+        <div className='grid gap-4'>
+          {/* 프로필 수정 */}
+          <ProfileEdit user={userData} />
 
-        {/* 비밀번호 수정 */}
-        <PasswordEdit />
-      </div>
-    </div>
+          {/* 비밀번호 수정 */}
+          <PasswordEdit />
+        </div>
+      </PageInner>
+    </Page>
   );
 }
