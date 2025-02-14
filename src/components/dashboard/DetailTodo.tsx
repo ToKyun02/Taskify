@@ -17,6 +17,7 @@ import kebob from '@/assets/icons/kebab.svg';
 import RoundChip from '../ui/Chip/RoundChip';
 import { getErrorMessage } from '@/utils/errorMessage';
 import { formatDate } from '@/utils/formatDate';
+import { useColumnsQuery } from '@/apis/columns/queries';
 
 interface DetailTodoProps {
   card: Card;
@@ -32,6 +33,10 @@ const DetailTodo = forwardRef<ModalHandle, DetailTodoProps>(({ card, onEdit }, r
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const formattedDueDate = formatDate(card.dueDate);
+
+  const { data: columnsData } = useColumnsQuery(card.dashboardId);
+  const columns = columnsData?.data ?? [];
+  const foundColumn = columns.find((col) => col.id === card.columnId);
 
   const handleDeleteCard = async () => {
     const userConfirmed = await confirm('이 카드를 삭제하시겠습니까?', {
@@ -122,7 +127,7 @@ const DetailTodo = forwardRef<ModalHandle, DetailTodoProps>(({ card, onEdit }, r
               </div>
 
               <div className='flex items-center gap-3'>
-                <RoundChip label='To Do' />
+                <RoundChip label={foundColumn?.title || ''} />
                 <div className='h-5 w-[1px] bg-gray-30'></div>
                 {card.tags.map((tag) => (
                   <TagChip key={tag} label={tag} />
