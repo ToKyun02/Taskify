@@ -4,8 +4,9 @@ import axiosServerHelper from '@/utils/network/axiosServerHelper';
 import { Dashboard, dashboardSchema } from '@/apis/dashboards/types';
 import { safeResponse } from '@/utils/network/safeResponse';
 
-export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
-  const id = params.id;
+export async function generateMetadata({ params }: { params: { id: string } | Promise<{ id: string }> }): Promise<Metadata> {
+  const resolvedParams = await params;
+  const id = resolvedParams.id;
   const response = await axiosServerHelper<Dashboard>(`/dashboards/${id}`);
   const dashboardDetail = safeResponse(response.data, dashboardSchema);
   return {
