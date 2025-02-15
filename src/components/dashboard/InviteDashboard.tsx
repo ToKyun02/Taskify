@@ -38,6 +38,7 @@ const InviteDashboard = forwardRef<ModalHandle>((props, ref) => {
     try {
       await invite({ id: Number(id), email: formData.email });
       alert('초대했습니다.');
+      reset();
       if (ref && 'current' in ref) {
         ref.current?.close();
       }

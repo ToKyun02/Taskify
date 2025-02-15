@@ -19,8 +19,9 @@ export const useDashboardQuery = (id: Dashboard['id']) => {
 };
 
 export const useDashboardInvitationsQuery = (params: GetDashboardInvitationsRequest) => {
+  const { id, ...rest } = params;
   return useQuery({
-    queryKey: ['invitations', params.id],
+    queryKey: ['invitations', id, rest],
     queryFn: () => getDashboardInvitations(params),
   });
 };

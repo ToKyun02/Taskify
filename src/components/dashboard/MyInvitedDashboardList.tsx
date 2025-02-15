@@ -56,7 +56,7 @@ export default function MyInvitedDashboardList() {
           {hasNoSearchResults ? (
             <MyInvitedEmptyCard>검색된 초대가 없습니다.</MyInvitedEmptyCard>
           ) : (
-            <>
+            <div>
               <Table responsive>
                 <TableColGroup className='hidden md:table-column-group'>
                   <TableCol />
@@ -91,8 +91,8 @@ export default function MyInvitedDashboardList() {
               </Table>
 
               {/* 공통 load more 트리거 요소 */}
-              <div ref={ref} className='h-2' />
-            </>
+              <div ref={ref} />
+            </div>
           )}
         </div>
       )}
