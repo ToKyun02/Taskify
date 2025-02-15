@@ -1,10 +1,11 @@
 'use client';
 
-import { DEFAULT_COLORS } from '@/constants/colors';
-import { cn, getColorByString } from '@/utils/helper';
-import { cva, VariantProps } from 'class-variance-authority';
-import Image from 'next/image';
 import { HTMLAttributes, useState } from 'react';
+import Image from 'next/image';
+import { cva, VariantProps } from 'class-variance-authority';
+import { cn, getColorByString } from '@/utils/helper';
+import { DEFAULT_COLORS } from '@/constants/colors';
+import { User } from '@/apis/users/types';
 
 /**
  * 커스터마이징 가능한 기본 공용 Avatar 컴포넌트입니다.
@@ -44,22 +45,20 @@ const avatarVariants = cva(
   },
 );
 
-interface AvatarProps extends HTMLAttributes<HTMLDivElement>, VariantProps<typeof avatarVariants> {
-  email: string;
-  profileImageUrl?: string | null;
-}
+type AvatarProps = HTMLAttributes<HTMLDivElement> & VariantProps<typeof avatarVariants> & Partial<Pick<User, 'email' | 'nickname' | 'profileImageUrl'>>;
 
-export default function Avatar({ email, profileImageUrl, size, className, ...props }: AvatarProps) {
+export default function Avatar({ email, nickname, profileImageUrl, size, className, ...props }: AvatarProps) {
   const [imgError, setImgError] = useState(false);
-  const colorCode = getColorByString(email, DEFAULT_COLORS);
-  const firstChar = email.charAt(0);
+  const fallback = email || nickname || '';
+  const colorCode = fallback ? getColorByString(fallback, DEFAULT_COLORS) : DEFAULT_COLORS[0];
+  const firstChar = fallback.charAt(0);
 
   const isFallback = !profileImageUrl || imgError;
 
   return (
     <figure className={cn(avatarVariants({ size, className }))} {...props}>
       {!isFallback ? (
-        <Image src={profileImageUrl} alt={email} fill onError={() => setImgError(true)} className='object-cover' />
+        <Image src={profileImageUrl} alt={fallback} fill onError={() => setImgError(true)} className='object-cover' />
       ) : (
         <span className='flex aspect-square w-full items-center justify-center font-semibold uppercase text-white' style={{ backgroundColor: colorCode }}>
           {firstChar}
