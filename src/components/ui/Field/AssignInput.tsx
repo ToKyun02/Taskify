@@ -89,7 +89,6 @@ export function AssignInput({ onChange, label, required, error, className, defau
             >
               <li className='mb-2 flex h-10 items-center justify-between px-2'>
                 <div className='flex items-center gap-4'>
-                  <span>담당자 목록</span>
                   <PaginationWithCounter totalCount={data?.totalCount || 0} page={page} setPage={setPage} pageSize={PAGE_SIZE} />
                 </div>
 
