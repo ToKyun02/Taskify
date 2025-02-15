@@ -14,10 +14,6 @@ import { postCardImage } from '@/apis/columns';
 import convertDateFormat from '@/utils/convertDateFormat';
 import { getErrorMessage } from '@/utils/errorMessage';
 
-const DEFAULT_POST_IMAGE = {
-  imageUrl: 'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/taskify/task_image/no_image.png',
-} as const;
-
 interface TodoEditModalProps {
   card: Card;
 }
@@ -51,7 +47,7 @@ const TodoEditModal = forwardRef<ModalHandle, TodoEditModalProps>(({ card }, ref
 
   const onSubmit = async (data: CardForm) => {
     try {
-      let finalImageUrl = card.imageUrl ?? DEFAULT_POST_IMAGE.imageUrl;
+      let finalImageUrl = card.imageUrl;
       if (data.imageUrl instanceof File) {
         const { imageUrl } = await postCardImage(data.columnId, {
           image: data.imageUrl,
@@ -106,7 +102,7 @@ const TodoEditModal = forwardRef<ModalHandle, TodoEditModalProps>(({ card }, ref
 
             <Controller name='tags' control={control} render={({ field }) => <TagInput label='태그' error={errors.tags?.message} placeholder='입력 후 Enter' {...field} />} />
 
-            <Controller name='imageUrl' control={control} render={({ field }) => <ImageUpload label='이미지' error={errors.imageUrl?.message} defaultValue={card.imageUrl ?? ''} {...field} />} />
+            <Controller name='imageUrl' control={control} render={({ field }) => <ImageUpload label='이미지' error={errors.imageUrl?.message} defaultValue={card.imageUrl} {...field} />} />
           </div>
 
           <ModalFooter>
