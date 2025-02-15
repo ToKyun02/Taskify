@@ -30,7 +30,6 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   };
 }
 
-export default function Layout({ children, params }: { children: ReactNode; params: Promise<{ id: string }> }) {
-  void params;
+export default function Layout({ children }: { children: ReactNode }) {
   return <>{children}</>;
 }

@@ -30,7 +30,6 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   };
 }
 
-export default async function DashboardDetailPage({ params }: { params: Promise<{ id: string }> }) {
-  await params;
+export default async function DashboardDetailPage() {
   return <ColumnList />;
 }
