@@ -49,7 +49,7 @@ type AvatarProps = HTMLAttributes<HTMLDivElement> & VariantProps<typeof avatarVa
 
 export default function Avatar({ email, nickname, profileImageUrl, size, className, ...props }: AvatarProps) {
   const [imgError, setImgError] = useState(false);
-  const fallback = email || nickname || '';
+  const fallback = email || nickname || 'user';
   const colorCode = fallback ? getColorByString(fallback, DEFAULT_COLORS) : DEFAULT_COLORS[0];
   const firstChar = fallback.charAt(0);
 
