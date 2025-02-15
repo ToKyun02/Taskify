@@ -92,7 +92,11 @@ const TodoEditModal = forwardRef<ModalHandle, TodoEditModalProps>(({ card }, ref
                 }}
               />
 
-              <Controller name='assigneeUserId' control={control} render={({ field }) => <AssignInput className='w-full' label='담당자' error={errors.assigneeUserId?.message} {...field} />} />
+              <Controller
+                name='assigneeUserId'
+                control={control}
+                render={({ field }) => <AssignInput defaultAssignee={card.assignee} className='w-full' label='담당자' error={errors.assigneeUserId?.message} {...field} />}
+              />
             </div>
             <Input label='제목' error={errors.title?.message} placeholder='제목을 입력해 주세요' required {...register('title')} />
 
