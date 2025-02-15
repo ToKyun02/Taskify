@@ -9,3 +9,9 @@ export type BaseCursor = {
 };
 
 export type NavigationMethod = 'infiniteScroll' | 'pagination';
+
+export interface Assignee {
+  id: number;
+  nickname: string;
+  profileImageUrl: string | null;
+}
