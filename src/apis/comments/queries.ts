@@ -1,9 +1,9 @@
-import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { InfiniteData, useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getComments, postComment, putComment, deleteComment } from '.';
 import type { CommentForm, CommentsResponse, GetCommentsParams, PutCommentForm } from '@/apis/comments/types';
 
 export const useCommentsQuery = (params: GetCommentsParams) => {
-  return useInfiniteQuery<CommentsResponse, Error, CommentsResponse, [string, number], number | undefined>({
+  return useInfiniteQuery<CommentsResponse, Error, InfiniteData<CommentsResponse>, [string, number], number | undefined>({
     queryKey: ['comments', params.cardId],
     queryFn: ({ pageParam = undefined }) => getComments({ ...params, cursorId: pageParam }),
     getNextPageParam: (lastPage) => (lastPage.cursorId === null ? undefined : lastPage.cursorId),
