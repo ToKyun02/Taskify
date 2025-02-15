@@ -21,3 +21,7 @@ export default function GoBackLink({ href }: GoBackLinkProps) {
     </Link>
   );
 }
+
+export function GoBackSkeleton() {
+  return <div className='mb-8 h-5 w-24 animate-pulse bg-gray-200' />;
+}
