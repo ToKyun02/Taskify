@@ -31,7 +31,7 @@ const TodoEditModal = forwardRef<ModalHandle, TodoEditModalProps>(({ card }, ref
     handleSubmit,
     register,
     control,
-    formState: { errors, isValid, isSubmitting },
+    formState: { errors, isValid, isSubmitting, isDirty },
   } = useForm<CardForm>({
     resolver: zodResolver(cardFormSchema),
     mode: 'onBlur',
@@ -122,7 +122,7 @@ const TodoEditModal = forwardRef<ModalHandle, TodoEditModalProps>(({ card }, ref
             >
               취소
             </Button>
-            <Button type='submit' size='lg' disabled={!isValid || isSubmitting}>
+            <Button type='submit' size='lg' disabled={!isValid || isSubmitting || !isDirty}>
               {isSubmitting ? '수정중...' : '수정'}
             </Button>
           </ModalFooter>
