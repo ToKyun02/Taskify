@@ -1,18 +1,20 @@
 'use client';
 
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import React, { useEffect } from 'react';
 import LogoCi from '@/assets/images/logo_ci.svg';
 import LogoBi from '@/assets/images/logo_bi.svg';
 import Button from '@/components/ui/Button/Button';
 import Link from 'next/link';
 
-export default function NotFound() {
-  const router = useRouter();
+interface ErrorProps {
+  error: Error;
+  reset: () => void;
+}
 
-  const handleGoHome = () => {
-    router.push('/');
-  };
+export default function ErrorPage({ error, reset }: ErrorProps) {
+  useEffect(() => {}, [error]);
+
   return (
     <>
       <header className='fixed ml-[20px] mt-[20px] w-full'>
@@ -25,10 +27,11 @@ export default function NotFound() {
       </header>
       <div className='flex h-screen w-full items-center justify-center'>
         <div className='flex h-fit w-screen flex-col items-center justify-center'>
-          <h1 className='text-3xl font-bold text-gray-70'>404 ERROR</h1>
-          <p className='mt-2 text-xl text-gray-50'>존재하지 않는 페이지입니다.</p>
-          <Button variant='default' size='default' onClick={handleGoHome} className='mt-4'>
-            돌아가기
+          <h1 className='text-3xl font-bold text-gray-70'>오류가 발생했습니다.</h1>
+          <p className='mt-2 text-xs text-gray-50 sm:text-xl'>죄송합니다. 문제가 발생하여 요청을 처리할 수 없습니다.</p>
+          <p className='text-xl text-gray-40'>{error.message}</p>
+          <Button variant='default' size='default' onClick={reset} className='mt-4'>
+            다시 시도
           </Button>
         </div>
       </div>
