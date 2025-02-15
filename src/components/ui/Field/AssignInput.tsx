@@ -12,6 +12,7 @@ import Image from 'next/image';
 import XIcon from '@/assets/icons/x.svg';
 import Avatar from '../Avatar/Avatar';
 import { Member } from '@/apis/members/types';
+import { Assignee } from '@/types/common';
 
 const PAGE_SIZE = 5;
 
@@ -21,14 +22,15 @@ type AssignInputProps = BaseField &
   Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange'> & {
     value: number;
     onChange: (assignId: number) => void;
+    defaultAssignee?: Assignee;
   };
 
-export function AssignInput({ onChange, label, required, error, className }: AssignInputProps) {
+export function AssignInput({ onChange, label, required, error, className, defaultAssignee }: AssignInputProps) {
   const params = useParams();
   const dashboardId = Number(params.id);
   const [page, setPage] = useState(1);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [selectedMember, setSelectedMember] = useState<Member>();
+  const [selectedAssignee, setSelectedAssignee] = useState<Assignee | null>(defaultAssignee ?? null);
   const { data } = useMembersQuery({ dashboardId, page, size: PAGE_SIZE });
   const id = useId();
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -39,7 +41,7 @@ export function AssignInput({ onChange, label, required, error, className }: Ass
 
   const handleSelectItem = (member: Member) => {
     onChange(member.userId);
-    setSelectedMember(member);
+    setSelectedAssignee({ id: member.userId, nickname: member.nickname, profileImageUrl: member.profileImageUrl });
     setIsDropdownOpen(false);
   };
 
@@ -65,11 +67,11 @@ export function AssignInput({ onChange, label, required, error, className }: Ass
       )}
       <div ref={dropdownRef} className={cn(baseFieldClassName, 'relative flex h-auto min-h-[50px] items-center gap-2 px-4 py-2', error && baseErrorClassName, className)}>
         <div onClick={handleInputClick} className='flex w-full items-center gap-2'>
-          {selectedMember?.userId && <Avatar email={selectedMember.email} profileImageUrl={selectedMember.profileImageUrl} className='h-8 w-8' />}
+          {selectedAssignee?.id && <Avatar profileImageUrl={selectedAssignee.profileImageUrl} nickname={selectedAssignee.nickname} className='h-8 w-8' />}
           <input
             type='text'
             id={id}
-            value={selectedMember?.nickname || ''}
+            value={selectedAssignee?.nickname || ''}
             readOnly
             placeholder='담당자를 지정해 주세요'
             className={cn('flex flex-1 text-black focus-visible:outline-none', className)}
