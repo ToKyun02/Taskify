@@ -5,27 +5,43 @@ import { useParams } from 'next/navigation';
 import ColumnItem from './ColumnItem';
 import AddColumnBtn from './AddColumnBtn';
 import { isEmpty } from 'es-toolkit/compat';
+import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd';
 
 export default function ColumnList() {
   const params = useParams();
   const dashbaordId = Number(params.id);
   const { data, isLoading } = useColumnsQuery(dashbaordId);
 
-  return (
-    <ul className='flex flex-col lg:flex-row'>
-      {isLoading && Array.from({ length: 3 }, (_, index) => <SkeletionItem key={index} />)}
+  const handleDragEnd = (result: DropResult) => {
+    if (!result.destination) return;
+    //TODO: 로직 구현 후 삭제 예정입니다.
+    console.log(result);
+  };
 
-      {!isLoading && isEmpty(data?.data) ? (
-        <EmptyList />
-      ) : (
-        data?.data.map((column) => (
-          <li key={column.id} className='flex flex-col gap-4 border-b border-r-0 p-6 lg:min-h-[calc(100dvh-70px)] lg:border-b-0 lg:border-r'>
-            <ColumnItem column={column} />
-          </li>
-        ))
-      )}
-      <AddColumnBtn dashboardId={dashbaordId} columns={data?.data} />
-    </ul>
+  return (
+    <DragDropContext onDragEnd={handleDragEnd}>
+      <ul className='flex flex-col lg:flex-row'>
+        {isLoading && Array.from({ length: 3 }, (_, index) => <SkeletionItem key={index} />)}
+
+        {!isLoading && isEmpty(data?.data) ? (
+          <EmptyList />
+        ) : (
+          data?.data.map((column) => (
+            <Droppable droppableId={column.id.toString()} direction='vertical' key={column.id}>
+              {(provided) => (
+                <div {...provided.droppableProps} ref={provided.innerRef}>
+                  <li className='flex flex-col gap-4 border-b border-r-0 p-6 lg:min-h-[calc(100dvh-70px)] lg:border-b-0 lg:border-r'>
+                    <ColumnItem column={column} />
+                  </li>
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          ))
+        )}
+        <AddColumnBtn dashboardId={dashbaordId} columns={data?.data} />
+      </ul>
+    </DragDropContext>
   );
 }
 

@@ -11,6 +11,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import TodoCard from '../dashboard/TodoCard';
 import { ModalHandle } from '../ui/Modal/Modal';
 import CreateCard from './CreateCard';
+import { Draggable } from '@hello-pangea/dnd';
 
 const PAGE_SIZE = 5;
 
@@ -37,19 +38,25 @@ export default function ColumnItem({ column }: ColumnItemProps) {
       <div className='flex flex-col gap-4'>
         <AnimatePresence>
           {cards.map((card, index) => (
-            <motion.div
-              key={card.id}
-              layout
-              initial={{ opacity: 0, y: 0 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{
-                opacity: { duration: 1 },
-                y: { delay: index * 0.5 },
-              }}
-            >
-              <TodoCard card={card} />
-            </motion.div>
+            <Draggable draggableId={card.id.toString()} index={index} key={card.id}>
+              {(provided, snapshot) => (
+                <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
+                  <motion.div
+                    key={card.id}
+                    layout={!snapshot.isDragging}
+                    initial={{ opacity: 0, y: 0 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{
+                      opacity: { duration: 1 },
+                      y: { delay: index * 0.5 },
+                    }}
+                  >
+                    <TodoCard card={card} />
+                  </motion.div>
+                </div>
+              )}
+            </Draggable>
           ))}
         </AnimatePresence>
         {isFetching && Array.from({ length: PAGE_SIZE }, (_, i) => <SkeletonCard key={i} />)}

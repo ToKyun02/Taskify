@@ -54,8 +54,9 @@ export const useRemoveCard = () => {
     mutationFn: (id: Card['id']) => {
       return deleteCard(id);
     },
-    onSuccess: () => {
+    onSuccess: (_, id) => {
       queryClient.invalidateQueries({ queryKey: ['cards'] });
+      queryClient.invalidateQueries({ queryKey: ['card', id] });
     },
   });
 };
