@@ -15,6 +15,12 @@ interface ErrorProps {
 export default function ErrorPage({ error, reset }: ErrorProps) {
   useEffect(() => {}, [error]);
 
+  const displayMessage = error.message.includes('401')
+    ? '인증에 실패했습니다. 다시 로그인 해주세요.'
+    : error.message.includes('500')
+      ? '서버에 문제가 발생했습니다. 잠시 후 다시 시도해 주세요.'
+      : '예기치 않은 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.';
+
   return (
     <>
       <header className='fixed ml-[20px] mt-[20px] w-full'>
@@ -29,7 +35,7 @@ export default function ErrorPage({ error, reset }: ErrorProps) {
         <div className='flex h-fit w-screen flex-col items-center justify-center'>
           <h1 className='text-3xl font-bold text-gray-70'>오류가 발생했습니다.</h1>
           <p className='mt-2 text-xs text-gray-50 sm:text-xl'>죄송합니다. 문제가 발생하여 요청을 처리할 수 없습니다.</p>
-          <p className='text-xl text-gray-40'>{error.message}</p>
+          <p className='text-xl text-gray-40'>{displayMessage}</p>
           <Button variant='default' size='default' onClick={reset} className='mt-4'>
             다시 시도
           </Button>
