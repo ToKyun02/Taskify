@@ -6,16 +6,27 @@ import ColumnItem from './ColumnItem';
 import AddColumnBtn from './AddColumnBtn';
 import { isEmpty } from 'es-toolkit/compat';
 import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd';
+import { useMoveCard } from '@/apis/cards/queries';
 
 export default function ColumnList() {
   const params = useParams();
   const dashbaordId = Number(params.id);
   const { data, isLoading } = useColumnsQuery(dashbaordId);
+  const { mutateAsync: moveCard } = useMoveCard();
 
-  const handleDragEnd = (result: DropResult) => {
+  const handleDragEnd = async (result: DropResult) => {
     if (!result.destination) return;
-    //TODO: 로직 구현 후 삭제 예정입니다.
-    console.log(result);
+    const prevId = Number(result.source.droppableId);
+    const columnId = Number(result.destination.droppableId);
+    const cardId = Number(result.draggableId);
+
+    if (prevId === columnId) return;
+
+    moveCard({
+      cardId,
+      columnId,
+      prevId,
+    });
   };
 
   return (
@@ -27,7 +38,7 @@ export default function ColumnList() {
           <EmptyList />
         ) : (
           data?.data.map((column) => (
-            <Droppable droppableId={column.id.toString()} direction='vertical' key={column.id}>
+            <Droppable droppableId={column.id.toString()} key={column.id}>
               {(provided) => (
                 <div {...provided.droppableProps} ref={provided.innerRef}>
                   <li className='flex flex-col gap-4 border-b border-r-0 p-6 lg:min-h-[calc(100dvh-70px)] lg:border-b-0 lg:border-r'>

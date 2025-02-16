@@ -20,7 +20,7 @@ interface ColumnItemProps {
 }
 
 export default function ColumnItem({ column }: ColumnItemProps) {
-  const { data, fetchNextPage, hasNextPage, isFetching } = useCardsQuery({ size: PAGE_SIZE, columnId: column.id });
+  const { data, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage } = useCardsQuery({ size: PAGE_SIZE, columnId: column.id });
   const cards = data?.pages.flatMap((page) => page.cards) ?? [];
   const totalCount = data?.pages[0]?.totalCount ?? 0;
 
@@ -39,17 +39,16 @@ export default function ColumnItem({ column }: ColumnItemProps) {
         <AnimatePresence>
           {cards.map((card, index) => (
             <Draggable draggableId={card.id.toString()} index={index} key={card.id}>
-              {(provided, snapshot) => (
+              {(provided) => (
                 <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
                   <motion.div
                     key={card.id}
-                    layout={!snapshot.isDragging}
-                    initial={{ opacity: 0, y: 0 }}
+                    initial={{ opacity: 1, y: 0 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                     transition={{
-                      opacity: { duration: 1 },
-                      y: { delay: index * 0.5 },
+                      opacity: { duration: 0.2 },
+                      y: { delay: 0.2 },
                     }}
                   >
                     <TodoCard card={card} />
@@ -59,7 +58,8 @@ export default function ColumnItem({ column }: ColumnItemProps) {
             </Draggable>
           ))}
         </AnimatePresence>
-        {isFetching && Array.from({ length: PAGE_SIZE }, (_, i) => <SkeletonCard key={i} />)}
+        {isLoading && Array.from({ length: PAGE_SIZE }, (_, i) => <SkeletonCard key={i} />)}
+        {isFetchingNextPage && Array.from({ length: PAGE_SIZE }, (_, i) => <SkeletonCard key={i} />)}
         <div className='h-2' ref={ref} />
       </div>
       <CreateCard dashboardId={column.dashboardId} columnId={column.id} ref={addRef} />
