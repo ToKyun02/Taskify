@@ -38,17 +38,17 @@ export default function ColumnItem({ column }: ColumnItemProps) {
       <div className='flex flex-col gap-4'>
         <AnimatePresence>
           {cards.map((card, index) => (
-            <Draggable draggableId={card.id.toString()} index={index} key={card.id}>
+            <Draggable draggableId={card.id.toString()} index={index} key={card.id.toString()}>
               {(provided) => (
                 <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
                   <motion.div
-                    key={card.id}
-                    initial={{ opacity: 1, y: 0 }}
+                    key={card.id.toString()}
+                    initial={{ opacity: 0, y: 0 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                     transition={{
-                      opacity: { duration: 0.2 },
-                      y: { delay: 0.2 },
+                      opacity: { duration: 0.5 },
+                      y: { delay: 0.5 },
                     }}
                   >
                     <TodoCard card={card} />

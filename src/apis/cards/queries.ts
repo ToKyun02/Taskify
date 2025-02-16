@@ -102,6 +102,7 @@ export const useMoveCard = () => {
     onSettled: (data, error, variables) => {
       queryClient.invalidateQueries({ queryKey: ['cards', variables.prevId] });
       queryClient.invalidateQueries({ queryKey: ['cards', variables.columnId] });
+      queryClient.invalidateQueries({ queryKey: ['card', variables.cardId] });
     },
   });
 };
