@@ -1,15 +1,16 @@
 'use client';
 
-import { deleteComment, getComments, postComment, putComment } from '@/apis/comments';
-import { Comment, CommentForm } from '@/apis/comments/types';
 import useAlert from '@/hooks/useAlert';
 import { formatDate } from '@/utils/formatDate';
 import { useEffect, useState } from 'react';
 import Avatar from '../ui/Avatar/Avatar';
 import Button from '../ui/Button/Button';
 import { Textarea } from '../ui/Field';
-import { getErrorMessage } from '@/utils/errorMessage';
 import useConfirm from '@/hooks/useConfirm';
+import { useCommentsQuery, useDeleteComment, usePostComment, useUpdateComment } from '@/apis/comments/queries';
+import { CommentForm } from '@/apis/comments/types';
+import { getErrorMessage } from '@/utils/errorMessage';
+import { useInView } from 'react-intersection-observer';
 
 interface CommentSectionProps {
   cardId: number;
@@ -17,30 +18,18 @@ interface CommentSectionProps {
   dashboardId: number;
 }
 
+const PAGE_SIZE = 10;
+
 export default function CommentSection({ cardId, columnId, dashboardId }: CommentSectionProps) {
   const alert = useAlert();
   const confirm = useConfirm();
-  const [comments, setComments] = useState<Comment[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
   const [content, setContent] = useState('');
 
-  useEffect(() => {
-    fetchComments();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cardId]);
-
-  async function fetchComments() {
-    setIsLoading(true);
-    try {
-      const data = await getComments({ cardId, size: 10 });
-      setComments(data.comments);
-    } catch (err) {
-      const message = getErrorMessage(err);
-      alert(message);
-    } finally {
-      setIsLoading(false);
-    }
-  }
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useCommentsQuery({ cardId, size: PAGE_SIZE });
+  const comments = data?.pages.flatMap((page) => page.comments) ?? [];
+  const postCommentMutation = usePostComment();
+  const updateCommentMutation = useUpdateComment(cardId);
+  const deleteCommentMutation = useDeleteComment(cardId);
 
   async function handleSubmitComment() {
     if (!content.trim()) return;
@@ -50,45 +39,49 @@ export default function CommentSection({ cardId, columnId, dashboardId }: Commen
       columnId,
       dashboardId,
     };
+
     try {
-      const newComment = await postComment(formData);
-      setComments((prev) => [newComment, ...prev]);
+      await postCommentMutation.mutateAsync(formData);
       setContent('');
+      alert('댓글이 작성되었습니다');
     } catch (err) {
-      const message = getErrorMessage(err);
-      alert(message);
+      alert(getErrorMessage(err));
     }
   }
 
   async function handleEditComment(commentId: number, currentContent: string) {
     const newContent = prompt('댓글 수정하기', currentContent);
     if (!newContent) return;
+
     try {
-      const updated = await putComment(commentId, { content: newContent });
-      setComments((prev) => prev.map((c) => (c.id === commentId ? updated : c)));
+      await updateCommentMutation.mutateAsync({ id: commentId, putCommentForm: { content: newContent } });
+      alert('댓글이 수정되었습니다.');
     } catch (err) {
-      const message = getErrorMessage(err);
-      alert(message);
+      alert(getErrorMessage(err));
     }
   }
 
   async function handleDeleteComment(commentId: number) {
-    const userConfirmed = await confirm('이 카드를 삭제하시겠습니까?', {
-      buttons: {
-        ok: '삭제',
-        cancel: '취소',
-      },
+    const userConfirmed = await confirm('이 댓글을 삭제하시겠습니까?', {
+      buttons: { ok: '삭제', cancel: '취소' },
     });
-
     if (!userConfirmed) return;
+
     try {
-      await deleteComment(commentId);
-      setComments((prev) => prev.filter((c) => c.id !== commentId));
+      await deleteCommentMutation.mutateAsync(commentId);
+      alert('댓글이 삭제되었습니다.');
     } catch (err) {
-      const message = getErrorMessage(err);
-      alert(message);
+      alert(getErrorMessage(err));
     }
   }
+
+  const { ref, inView } = useInView();
+
+  useEffect(() => {
+    if (inView && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
     <div className='flex flex-col gap-4'>
@@ -123,6 +116,8 @@ export default function CommentSection({ cardId, columnId, dashboardId }: Commen
             </div>
           </div>
         ))}
+
+      <div ref={ref} className='h-1'></div>
     </div>
   );
 }
