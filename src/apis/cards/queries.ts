@@ -27,8 +27,8 @@ export const useCreateCard = () => {
     mutationFn: (cardRequest: CardRequest) => {
       return postCard(cardRequest);
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['cards'] });
+    onSuccess: (card: Card) => {
+      queryClient.invalidateQueries({ queryKey: ['cards', card.columnId] });
     },
   });
 };
@@ -40,9 +40,9 @@ export const useUpdateCard = () => {
     mutationFn: ({ id, cardRequest }: { id: Card['id']; cardRequest: CardRequest }) => {
       return putCard(id, cardRequest);
     },
-    onSuccess: ({ id }: { id: Card['id'] }) => {
-      queryClient.invalidateQueries({ queryKey: ['cards'] });
-      queryClient.invalidateQueries({ queryKey: ['card', id] });
+    onSuccess: (card: Card) => {
+      queryClient.invalidateQueries({ queryKey: ['cards', card.columnId] });
+      queryClient.invalidateQueries({ queryKey: ['card', card.id] });
     },
   });
 };
