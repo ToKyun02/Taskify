@@ -1,4 +1,5 @@
 'use client';
+
 import { createContext, PropsWithChildren, useContext, useState } from 'react';
 
 interface AccordionContextType {
