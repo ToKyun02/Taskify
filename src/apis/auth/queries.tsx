@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { login, logout, putPassword } from '.';
 import { LoginFormData, PutPasswordFormData } from './types';
 
@@ -19,9 +19,13 @@ export const usePutPassword = () => {
 };
 
 export const useLogout = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: () => {
       return logout();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries();
     },
   });
 };

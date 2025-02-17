@@ -2,24 +2,22 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { useQueryClient } from '@tanstack/react-query';
 import { motion } from 'motion/react';
 import { useGetUser } from '@/apis/users/queries';
 import Avatar from '@/components/ui/Avatar/Avatar';
-import axiosClientHelper from '@/utils/network/axiosClientHelper';
 import useAlert from '@/hooks/useAlert';
+import { useLogout } from '@/apis/auth/queries';
 
 export default function Profile() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { data, isFetching } = useGetUser();
   const alert = useAlert();
   const menuRef = useRef<HTMLDivElement | null>(null);
-  const queryClient = useQueryClient();
+  const { mutateAsync: logout } = useLogout();
 
   const handleLogout = async () => {
-    await axiosClientHelper.post('/auth/logout');
+    await logout();
     await alert('로그아웃 했습니다.');
-    queryClient.invalidateQueries();
     window.location.reload();
   };
 
