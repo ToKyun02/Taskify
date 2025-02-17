@@ -6,6 +6,7 @@ import LogoCi from '@/assets/images/logo_ci.svg';
 import LogoBi from '@/assets/images/logo_bi.svg';
 import Button from '@/components/ui/Button/Button';
 import Link from 'next/link';
+import axios from 'axios';
 
 interface ErrorProps {
   error: Error;
@@ -15,11 +16,17 @@ interface ErrorProps {
 export default function ErrorPage({ error, reset }: ErrorProps) {
   useEffect(() => {}, [error]);
 
-  const displayMessage = error.message.includes('401')
-    ? '인증에 실패했습니다. 다시 로그인 해주세요.'
-    : error.message.includes('500')
-      ? '서버에 문제가 발생했습니다. 잠시 후 다시 시도해 주세요.'
-      : '예기치 않은 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.';
+  let status: number | undefined;
+  if (axios.isAxiosError(error)) {
+    status = error.response?.status;
+  }
+
+  const displayMessage =
+    status === 401
+      ? '인증에 실패했습니다. 다시 로그인 해주세요.'
+      : status === 500
+        ? '서버에 문제가 발생했습니다. 잠시 후 다시 시도해 주세요.'
+        : '예기치 않은 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.';
 
   return (
     <>
