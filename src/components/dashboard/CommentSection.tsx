@@ -111,7 +111,7 @@ export default function CommentSection({ cardId, columnId, dashboardId }: Commen
 
       <EditCommentModal ref={editModalRef} initialContent={editingComment?.content || ''} onSave={handleSaveComment} />
 
-      <div className='max-h-[155px] overflow-y-auto'>
+      <div className='h-[155px] overflow-y-auto'>
         {isLoading
           ? Array.from({ length: 3 }).map((_, idx) => <Skeleton key={idx} />)
           : comments.map((comment) => (
