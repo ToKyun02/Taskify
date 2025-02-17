@@ -1,23 +1,22 @@
 'use client';
 
-import { forwardRef, useState } from 'react';
-import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '../ui/Modal/Modal';
-import { motion } from 'motion/react';
+import { forwardRef } from 'react';
+import Image from 'next/image';
 import useAlert from '@/hooks/useAlert';
 import { Card } from '@/apis/cards/types';
-import CommentSection from './CommentSection';
-import useConfirm from '@/hooks/useConfirm';
-import Image from 'next/image';
-import Avatar from '../ui/Avatar/Avatar';
-import TagChip from '../ui/Chip/TagChip';
-import x_img from '@/assets/icons/x.svg';
-import kebob from '@/assets/icons/kebab.svg';
-import RoundChip from '../ui/Chip/RoundChip';
-import { getErrorMessage } from '@/utils/errorMessage';
-import { formatDate } from '@/utils/formatDate';
 import { useColumnsQuery } from '@/apis/columns/queries';
 import { useRemoveCard } from '@/apis/cards/queries';
+import useConfirm from '@/hooks/useConfirm';
+import CommentSection from '@/components/dashboard/CommentSection';
+import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '@/components/ui/Modal/Modal';
+import Avatar from '@/components/ui/Avatar/Avatar';
+import TagChip from '@/components/ui/Chip/TagChip';
+import RoundChip from '@/components/ui/Chip/RoundChip';
+import { getErrorMessage } from '@/utils/errorMessage';
+import { formatDate } from '@/utils/formatDate';
+import Dropdown from '@/components/ui/Dropdown/Dropdown';
 import { DEFAULT_CARD_IMAGE_URL } from '@/constants/paths';
+import x_img from '@/assets/icons/x.svg';
 
 interface DetailTodoProps {
   card: Card;
@@ -25,16 +24,13 @@ interface DetailTodoProps {
 }
 
 const DetailTodo = forwardRef<ModalHandle, DetailTodoProps>(({ card, onEdit }, ref) => {
-  const alert = useAlert();
-  const confirm = useConfirm();
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const { mutateAsync: remove } = useRemoveCard();
-
-  const formattedDueDate = formatDate(card.dueDate);
-
   const { data: columnsData } = useColumnsQuery(card.dashboardId);
+  const { mutateAsync: remove } = useRemoveCard();
   const columns = columnsData?.data ?? [];
   const foundColumn = columns.find((col) => col.id === card.columnId);
+  const formattedDueDate = formatDate(card.dueDate);
+  const alert = useAlert();
+  const confirm = useConfirm();
 
   const handleDeleteCard = async () => {
     const userConfirmed = await confirm('이 카드를 삭제하시겠습니까?', {
@@ -61,7 +57,7 @@ const DetailTodo = forwardRef<ModalHandle, DetailTodoProps>(({ card, onEdit }, r
     onEdit();
   };
 
-  const handleXClick = () => {
+  const handleClose = () => {
     if (ref && 'current' in ref) {
       ref.current?.close();
     }
@@ -71,87 +67,64 @@ const DetailTodo = forwardRef<ModalHandle, DetailTodoProps>(({ card, onEdit }, r
     <Modal ref={ref}>
       <ModalContent>
         <ModalHeader className='relative flex justify-end'>
-          <div className='flex gap-4'>
-            <Image src={kebob} width={3} height={24} alt='메뉴' className='cursor-pointer' onClick={() => setIsDropdownOpen((prev) => !prev)} />
-            <Image src={x_img} width={24} height={24} alt='나가기' onClick={handleXClick} className='cursor-pointer' />
+          <div className='flex'>
+            <Dropdown
+              options={[
+                {
+                  value: 'modify',
+                  component: (
+                    <button onClick={handleEditCard} className='whitespace-nowrap font-normal'>
+                      수정하기
+                    </button>
+                  ),
+                },
+                {
+                  value: 'delete',
+                  component: (
+                    <button onClick={handleDeleteCard} className='whitespace-nowrap font-normal'>
+                      삭제하기
+                    </button>
+                  ),
+                },
+              ]}
+              type='kebab'
+            />
+            <button className='flex h-8 w-8 cursor-pointer items-center justify-center rounded-sm hover:bg-gray-10' onClick={handleClose}>
+              <Image src={x_img} width={24} height={24} alt='나가기' />
+            </button>
           </div>
-          {isDropdownOpen && (
-            <motion.ul initial={{ scale: 0.8, y: -20 }} animate={{ scale: 1, y: 0 }} className='absolute right-0 top-[calc(100%+6px)] z-10 w-28 rounded-md border border-gray-30 bg-white p-[4px]'>
-              <li>
-                <button
-                  onClick={() => {
-                    setIsDropdownOpen(false);
-                    handleEditCard();
-                  }}
-                  className='flex h-10 w-full items-center justify-center rounded-md text-md hover:bg-violet-10 hover:font-medium hover:text-violet-20'
-                >
-                  수정하기
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => {
-                    setIsDropdownOpen(false);
-                    handleDeleteCard();
-                  }}
-                  className='flex h-10 w-full items-center justify-center rounded-md text-md hover:bg-violet-10 hover:font-medium hover:text-violet-20'
-                >
-                  삭제하기
-                </button>
-              </li>
-            </motion.ul>
-          )}
         </ModalHeader>
-        <div className='flex flex-col gap-8 md:flex-row md:items-start'>
-          <div className='flex flex-1 flex-col gap-4'>
-            <div className='flex flex-col gap-4'>
-              <div className='flex flex-col gap-2 text-xl font-bold text-gray-70'>{card.title}</div>
+        <div className='relative grid gap-6 md:pr-48'>
+          <div className='break-all text-xl font-bold text-gray-70'>{card.title}</div>
 
-              <div className='md:hidden'>
-                <div className='flex h-[64px] w-[295px] justify-between rounded-lg border border-gray-30 px-4 py-1.5'>
-                  <div className='flex flex-col justify-between'>
-                    <span className='text-xs font-semibold text-black'>담당자</span>
-                    <div className='flex items-center gap-2'>
-                      <Avatar email={card.assignee.nickname} size='sm' />
-                      <span className='text-xs text-gray-70'>{card.assignee.nickname}</span>
-                    </div>
-                  </div>
-                  <div className='flex flex-col justify-between'>
-                    <span className='text-xs font-semibold text-black'>마감일</span>
-                    <span className='text-xs text-gray-70'>{formattedDueDate}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className='flex items-center gap-3'>
-                <RoundChip label={foundColumn?.title || ''} />
-                <div className='h-5 w-[1px] bg-gray-30'></div>
-                {card.tags.map((tag) => (
-                  <TagChip key={tag} label={tag} />
-                ))}
+          <aside className='right-0 top-0 flex flex-row gap-4 rounded-lg border border-gray-30 p-4 md:absolute md:w-44 md:flex-col'>
+            <div className='grid flex-1 gap-[6px]'>
+              <span className='text-xs font-semibold text-black'>담당자</span>
+              <div className='flex items-center gap-2'>
+                <Avatar email={card.assignee.nickname} size='sm' profileImageUrl={card.assignee.profileImageUrl?.toString() ?? null} />
+                <span className='text-xs text-gray-70'>{card.assignee.nickname}</span>
               </div>
             </div>
 
-            <span className='text-md'>{card.description}</span>
-
-            {card.imageUrl !== DEFAULT_CARD_IMAGE_URL && <Image src={card.imageUrl} width={400} height={200} alt={card.title} className='object-cover' />}
-          </div>
-
-          <aside className='hidden flex-shrink-0 md:block'>
-            <div className='flex h-full w-[181px] flex-col gap-4 rounded-lg border border-gray-30 px-4 py-1.5'>
-              <div className='flex flex-col justify-between'>
-                <span className='text-xs font-semibold text-black'>담당자</span>
-                <div className='flex items-center gap-2'>
-                  <Avatar email={card.assignee.nickname} size='sm' profileImageUrl={card.assignee.profileImageUrl?.toString() ?? null} />
-                  <span className='text-xs text-gray-70'>{card.assignee.nickname}</span>
-                </div>
-              </div>
-              <div className='flex flex-col justify-between'>
-                <span className='text-xs font-semibold text-black'>마감일</span>
-                <span className='text-xs text-gray-70'>{formattedDueDate}</span>
-              </div>
+            <div className='grid flex-1 gap-[6px]'>
+              <span className='text-xs font-semibold text-black'>마감일</span>
+              <span className='text-xs text-gray-70'>{formattedDueDate}</span>
             </div>
           </aside>
+
+          <div className='flex gap-3'>
+            <RoundChip label={foundColumn?.title || ''} />
+            <div className='mt-1.5 h-5 w-[1px] bg-gray-30'></div>
+            <div className='flex flex-1 flex-wrap gap-1.5 pt-[2px]'>
+              {card.tags.map((tag) => (
+                <TagChip key={tag} label={tag} />
+              ))}
+            </div>
+          </div>
+
+          <span className='break-all text-md'>{card.description}</span>
+
+          {card.imageUrl !== DEFAULT_CARD_IMAGE_URL && <Image src={card.imageUrl} width={400} height={200} alt={card.title} className='object-cover' />}
         </div>
 
         <ModalFooter className='flex flex-col'>

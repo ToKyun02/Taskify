@@ -29,14 +29,14 @@ export default function TodoCard({ card }: TodoCardProps) {
   return (
     <>
       <div
-        className='flex w-full cursor-pointer flex-col gap-1 rounded-md border border-gray-30 bg-white px-3 py-[5px] md:flex-row md:gap-2.5 lg:w-[314px] lg:flex-col'
+        className='flex w-full cursor-pointer flex-col gap-1 rounded-md border border-gray-30 bg-white p-4 md:flex-row md:gap-2.5 lg:w-[314px] lg:flex-col'
         onClick={() => detailTodoModalRef.current?.open()}
       >
         {card.imageUrl !== DEFAULT_CARD_IMAGE_URL && <Image src={card.imageUrl} alt={card.title} className='w-full md:w-[120px] lg:w-full' width={400} height={200} />}
         <div className='flex flex-col gap-1.5 md:flex-1 md:flex-row lg:flex-col lg:gap-2'>
           <div className='flex flex-col gap-1.5 md:flex-none lg:gap-2.5'>
-            <span className='text-md font-medium text-gray-70 lg:text-lg'>{card.title}</span>
-            <div className='flex gap-1.5'>
+            <span className='break-words break-all text-md font-medium text-gray-70 lg:text-lg lg:leading-5'>{card.title}</span>
+            <div className='flex flex-wrap gap-1.5 break-words'>
               {card.tags.map((tag) => (
                 <TagChip key={tag} label={tag} />
               ))}
