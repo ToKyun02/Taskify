@@ -1,9 +1,9 @@
+import { PropsWithChildren } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import LogoCi from '@/assets/images/logo_ci.svg';
-import { ReactNode } from 'react';
 
-export default function Header({ children }: { children: ReactNode }) {
+export default function Header({ children }: PropsWithChildren) {
   return (
     <header className='flex flex-col items-center gap-[10px]'>
       <Link href={'/'} className='flex flex-col items-center gap-4'>
