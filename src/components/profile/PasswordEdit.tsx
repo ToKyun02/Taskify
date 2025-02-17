@@ -1,17 +1,14 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { isAxiosError } from 'axios';
 import { Input } from '@/components/ui/Field/Input';
 import { passwordSchema, PutPasswordFormData } from '@/apis/auth/types';
-import { logout, putPassword } from '@/apis/auth';
 import useAlert from '@/hooks/useAlert';
 import { Card, CardTitle } from '@/components//ui/Card/Card';
 import Button from '@/components/ui/Button/Button';
 import { getErrorMessage } from '@/utils/errorMessage';
+import { usePutPassword } from '@/apis/auth/queries';
 
 export default function PasswordEdit() {
   const {
@@ -30,8 +27,7 @@ export default function PasswordEdit() {
   });
 
   const alert = useAlert();
-  const router = useRouter();
-  const queryClient = useQueryClient();
+  const { mutateAsync: putPassword } = usePutPassword();
 
   const onSubmit = async (putPasswordFormData: PutPasswordFormData) => {
     try {
@@ -39,15 +35,8 @@ export default function PasswordEdit() {
       alert('비밀번호가 변경되었습니다!');
       reset();
     } catch (error) {
-      if (isAxiosError(error) && error?.status === 401) {
-        await alert('세션이 만료되어 로그인 페이지로 이동합니다.');
-        await logout();
-        queryClient.invalidateQueries();
-        router.replace('/login');
-      } else {
-        const message = getErrorMessage(error);
-        alert(message);
-      }
+      const message = getErrorMessage(error);
+      alert(message);
     }
   };
 

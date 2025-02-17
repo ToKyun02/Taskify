@@ -6,8 +6,9 @@ import Field from '@/components/auth/Field';
 import SubmitButton from '@/components/auth/SubmitButton';
 import { LOGIN_FORM_PLACEHOLDER } from '@/constants/auth';
 import { loginSchema, LoginFormData } from '@/apis/auth/types';
-import { login } from '@/apis/auth';
 import useAlert from '@/hooks/useAlert';
+import { useLogin } from '@/apis/auth/queries';
+import { getErrorMessage } from '@/utils/errorMessage';
 
 export default function LoginForm() {
   const {
@@ -24,14 +25,16 @@ export default function LoginForm() {
   });
 
   const alert = useAlert();
+  const { mutateAsync: login } = useLogin();
 
   const onSubmit = async (loginFormData: LoginFormData) => {
-    const response = await login(loginFormData);
-    if ('message' in response) {
-      alert(response.message);
-    } else {
+    try {
+      await login(loginFormData);
       await alert('로그인이 완료되었습니다!');
       window.location.reload();
+    } catch (error) {
+      const message = getErrorMessage(error);
+      alert(message);
     }
   };
 

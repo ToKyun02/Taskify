@@ -1,44 +1,43 @@
 import axiosClientHelper from '@/utils/network/axiosClientHelper';
 import { CreateProfileImageForm, ProfileImageUrlResponse, profileImageUrlResponseSchema, SignupFormData, SignupResponse, UpdateUserForm, User, userSchema } from './types';
-import { isAxiosError } from 'axios';
-import { isError } from 'es-toolkit/compat';
+import { safeResponse } from '@/utils/network/safeResponse';
 
-export const signup = async (signupFormData: SignupFormData): SignupResponse => {
-  try {
-    const response = await axiosClientHelper.post('/users', signupFormData);
-    const result = userSchema.safeParse(response.data);
-    if (!result.success) throw new Error('서버에서 받은 데이터가 예상과 다릅니다.');
-    return response.data;
-  } catch (error) {
-    if (isAxiosError(error)) return error.response?.data;
-    return {
-      message: isError(error) ? error.message : String(error),
-    };
-  }
+/**
+ * signup
+ * https://sp-taskify-api.vercel.app/docs/#/Users/Create
+ */
+export const signup = async (signupFormData: SignupFormData) => {
+  const response = await axiosClientHelper.post<SignupResponse>('/users', signupFormData);
+  return safeResponse(response.data, userSchema);
 };
 
+/**
+ * 내 정보 조회
+ * https://sp-taskify-api.vercel.app/docs/#/Users/GetMyInfo
+ */
 export const getUser = async () => {
   const response = await axiosClientHelper.get<User>('/users/me');
-  const result = userSchema.safeParse(response.data);
-  if (!result.success) throw new Error('서버에서 받은 데이터가 예상과 다릅니다.');
-  return response.data;
+  return safeResponse(response.data, userSchema);
 };
 
+/**
+ * 내 정보 수정
+ * https://sp-taskify-api.vercel.app/docs/#/Users/UpdateMyInfo
+ */
 export const updateUser = async (updateUserForm: UpdateUserForm) => {
   const response = await axiosClientHelper.put<User>('/users/me', updateUserForm);
-  const result = userSchema.safeParse(response.data);
-  if (!result.success) throw new Error('서버에서 받은 데이터가 예상과 다릅니다.');
-  return response.data;
+  return safeResponse(response.data, userSchema);
 };
 
+/**
+ * 프로필 이미지 업로드
+ * https://sp-taskify-api.vercel.app/docs/#/Users/UploadProfileImage
+ */
 export const createProfileImage = async (createProfileImageForm: CreateProfileImageForm) => {
   const response = await axiosClientHelper.post<ProfileImageUrlResponse>('/users/me/image', createProfileImageForm, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
   });
-
-  const result = profileImageUrlResponseSchema.safeParse(response.data);
-  if (!result.success) throw new Error('서버에서 받은 데이터가 예상과 다릅니다.');
-  return response.data;
+  return safeResponse(response.data, profileImageUrlResponseSchema);
 };

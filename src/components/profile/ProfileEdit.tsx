@@ -5,8 +5,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useAlert from '@/hooks/useAlert';
 import { UpdateUserForm, updateUserFormSchema, User } from '@/apis/users/types';
-import { useUpdateUser } from '@/apis/users/queries';
-import { createProfileImage } from '@/apis/users';
+import { useCreateProfileImage, useUpdateUser } from '@/apis/users/queries';
 import { Input } from '@/components/ui/Field/Input';
 import { ImageUpload } from '@/components/ui/Field/ImageUpload';
 import Button from '@/components/ui/Button/Button';
@@ -36,6 +35,7 @@ export default function ProfileEdit({ user }: ProfileEditProps) {
   const router = useRouter();
   const alert = useAlert();
   const { mutateAsync: update } = useUpdateUser();
+  const { mutateAsync: createProfileImage } = useCreateProfileImage();
 
   const resetProfileImage = () => {
     setValue('profileImageUrl', null, {
