@@ -7,9 +7,10 @@ import SubmitButton from '@/components/auth/SubmitButton';
 import Checkbox from './Checkbox';
 import { SIGNUP_FORM_PLACEHOLDER } from '@/constants/auth';
 import { signupSchema, SignupFormData } from '@/apis/users/types';
-import { signup } from '@/apis/users';
 import useAlert from '@/hooks/useAlert';
 import { useRouter } from 'next/navigation';
+import { useSignup } from '@/apis/users/queries';
+import { getErrorMessage } from '@/utils/errorMessage';
 
 export default function SignupForm() {
   const {
@@ -31,14 +32,16 @@ export default function SignupForm() {
 
   const alert = useAlert();
   const router = useRouter();
+  const { mutateAsync: signup } = useSignup();
 
   const onSubmit = async (signupFormData: SignupFormData) => {
-    const response = await signup(signupFormData);
-    if ('message' in response) {
-      alert(response.message);
-    } else {
+    try {
+      await signup(signupFormData);
       await alert('가입이 완료되었습니다!');
       router.replace('/login');
+    } catch (error) {
+      const message = getErrorMessage(error);
+      alert(message);
     }
   };
 
