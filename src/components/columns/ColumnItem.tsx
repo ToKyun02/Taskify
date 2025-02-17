@@ -7,10 +7,11 @@ import DashboardButton from '@/components/ui/Button/DashboardButton';
 import { useCardsQuery } from '@/apis/cards/queries';
 import { useInView } from 'react-intersection-observer';
 import { useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
 import TodoCard from '../dashboard/TodoCard';
 import { ModalHandle } from '../ui/Modal/Modal';
 import CreateCard from './CreateCard';
+import { Draggable } from '@hello-pangea/dnd';
 
 const PAGE_SIZE = 5;
 
@@ -19,7 +20,7 @@ interface ColumnItemProps {
 }
 
 export default function ColumnItem({ column }: ColumnItemProps) {
-  const { data, fetchNextPage, hasNextPage, isFetching } = useCardsQuery({ size: PAGE_SIZE, columnId: column.id });
+  const { data, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage } = useCardsQuery({ size: PAGE_SIZE, columnId: column.id });
   const cards = data?.pages.flatMap((page) => page.cards) ?? [];
   const totalCount = data?.pages[0]?.totalCount ?? 0;
 
@@ -35,24 +36,29 @@ export default function ColumnItem({ column }: ColumnItemProps) {
       <Title column={column} cardCount={totalCount} />
       <DashboardButton variant='addTodo' onClick={() => addRef.current?.open()} />
       <div className='flex flex-col gap-4'>
-        <AnimatePresence>
-          {cards.map((card, index) => (
-            <motion.div
-              key={card.id}
-              layout
-              initial={{ opacity: 0, y: 0 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{
-                opacity: { duration: 1 },
-                y: { delay: index * 0.5 },
-              }}
-            >
-              <TodoCard card={card} />
-            </motion.div>
-          ))}
-        </AnimatePresence>
-        {isFetching && Array.from({ length: PAGE_SIZE }, (_, i) => <SkeletonCard key={i} />)}
+        {cards.map((card, index) => (
+          <Draggable draggableId={card.id.toString()} index={index} key={card.id.toString()}>
+            {(provided) => (
+              <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
+                <motion.div
+                  key={card.id.toString()}
+                  initial={{ opacity: 1, y: 0 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{
+                    opacity: { duration: 0.5 },
+                    y: { delay: 1 },
+                  }}
+                >
+                  <TodoCard card={card} />
+                </motion.div>
+              </div>
+            )}
+          </Draggable>
+        ))}
+
+        {isLoading && Array.from({ length: PAGE_SIZE }, (_, i) => <SkeletonCard key={i} />)}
+        {isFetchingNextPage && Array.from({ length: PAGE_SIZE }, (_, i) => <SkeletonCard key={i} />)}
         <div className='h-2' ref={ref} />
       </div>
       <CreateCard dashboardId={column.dashboardId} columnId={column.id} ref={addRef} />

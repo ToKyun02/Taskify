@@ -5,27 +5,90 @@ import { useParams } from 'next/navigation';
 import ColumnItem from './ColumnItem';
 import AddColumnBtn from './AddColumnBtn';
 import { isEmpty } from 'es-toolkit/compat';
+import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd';
+import { useMoveCard } from '@/apis/cards/queries';
+import { useQueryClient } from '@tanstack/react-query';
+import { Card, CardsResponse } from '@/apis/cards/types';
 
 export default function ColumnList() {
   const params = useParams();
   const dashbaordId = Number(params.id);
   const { data, isLoading } = useColumnsQuery(dashbaordId);
+  const { mutateAsync: moveCard } = useMoveCard();
+  const queryClient = useQueryClient();
+
+  const handleDragEnd = async (result: DropResult) => {
+    if (!result.destination) return;
+    const prevId = Number(result.source.droppableId);
+    const columnId = Number(result.destination.droppableId);
+    const cardId = Number(result.draggableId);
+
+    if (prevId === columnId) return;
+
+    const prevSourceColumn = queryClient.getQueryData<{ pageParams: number[]; pages: CardsResponse[] }>(['cards', prevId]);
+
+    queryClient.setQueryData(['cards', prevId], (data: { pageParams: number[]; pages: CardsResponse[] }) => {
+      const updatedPages = data.pages.map((page) => {
+        return {
+          ...page,
+          cards: page.cards.filter((card: Card) => card.id !== cardId),
+        };
+      });
+      return { ...data, pages: updatedPages };
+    });
+
+    queryClient.setQueryData(['cards', columnId], (data: { pageParams: number[]; pages: CardsResponse[] }) => {
+      const updatedPages = data.pages.map((page) => {
+        const prevCards = prevSourceColumn?.pages.flatMap((page) => page.cards);
+        const cardToMove = prevCards?.find((card) => {
+          return card.id === cardId;
+        });
+        if (cardToMove) {
+          return {
+            ...page,
+            cards: [cardToMove, ...page.cards].sort((a, b) => {
+              const dateA = new Date(a.createdAt);
+              const dateB = new Date(b.createdAt);
+              return dateA.getTime() - dateB.getTime();
+            }),
+          };
+        }
+        return page;
+      });
+      return { ...data, pages: updatedPages };
+    });
+
+    await moveCard({
+      cardId,
+      columnId,
+      prevId,
+    });
+  };
 
   return (
-    <ul className='flex flex-col lg:flex-row'>
-      {isLoading && Array.from({ length: 3 }, (_, index) => <SkeletionItem key={index} />)}
+    <DragDropContext onDragEnd={handleDragEnd}>
+      <ul className='flex flex-col lg:flex-row'>
+        {isLoading && Array.from({ length: 3 }, (_, index) => <SkeletionItem key={index} />)}
 
-      {!isLoading && isEmpty(data?.data) ? (
-        <EmptyList />
-      ) : (
-        data?.data.map((column) => (
-          <li key={column.id} className='flex flex-col gap-4 border-b border-r-0 p-6 lg:min-h-[calc(100dvh-70px)] lg:border-b-0 lg:border-r'>
-            <ColumnItem column={column} />
-          </li>
-        ))
-      )}
-      <AddColumnBtn dashboardId={dashbaordId} columns={data?.data} />
-    </ul>
+        {!isLoading && isEmpty(data?.data) ? (
+          <EmptyList />
+        ) : (
+          data?.data.map((column) => (
+            <Droppable droppableId={column.id.toString()} key={column.id}>
+              {(provided) => (
+                <div {...provided.droppableProps} ref={provided.innerRef}>
+                  <li className='flex flex-col gap-4 border-b border-r-0 p-6 lg:min-h-[calc(100dvh-70px)] lg:border-b-0 lg:border-r'>
+                    <ColumnItem column={column} />
+                  </li>
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          ))
+        )}
+        <AddColumnBtn dashboardId={dashbaordId} columns={data?.data} />
+      </ul>
+    </DragDropContext>
   );
 }
 

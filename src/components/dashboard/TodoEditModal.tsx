@@ -87,7 +87,7 @@ const TodoEditModal = forwardRef<ModalHandle, TodoEditModalProps>(({ card }, ref
                 name='columnId'
                 control={control}
                 render={({ field }) => {
-                  const selected = columns.find((col) => col.id === field.value);
+                  const selected = columns.find((col) => col.id === card.columnId);
                   return <StatusDropdown columns={columns} selectedColumn={selected} onChange={(columnId) => field.onChange(columnId)} />;
                 }}
               />

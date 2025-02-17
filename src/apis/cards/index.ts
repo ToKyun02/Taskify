@@ -1,5 +1,6 @@
 import axiosClientHelper from '@/utils/network/axiosClientHelper';
 import { Card, CardRequest, cardSchema, CardsResponse, cardsResponseSchema, GetCardsParams } from './types';
+import { Column } from '../columns/types';
 
 const RESPONSE_INVALID_MESSAGE = '서버에서 받은 데이터가 예상과 다릅니다';
 
@@ -26,6 +27,13 @@ export const getCards = async (params: GetCardsParams) => {
 
 export const putCard = async (cardId: number, cardRequest: CardRequest) => {
   const response = await axiosClientHelper.put<Card>(`/cards/${cardId}`, cardRequest);
+  const result = cardSchema.safeParse(response.data);
+  if (!result.success) throw new Error(RESPONSE_INVALID_MESSAGE);
+  return result.data;
+};
+
+export const moveCard = async (cardId: Card['id'], columnId: Column['id']) => {
+  const response = await axiosClientHelper.put<Card>(`/cards/${cardId}`, { columnId });
   const result = cardSchema.safeParse(response.data);
   if (!result.success) throw new Error(RESPONSE_INVALID_MESSAGE);
   return result.data;
