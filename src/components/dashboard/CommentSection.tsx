@@ -2,7 +2,7 @@
 
 import useAlert from '@/hooks/useAlert';
 import { formatDate } from '@/utils/formatDate';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Avatar from '../ui/Avatar/Avatar';
 import Button from '../ui/Button/Button';
 import { Textarea } from '../ui/Field';
@@ -11,6 +11,8 @@ import { useCommentsQuery, useDeleteComment, usePostComment, useUpdateComment } 
 import { CommentForm } from '@/apis/comments/types';
 import { getErrorMessage } from '@/utils/errorMessage';
 import { useInView } from 'react-intersection-observer';
+import { ModalHandle } from '../ui/Modal/Modal';
+import EditCommentModal from './EditCommentModal';
 
 interface CommentSectionProps {
   cardId: number;
@@ -31,6 +33,28 @@ export default function CommentSection({ cardId, columnId, dashboardId }: Commen
   const updateCommentMutation = useUpdateComment(cardId);
   const deleteCommentMutation = useDeleteComment(cardId);
 
+  const editModalRef = useRef<ModalHandle>(null);
+  const [editingComment, setEditingComment] = useState<{ id: number; content: string } | null>(null);
+
+  const handleEditComment = (commentId: number, currentContent: string) => {
+    setEditingComment({ id: commentId, content: currentContent });
+    editModalRef.current?.open();
+  };
+
+  const handleSaveComment = async (newContent: string) => {
+    if (!editingComment) return;
+
+    try {
+      await updateCommentMutation.mutateAsync({
+        id: editingComment.id,
+        putCommentForm: { content: newContent },
+      });
+      alert('댓글이 수정되었습니다.');
+    } catch (err) {
+      alert(getErrorMessage(err));
+    }
+  };
+
   async function handleSubmitComment() {
     if (!content.trim()) return;
     const formData: CommentForm = {
@@ -44,18 +68,6 @@ export default function CommentSection({ cardId, columnId, dashboardId }: Commen
       await postCommentMutation.mutateAsync(formData);
       setContent('');
       alert('댓글이 작성되었습니다');
-    } catch (err) {
-      alert(getErrorMessage(err));
-    }
-  }
-
-  async function handleEditComment(commentId: number, currentContent: string) {
-    const newContent = prompt('댓글 수정하기', currentContent);
-    if (!newContent) return;
-
-    try {
-      await updateCommentMutation.mutateAsync({ id: commentId, putCommentForm: { content: newContent } });
-      alert('댓글이 수정되었습니다.');
     } catch (err) {
       alert(getErrorMessage(err));
     }
@@ -94,6 +106,8 @@ export default function CommentSection({ cardId, columnId, dashboardId }: Commen
       </div>
 
       {isLoading && <div className='text-sm text-gray-50'>댓글 불러오는 중...</div>}
+
+      <EditCommentModal ref={editModalRef} initialContent={editingComment?.content || ''} onSave={handleSaveComment} />
 
       {!isLoading &&
         comments.map((comment) => (
