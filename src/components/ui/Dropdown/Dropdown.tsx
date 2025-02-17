@@ -5,6 +5,7 @@ import Image from 'next/image';
 import KebabIcon from '@/assets/icons/kebab.svg';
 import DropdownArrow from '@/assets/icons/drop_down_arrow.svg';
 import Check from '@/assets/icons/check_gray.svg';
+import { cn } from '@/utils/helper';
 
 interface DropdownOption {
   value: string;
@@ -17,7 +18,7 @@ interface DropdownProps {
   options: DropdownOption[];
   placeholder?: string;
   type?: 'kebab' | 'status' | 'search';
-  onSelect: (value: string) => void;
+  onSelect?: (value: string) => void;
 }
 
 export default function Dropdown({ defaultValue, options, placeholder = '이름을 입력해 주세요', type = 'status', onSelect }: DropdownProps) {
@@ -33,7 +34,7 @@ export default function Dropdown({ defaultValue, options, placeholder = '이름�
   const handleSelect = (option: DropdownOption) => {
     setSelectedValue(option);
     setSearchTerm(option.label || '');
-    onSelect(option.value);
+    onSelect?.(option.value);
     setIsOpen(false);
     setIsInputMode(false);
   };
@@ -89,8 +90,8 @@ export default function Dropdown({ defaultValue, options, placeholder = '이름�
           <Image src={DropdownArrow} alt='드롭다운 메뉴 열기' width={8} height={5} className='cursor-pointer' onClick={() => setIsOpen(!isOpen)} />
         </div>
       ) : type === 'kebab' ? (
-        <button onClick={() => setIsOpen(!isOpen)} className='flex h-[28px] w-[28px] items-center justify-center'>
-          <Image src={KebabIcon} alt='메뉴' width={3.5} height={16} />
+        <button onClick={() => setIsOpen(!isOpen)} className='flex h-8 w-8 items-center justify-center rounded-sm hover:bg-gray-10'>
+          <Image src={KebabIcon} alt='메뉴' width={3} height={24} />
         </button>
       ) : (
         <button
@@ -104,13 +105,13 @@ export default function Dropdown({ defaultValue, options, placeholder = '이름�
 
       {/* 드롭다운 메뉴 */}
       {isOpen && (
-        <div className={`absolute right-0 top-full z-50 mt-1 w-full rounded-lg border border-gray-30 bg-white p-[7px] shadow-lg ${type === 'kebab' ? 'mt-0 w-[110px]' : ''}`}>
+        <div className={cn('absolute right-0 top-full z-50 mt-1 w-full rounded-lg border border-gray-30 bg-white p-[7px] shadow-lg', type === 'kebab' && 'mt-0 w-auto')}>
           <ul className='max-h-48'>
             {filteredOptions.length > 0 ? (
               filteredOptions.map((option) => (
                 <li
                   key={option.value}
-                  className={`flex cursor-pointer items-center justify-between rounded-[4px] px-4 py-2 text-[16px] text-gray-70 hover:bg-violet-10 hover:text-violet-20 ${type === 'kebab' ? 'text-[14px]' : ''}`}
+                  className={`flex cursor-pointer items-center justify-between rounded-[4px] px-4 py-2 text-[16px] text-gray-70 hover:bg-violet-10 hover:text-violet-20 ${type === 'kebab' ? 'py-1 text-[14px]' : ''}`}
                   onClick={() => handleSelect(option)}
                 >
                   <div className='flex items-center gap-2'>
