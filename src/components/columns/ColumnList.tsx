@@ -7,12 +7,15 @@ import AddColumnBtn from './AddColumnBtn';
 import { isEmpty } from 'es-toolkit/compat';
 import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd';
 import { useMoveCard } from '@/apis/cards/queries';
+import { useQueryClient } from '@tanstack/react-query';
+import { Card, CardsResponse } from '@/apis/cards/types';
 
 export default function ColumnList() {
   const params = useParams();
   const dashbaordId = Number(params.id);
   const { data, isLoading } = useColumnsQuery(dashbaordId);
   const { mutateAsync: moveCard } = useMoveCard();
+  const queryClient = useQueryClient();
 
   const handleDragEnd = async (result: DropResult) => {
     if (!result.destination) return;
@@ -22,7 +25,40 @@ export default function ColumnList() {
 
     if (prevId === columnId) return;
 
-    moveCard({
+    const prevSourceColumn = queryClient.getQueryData<{ pageParams: number[]; pages: CardsResponse[] }>(['cards', prevId]);
+
+    queryClient.setQueryData(['cards', prevId], (data: { pageParams: number[]; pages: CardsResponse[] }) => {
+      const updatedPages = data.pages.map((page) => {
+        return {
+          ...page,
+          cards: page.cards.filter((card: Card) => card.id !== cardId),
+        };
+      });
+      return { ...data, pages: updatedPages };
+    });
+
+    queryClient.setQueryData(['cards', columnId], (data: { pageParams: number[]; pages: CardsResponse[] }) => {
+      const updatedPages = data.pages.map((page) => {
+        const prevCards = prevSourceColumn?.pages.flatMap((page) => page.cards);
+        const cardToMove = prevCards?.find((card) => {
+          return card.id === cardId;
+        });
+        if (cardToMove) {
+          return {
+            ...page,
+            cards: [cardToMove, ...page.cards].sort((a, b) => {
+              const dateA = new Date(a.createdAt);
+              const dateB = new Date(b.createdAt);
+              return dateA.getTime() - dateB.getTime();
+            }),
+          };
+        }
+        return page;
+      });
+      return { ...data, pages: updatedPages };
+    });
+
+    await moveCard({
       cardId,
       columnId,
       prevId,

@@ -62,37 +62,6 @@ export const useMoveCard = () => {
       const prevSourceColumn = queryClient.getQueryData<{ pageParams: number[]; pages: CardsResponse[] }>(['cards', variables.prevId]);
       const prevDestinationColumn = queryClient.getQueryData<{ pageParams: number[]; pages: CardsResponse[] }>(['cards', variables.columnId]);
 
-      queryClient.setQueryData(['cards', variables.prevId], (data: { pageParams: number[]; pages: CardsResponse[] }) => {
-        const updatedPages = data.pages.map((page) => {
-          return {
-            ...page,
-            cards: page.cards.filter((card: Card) => card.id !== variables.cardId),
-          };
-        });
-        return { ...data, pages: updatedPages };
-      });
-
-      queryClient.setQueryData(['cards', variables.columnId], (data: { pageParams: number[]; pages: CardsResponse[] }) => {
-        const updatedPages = data.pages.map((page) => {
-          const prevCards = prevSourceColumn?.pages.flatMap((page) => page.cards);
-          const cardToMove = prevCards?.find((card) => {
-            return card.id === variables.cardId;
-          });
-          if (cardToMove) {
-            return {
-              ...page,
-              cards: [cardToMove, ...page.cards].sort((a, b) => {
-                const dateA = new Date(a.createdAt);
-                const dateB = new Date(b.createdAt);
-                return dateA.getTime() - dateB.getTime();
-              }),
-            };
-          }
-          return page;
-        });
-        return { ...data, pages: updatedPages };
-      });
-
       return { prevSourceColumn, prevDestinationColumn };
     },
     onError: (error, variables, context) => {
