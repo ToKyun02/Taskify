@@ -44,6 +44,10 @@ export default function CommentSection({ cardId, columnId, dashboardId }: Commen
   const handleSaveComment = async (newContent: string) => {
     if (!editingComment) return;
 
+    if (newContent.trim() === editingComment.content.trim()) {
+      return;
+    }
+
     try {
       await updateCommentMutation.mutateAsync({
         id: editingComment.id,
