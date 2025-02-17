@@ -49,7 +49,7 @@
   </br>
   <section>
     <h3>⏬아래 링크를 클릭하시면 더 다양한 기능들을 만날 수 있습니다!⏬</h3>
-    <a>⏩지금 Taskify 사용하러 가보기!⏪</a>
+    <a href="https://taskify-lab.vercel.app/">⏩지금 Taskify 사용하러 가보기!⏪</a>
   </section>
 </div>
 
@@ -73,11 +73,11 @@
 >> 리액트 기반 프로젝트인 경우 useEffect를 통해 로그인 상태를 판단하게 되는데, 이렇게 구현될 경우 페이지 깜빡임 현상을 해결 할 수 없습니다. 또한, 보호된 페이지임에도 불구하고 노출을 피할 수 없습니다. 그리고 이것은 리다이렉트가 아니라 라우팅이라고 불러야 하는 것이 맞습니다. Taskify 팀은 이러한 현상을 해결하기 위해 middleware를 활용하여 로그인 상태를 판단합니다.
 >>> 브라우저가 쿠키를 보내면 middleware가 해당 쿠키를 읽어서 로그인 유무에 따라 페이지 접속에 따른 리다이렉트를 반환합니다. 클라이언트가 아니라 서버에서 로그인 상태를 판단하는 것입니다.
 
-### Taskify 팀의 기록
+### ✏️ Taskify 팀의 기록
 
 <div align="center">
   <p>⏬아래 링크를 클릭하시면 Taskify를 어떻게 만들었는지 알 수 있습니다.⏬</p>
-  <a>⏩Taskify 팀의 Notion 구경하기⏪</a>
+  <a href="https://dolomite-donkey-8b6.notion.site/Taskify-Project-185995a2c1748016ae55c2649f4ba52a">⏩Taskify 팀의 Notion 구경하기⏪</a>
 </div>
 
 <h2 id="프로젝트구조">🔧 프로젝트 구조</h2>
