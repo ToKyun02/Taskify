@@ -109,33 +109,51 @@ export default function CommentSection({ cardId, columnId, dashboardId }: Commen
         </Button>
       </div>
 
-      {isLoading && <div className='text-sm text-gray-50'>댓글 불러오는 중...</div>}
-
       <EditCommentModal ref={editModalRef} initialContent={editingComment?.content || ''} onSave={handleSaveComment} />
 
       <div className='max-h-[155px] overflow-y-auto'>
-        {!isLoading &&
-          comments.map((comment) => (
-            <div key={comment.id} className='flex gap-3'>
-              <div>
-                <Avatar email={comment.author.nickname} size='sm' />
-              </div>
-              <div className='flex flex-col gap-2.5'>
-                <div className='flex flex-col'>
-                  <div className='flex items-center gap-2'>
-                    <span className='text-md font-semibold text-gray-70'>{comment.author.nickname}</span>
-                    <span className='text-xs text-gray-40'>{formatDate(comment.createdAt)}</span>
+        {isLoading
+          ? Array.from({ length: 3 }).map((_, idx) => <Skeleton key={idx} />)
+          : comments.map((comment) => (
+              <div key={comment.id} className='flex gap-3'>
+                <div>
+                  <Avatar email={comment.author.nickname} size='sm' />
+                </div>
+                <div className='flex flex-col gap-2.5'>
+                  <div className='flex flex-col'>
+                    <div className='flex items-center gap-2'>
+                      <span className='text-md font-semibold text-gray-70'>{comment.author.nickname}</span>
+                      <span className='h-4 text-xs text-gray-40'>{formatDate(comment.createdAt)}</span>
+                    </div>
+                    <span className='break-all text-md text-gray-70'>{comment.content}</span>
                   </div>
-                  <span className='text-md text-gray-70'>{comment.content}</span>
-                </div>
-                <div className='flex cursor-pointer gap-3 text-xs text-gray-40 underline'>
-                  <span onClick={() => handleEditComment(comment.id, comment.content)}>수정</span>
-                  <span onClick={() => handleDeleteComment(comment.id)}>삭제</span>
+                  <div className='flex cursor-pointer gap-3 text-xs text-gray-40 underline'>
+                    <span onClick={() => handleEditComment(comment.id, comment.content)}>수정</span>
+                    <span onClick={() => handleDeleteComment(comment.id)}>삭제</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
         <div ref={ref} className='h-1'></div>
+      </div>
+    </div>
+  );
+}
+
+function Skeleton() {
+  return (
+    <div className='flex gap-3 py-2'>
+      <div className='h-8 w-8 shrink-0 rounded-full bg-gray-20' />
+      <div className='flex flex-1 flex-col gap-2'>
+        <div className='flex items-center gap-2'>
+          <div className='h-4 w-16 rounded bg-gray-20' />
+          <div className='h-3 w-20 rounded bg-gray-20' />
+        </div>
+        <div className='h-4 w-[90%] rounded bg-gray-20' />
+        <div className='flex gap-3'>
+          <div className='h-3 w-8 rounded bg-gray-20' />
+          <div className='h-3 w-8 rounded bg-gray-20' />
+        </div>
       </div>
     </div>
   );
