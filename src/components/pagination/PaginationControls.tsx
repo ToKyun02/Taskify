@@ -1,4 +1,4 @@
-import Arrow from './Arrow';
+import Arrow from '@/components/pagination/Arrow';
 
 /*
  * "PaginationControls" 컴포넌트 사용 가이드

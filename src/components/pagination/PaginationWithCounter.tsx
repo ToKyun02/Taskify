@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
-import PaginationControls from './PaginationControls';
+import PaginationControls from '@/components/pagination/PaginationControls';
 
 interface PaginationWithCounterProps {
   totalCount: number;

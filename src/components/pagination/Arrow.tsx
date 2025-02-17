@@ -1,5 +1,5 @@
-import { ARROW_PATH_LEFT, ARROW_PATH_RIGHT } from '@/constants/paths';
 import { cn } from '@/utils/helper';
+import { ARROW_PATH_LEFT, ARROW_PATH_RIGHT } from '@/constants/paths';
 
 /*
  * direction: 'left' | 'right'
