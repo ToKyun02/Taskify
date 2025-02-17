@@ -1,9 +1,9 @@
 'use client';
 
 import { forwardRef, useEffect, useState } from 'react';
-import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '../ui/Modal';
-import { Textarea } from '../ui/Field';
-import Button from '../ui/Button';
+import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '@/components/ui/Modal';
+import { Textarea } from '@/components/ui/Field';
+import Button from '@/components/ui/Button';
 
 interface EditCommentModalProps {
   initialContent: string;

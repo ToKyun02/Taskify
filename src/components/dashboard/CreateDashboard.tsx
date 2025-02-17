@@ -3,14 +3,14 @@ import { useRouter } from 'next/navigation';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useAlert from '@/hooks/useAlert';
+import { useCreateDashboard } from '@/apis/dashboards/queries';
+import { dashboardFormSchema, DashboardFormType } from '@/apis/dashboards/types';
+import { getErrorMessage } from '@/utils/errorMessage';
 import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '@/components/ui/Modal';
 import Button from '@/components/ui/Button';
 import { Input } from '@/components/ui/Field';
 import ColorPicker from '@/components/ui/Chip/ColorPicker';
-import { useCreateDashboard } from '@/apis/dashboards/queries';
-import { dashboardFormSchema, DashboardFormType } from '@/apis/dashboards/types';
 import { DEFAULT_COLORS } from '@/constants/colors';
-import { getErrorMessage } from '@/utils/errorMessage';
 
 const CreateDashboard = forwardRef<ModalHandle>((props, ref) => {
   const {

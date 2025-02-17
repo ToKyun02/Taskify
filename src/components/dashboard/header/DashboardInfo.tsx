@@ -9,7 +9,7 @@ import { useMembersQuery } from '@/apis/members/queries';
 import StackAvatars from '@/components/ui/Avatar/StackAvatars';
 import { ModalHandle } from '@/components/ui/Modal';
 import InviteDashboard from '@/components/dashboard/InviteDashboard';
-import HeaderButton from '@/components/dashboard-header/HeaderButton';
+import HeaderButton from '@/components/dashboard/header/HeaderButton';
 import Setting from '@/assets/icons/setting.svg';
 import AddBox from '@/assets/icons/add_box.svg';
 import crown from '@/assets/icons/crown.svg';

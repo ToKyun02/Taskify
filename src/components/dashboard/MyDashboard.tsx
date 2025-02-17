@@ -2,8 +2,8 @@
 
 import { useRef } from 'react';
 import { ModalHandle } from '@/components/ui/Modal';
-import CreateDashboard from './CreateDashboard';
-import MyDashboardList from './MyDashboardList';
+import CreateDashboard from '@/components/dashboard/CreateDashboard';
+import MyDashboardList from '@/components/dashboard/MyDashboardList';
 
 export default function MyDashboard() {
   const addDashboardModalRef = useRef<ModalHandle>(null);

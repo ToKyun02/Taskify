@@ -3,12 +3,12 @@ import { useParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useAlert from '@/hooks/useAlert';
-import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '@/components/ui/Modal';
-import { Input } from '@/components/ui/Field';
-import Button from '@/components/ui/Button';
 import { inviteDashboardFormSchema, InviteDashboardFormType } from '@/apis/dashboards/types';
 import { useInviteDashboard } from '@/apis/dashboards/queries';
 import { getErrorMessage } from '@/utils/errorMessage';
+import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '@/components/ui/Modal';
+import { Input } from '@/components/ui/Field';
+import Button from '@/components/ui/Button';
 
 const InviteDashboard = forwardRef<ModalHandle>((props, ref) => {
   const {

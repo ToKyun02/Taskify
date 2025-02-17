@@ -1,18 +1,18 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import Button from '@/components/ui/Button';
-import { Card, CardTitle } from '@/components/ui/Card';
-import { ModalHandle } from '@/components/ui/Modal';
-import InviteDashboard from './InviteDashboard';
 import { useParams } from 'next/navigation';
-import { useCancelInviteDashboard, useDashboardInvitationsQuery } from '@/apis/dashboards/queries';
-import { getErrorMessage } from '@/utils/errorMessage';
+import { isAxiosError } from 'axios';
+import Button from '@/components/ui/Button';
 import useAlert from '@/hooks/useAlert';
 import useConfirm from '@/hooks/useConfirm';
+import { useCancelInviteDashboard, useDashboardInvitationsQuery } from '@/apis/dashboards/queries';
+import { getErrorMessage } from '@/utils/errorMessage';
+import { Card, CardTitle } from '@/components/ui/Card';
+import { ModalHandle } from '@/components/ui/Modal';
+import InviteDashboard from '@/components/dashboard/InviteDashboard';
 import { Table, TableBody, TableCell, TableCol, TableColGroup, TableHead, TableHeadCell, TableRow } from '@/components/ui/Table';
 import PaginationWithCounter from '@/components/pagination/PaginationWithCounter';
-import { isAxiosError } from 'axios';
 
 const PAGE_SIZE = 5;
 

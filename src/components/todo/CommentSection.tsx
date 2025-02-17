@@ -1,18 +1,18 @@
 'use client';
 
-import useAlert from '@/hooks/useAlert';
-import { formatDate } from '@/utils/formatDate';
 import { useEffect, useRef, useState } from 'react';
-import Avatar from '../ui/Avatar';
-import Button from '../ui/Button';
-import { Textarea } from '../ui/Field';
+import { useInView } from 'react-intersection-observer';
+import useAlert from '@/hooks/useAlert';
 import useConfirm from '@/hooks/useConfirm';
 import { useCommentsQuery, useDeleteComment, usePostComment, useUpdateComment } from '@/apis/comments/queries';
 import { CommentForm } from '@/apis/comments/types';
+import { formatDate } from '@/utils/formatDate';
 import { getErrorMessage } from '@/utils/errorMessage';
-import { useInView } from 'react-intersection-observer';
-import { ModalHandle } from '../ui/Modal';
-import EditCommentModal from './EditCommentModal';
+import Avatar from '@/components/ui/Avatar';
+import Button from '@/components/ui/Button';
+import { Textarea } from '@/components/ui/Field';
+import { ModalHandle } from '@/components/ui/Modal';
+import EditCommentModal from '@/components/todo/EditCommentModal';
 
 interface CommentSectionProps {
   cardId: number;

@@ -9,7 +9,7 @@ import { useCardsQuery } from '@/apis/cards/queries';
 import ColumnSettingBtn from '@/components/columns/ColumnSettingBtn';
 import Dot from '@/components/ui/Dot';
 import DashboardButton from '@/components/ui/Button/DashboardButton';
-import TodoCard from '@/components/dashboard/TodoCard';
+import TodoCard from '@/components/todo/TodoCard';
 import { ModalHandle } from '@/components/ui/Modal';
 import CreateCard from '@/components/columns/CreateCard';
 
