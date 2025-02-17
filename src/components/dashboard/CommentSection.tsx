@@ -111,31 +111,40 @@ export default function CommentSection({ cardId, columnId, dashboardId }: Commen
 
       <EditCommentModal ref={editModalRef} initialContent={editingComment?.content || ''} onSave={handleSaveComment} />
 
-      <div className='h-[155px] overflow-y-auto'>
-        {isLoading
-          ? Array.from({ length: 3 }).map((_, idx) => <Skeleton key={idx} />)
-          : comments.map((comment) => (
-              <div key={comment.id} className='flex gap-3'>
-                <div>
-                  <Avatar email={comment.author.nickname} size='sm' />
+      <div className='min-h-[78px]'>
+        {isLoading && <div className='pt-6 text-center text-md font-medium text-gray-50'>댓글을 불러오고 있습니다...</div>}
+
+        {!isLoading && comments.length === 0 && <div className='pt-6 text-center text-md font-medium text-gray-50'>작성된 댓글이 없습니다</div>}
+        {!isLoading &&
+          comments.map((comment) => (
+            <div key={comment.id} className='flex gap-3'>
+              <div>
+                <Avatar email={comment.author.nickname} size='sm' />
+              </div>
+              <div className='flex flex-col gap-2.5'>
+                <div className='flex flex-col'>
+                  <div className='flex items-center gap-2'>
+                    <span className='text-md font-semibold text-gray-70'>{comment.author.nickname}</span>
+                    <span className='h-4 text-xs text-gray-40'>{formatDate(comment.createdAt)}</span>
+                  </div>
+                  <span className='break-all text-md text-gray-70'>{comment.content}</span>
                 </div>
-                <div className='flex flex-col gap-2.5'>
-                  <div className='flex flex-col'>
-                    <div className='flex items-center gap-2'>
-                      <span className='text-md font-semibold text-gray-70'>{comment.author.nickname}</span>
-                      <span className='h-4 text-xs text-gray-40'>{formatDate(comment.createdAt)}</span>
-                    </div>
-                    <span className='break-all text-md text-gray-70'>{comment.content}</span>
-                  </div>
-                  <div className='flex cursor-pointer gap-3 text-xs text-gray-40 underline'>
-                    <span onClick={() => handleEditComment(comment.id, comment.content)}>수정</span>
-                    <span onClick={() => handleDeleteComment(comment.id)}>삭제</span>
-                  </div>
+                <div className='flex cursor-pointer gap-3 text-xs text-gray-40 underline'>
+                  <span onClick={() => handleEditComment(comment.id, comment.content)}>수정</span>
+                  <span onClick={() => handleDeleteComment(comment.id)}>삭제</span>
                 </div>
               </div>
+            </div>
+          ))}
+        {isFetchingNextPage && (
+          <div className='py-2'>
+            {Array.from({ length: 3 }).map((_, idx) => (
+              <Skeleton key={idx} />
             ))}
-        <div ref={ref} className='h-1'></div>
+          </div>
+        )}
       </div>
+      <div ref={ref} className='h-1'></div>
     </div>
   );
 }
