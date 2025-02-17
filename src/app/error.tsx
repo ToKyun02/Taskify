@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import React, { useEffect } from 'react';
+import React from 'react';
 import LogoCi from '@/assets/images/logo_ci.svg';
 import LogoBi from '@/assets/images/logo_bi.svg';
 import Button from '@/components/ui/Button/Button';
@@ -14,8 +14,6 @@ interface ErrorProps {
 }
 
 export default function ErrorPage({ error, reset }: ErrorProps) {
-  useEffect(() => {}, [error]);
-
   let status: number | undefined;
   if (axios.isAxiosError(error)) {
     status = error.response?.status;
