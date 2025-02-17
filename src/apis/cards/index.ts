@@ -1,16 +1,21 @@
 import axiosClientHelper from '@/utils/network/axiosClientHelper';
 import { Card, CardRequest, cardSchema, CardsResponse, cardsResponseSchema, GetCardsParams } from './types';
 import { Column } from '../columns/types';
+import { safeResponse } from '@/utils/network/safeResponse';
 
-const RESPONSE_INVALID_MESSAGE = '서버에서 받은 데이터가 예상과 다릅니다';
-
+/**
+ * card 생성
+ * https://sp-taskify-api.vercel.app/docs/#/Cards/Create
+ */
 export const postCard = async (cardRequest: CardRequest) => {
   const response = await axiosClientHelper.post<Card>('/cards', cardRequest);
-  const result = cardSchema.safeParse(response.data);
-  if (!result.success) throw new Error(RESPONSE_INVALID_MESSAGE);
-  return result.data;
+  return safeResponse(response.data, cardSchema);
 };
 
+/**
+ * cards 목록 조회
+ * https://sp-taskify-api.vercel.app/docs/#/Cards/Find
+ */
 export const getCards = async (params: GetCardsParams) => {
   const { cursorId, size, columnId } = params;
   const response = await axiosClientHelper.get<CardsResponse>('/cards', {
@@ -20,32 +25,40 @@ export const getCards = async (params: GetCardsParams) => {
       ...(cursorId && { cursorId }),
     },
   });
-  const result = cardsResponseSchema.safeParse(response.data);
-  if (!result.success) throw new Error(RESPONSE_INVALID_MESSAGE);
-  return result.data;
+  return safeResponse(response.data, cardsResponseSchema);
 };
 
-export const putCard = async (cardId: number, cardRequest: CardRequest) => {
-  const response = await axiosClientHelper.put<Card>(`/cards/${cardId}`, cardRequest);
-  const result = cardSchema.safeParse(response.data);
-  if (!result.success) throw new Error(RESPONSE_INVALID_MESSAGE);
-  return result.data;
-};
-
-export const moveCard = async (cardId: Card['id'], columnId: Column['id']) => {
-  const response = await axiosClientHelper.put<Card>(`/cards/${cardId}`, { columnId });
-  const result = cardSchema.safeParse(response.data);
-  if (!result.success) throw new Error(RESPONSE_INVALID_MESSAGE);
-  return result.data;
-};
-
+/**
+ * card 상세 조회
+ * https://sp-taskify-api.vercel.app/docs/#/Cards/Get
+ */
 export const getCard = async (cardId: number) => {
   const response = await axiosClientHelper.get<Card>(`/cards/${cardId}`);
-  const result = cardSchema.safeParse(response.data);
-  if (!result.success) throw new Error(RESPONSE_INVALID_MESSAGE);
-  return result.data;
+  return safeResponse(response.data, cardSchema);
 };
 
+/**
+ * card 수정
+ * https://sp-taskify-api.vercel.app/docs/#/Cards/Update
+ */
+export const putCard = async (cardId: number, cardRequest: CardRequest) => {
+  const response = await axiosClientHelper.put<Card>(`/cards/${cardId}`, cardRequest);
+  return safeResponse(response.data, cardSchema);
+};
+
+/**
+ * card 드래그 이동
+ * https://sp-taskify-api.vercel.app/docs/#/Cards/Update
+ */
+export const moveCard = async (cardId: Card['id'], columnId: Column['id']) => {
+  const response = await axiosClientHelper.put<Card>(`/cards/${cardId}`, { columnId });
+  return safeResponse(response.data, cardSchema);
+};
+
+/**
+ * card 삭제
+ * https://sp-taskify-api.vercel.app/docs/#/Cards/Delete
+ */
 export const deleteCard = async (cardId: number) => {
   await axiosClientHelper.delete<void>(`/cards/${cardId}`);
 };

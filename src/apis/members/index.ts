@@ -15,7 +15,6 @@ export const getMembers = async (params: GetMembersRequest) => {
       dashboardId,
     },
   });
-
   return safeResponse(response.data, membersSchema);
 };
 
@@ -25,6 +24,5 @@ export const getMembers = async (params: GetMembersRequest) => {
  */
 export const deleteMember = async (params: DeleteMemberRequest) => {
   const { memberId } = params;
-  const response = await axiosClientHelper.delete<void>(`/members/${memberId}`);
-  return response.data;
+  await axiosClientHelper.delete<void>(`/members/${memberId}`);
 };

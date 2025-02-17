@@ -18,6 +18,15 @@ import {
 import { safeResponse } from '@/utils/network/safeResponse';
 
 /**
+ * dashboard 생성
+ * https://sp-taskify-api.vercel.app/docs/#/Dashboards/Create
+ */
+export const createDashboard = async (params: CreateDashboardRequest) => {
+  const response = await axiosClientHelper.post<Dashboard>('/dashboards', params);
+  return safeResponse(response.data, dashboardSchema);
+};
+
+/**
  * dashboards 목록 조회
  * https://sp-taskify-api.vercel.app/docs/#/Dashboards/Find
  */
@@ -31,7 +40,6 @@ export const getDashboards = async (params: GetDashboardsRequest) => {
       navigationMethod,
     },
   });
-
   return safeResponse(response.data, dashboardsSchema);
 };
 
@@ -41,18 +49,6 @@ export const getDashboards = async (params: GetDashboardsRequest) => {
  */
 export const getDashboardDetails = async (id: Dashboard['id']) => {
   const response = await axiosClientHelper.get<Dashboard>(`/dashboards/${id}`);
-
-  return safeResponse(response.data, dashboardSchema);
-};
-
-/**
- * dashboard 생성
- * https://sp-taskify-api.vercel.app/docs/#/Dashboards/Create
- */
-
-export const createDashboard = async (params: CreateDashboardRequest) => {
-  const response = await axiosClientHelper.post<Dashboard>('/dashboards', params);
-
   return safeResponse(response.data, dashboardSchema);
 };
 
@@ -63,7 +59,6 @@ export const createDashboard = async (params: CreateDashboardRequest) => {
 export const updateDashboard = async (params: UpdateDashboardRequest) => {
   const { id, ...reset } = params;
   const response = await axiosClientHelper.put<Dashboard>(`/dashboards/${id}`, reset);
-
   return safeResponse(response.data, dashboardSchema);
 };
 
@@ -74,6 +69,16 @@ export const updateDashboard = async (params: UpdateDashboardRequest) => {
 export const deleteDashboard = async (id: Dashboard['id']) => {
   const response = await axiosClientHelper.delete<void>(`/dashboards/${id}`);
   return response.data;
+};
+
+/**
+ * dashboard 초대
+ * https://sp-taskify-api.vercel.app/docs/#/Dashboards/CreateInvitation
+ */
+export const inviteDashboard = async (params: InviteDashboardRequest) => {
+  const { id, email } = params;
+  const response = await axiosClientHelper.post<DashboardInvitation>(`/dashboards/${id}/invitations`, { email });
+  return safeResponse(response.data, dashboardInvitationSchema);
 };
 
 /**
@@ -88,19 +93,7 @@ export const getDashboardInvitations = async (params: GetDashboardInvitationsReq
       size,
     },
   });
-
   return safeResponse(response.data, dashboardInvitationsSchema);
-};
-
-/**
- * dashboard 초대
- * https://sp-taskify-api.vercel.app/docs/#/Dashboards/CreateInvitation
- */
-export const inviteDashboard = async (params: InviteDashboardRequest) => {
-  const { id, email } = params;
-  const response = await axiosClientHelper.post<DashboardInvitation>(`/dashboards/${id}/invitations`, { email });
-
-  return safeResponse(response.data, dashboardInvitationSchema);
 };
 
 /**
@@ -109,6 +102,5 @@ export const inviteDashboard = async (params: InviteDashboardRequest) => {
  */
 export const cancelDashboardInvitation = async (params: CancelInviteDashboardRequest) => {
   const { dashboardId, invitationId } = params;
-  const response = await axiosClientHelper.delete<void>(`/dashboards/${dashboardId}/invitations/${invitationId}`);
-  return response.data;
+  await axiosClientHelper.delete<void>(`/dashboards/${dashboardId}/invitations/${invitationId}`);
 };

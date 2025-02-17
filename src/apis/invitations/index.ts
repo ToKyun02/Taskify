@@ -16,7 +16,6 @@ export const getMyInvitations = async (params: GetMyInvitationsRequest) => {
       ...(cursorId && { cursorId }), //cursorId가 있을경우에만(빈값 보내면 오류)
     },
   });
-
   return safeResponse(response.data, myInvitationsSchema);
 };
 
@@ -27,6 +26,5 @@ export const getMyInvitations = async (params: GetMyInvitationsRequest) => {
 export const respondToInvitation = async (params: RespondToInvitationRequest) => {
   const { invitationId, inviteAccepted } = params;
   const response = await axiosClientHelper.put<DashboardInvitation>(`/invitations/${invitationId}`, { inviteAccepted });
-
   return safeResponse(response.data, dashboardInvitationSchema);
 };

@@ -1,29 +1,38 @@
 import axiosClientHelper from '@/utils/network/axiosClientHelper';
 import { Comment, CommentForm, commentSchema, CommentsResponse, commentsResponseSchema, GetCommentsParams, PutCommentForm } from './types';
+import { safeResponse } from '@/utils/network/safeResponse';
 
-const RESPONSE_INVALID_MESSAGE = '서버에서 받은 데이터가 예상과 다릅니다';
-
+/**
+ * comment 생성
+ * https://sp-taskify-api.vercel.app/docs/#/Comments/Create
+ */
 export const postComment = async (commentForm: CommentForm) => {
   const response = await axiosClientHelper.post<Comment>('/comments', commentForm);
-  const result = commentSchema.safeParse(response.data);
-  if (!result.success) throw new Error(RESPONSE_INVALID_MESSAGE);
-  return result.data;
+  return safeResponse(response.data, commentSchema);
 };
 
+/**
+ * comments 목록 조회
+ * https://sp-taskify-api.vercel.app/docs/#/Columns/Find
+ */
 export const getComments = async (params: GetCommentsParams) => {
   const response = await axiosClientHelper.get<CommentsResponse>('/comments', { params });
-  const result = commentsResponseSchema.safeParse(response.data);
-  if (!result.success) throw new Error(RESPONSE_INVALID_MESSAGE);
-  return result.data;
+  return safeResponse(response.data, commentsResponseSchema);
 };
 
+/**
+ * comment 수정
+ * https://sp-taskify-api.vercel.app/docs/#/Columns/Update
+ */
 export const putComment = async (commentId: number, putCommentForm: PutCommentForm) => {
   const response = await axiosClientHelper.put<Comment>(`/comments/${commentId}`, putCommentForm);
-  const result = commentSchema.safeParse(response.data);
-  if (!result.success) throw new Error(RESPONSE_INVALID_MESSAGE);
-  return result.data;
+  return safeResponse(response.data, commentsResponseSchema);
 };
 
+/**
+ * comment 삭제
+ * https://sp-taskify-api.vercel.app/docs/#/Columns/Delete
+ */
 export const deleteComment = async (commentId: number) => {
   await axiosClientHelper.delete<void>(`/comments/${commentId}`);
 };
