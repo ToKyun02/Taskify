@@ -12,8 +12,9 @@ import useAlert from '@/hooks/useAlert';
 import { postCardImage } from '@/apis/columns';
 import { getErrorMessage } from '@/utils/errorMessage';
 import convertDateFormat from '@/utils/convertDateFormat';
+import { DEFAULT_CARD_IMAGE_URL } from '@/constants/paths';
 
-const DEFAULT_POST_IMAGE = { imageUrl: 'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/taskify/task_image/12-5_45251_1739412796075.jpeg' } as const;
+const DEFAULT_POST_IMAGE = { imageUrl: DEFAULT_CARD_IMAGE_URL } as const;
 
 interface CreateCardProps {
   dashboardId: number;

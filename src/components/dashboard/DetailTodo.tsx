@@ -17,13 +17,12 @@ import { getErrorMessage } from '@/utils/errorMessage';
 import { formatDate } from '@/utils/formatDate';
 import { useColumnsQuery } from '@/apis/columns/queries';
 import { useRemoveCard } from '@/apis/cards/queries';
+import { DEFAULT_CARD_IMAGE_URL } from '@/constants/paths';
 
 interface DetailTodoProps {
   card: Card;
   onEdit: () => void;
 }
-
-const NO_IMAGE_BASE_URL = 'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/taskify/task_image/';
 
 const DetailTodo = forwardRef<ModalHandle, DetailTodoProps>(({ card, onEdit }, ref) => {
   const alert = useAlert();
@@ -135,7 +134,7 @@ const DetailTodo = forwardRef<ModalHandle, DetailTodoProps>(({ card, onEdit }, r
 
             <span className='text-md'>{card.description}</span>
 
-            {card.imageUrl && card.imageUrl !== NO_IMAGE_BASE_URL && <Image src={card.imageUrl} width={400} height={200} alt={card.title} className='object-cover' />}
+            {card.imageUrl !== DEFAULT_CARD_IMAGE_URL && <Image src={card.imageUrl} width={400} height={200} alt={card.title} className='object-cover' />}
           </div>
 
           <aside className='hidden flex-shrink-0 md:block'>
