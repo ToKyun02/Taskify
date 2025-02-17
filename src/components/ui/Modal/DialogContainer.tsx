@@ -2,7 +2,7 @@
 
 import { useDialogStore } from '@/stores/modalStore';
 import BaseModal from '@/components/ui/Modal/BaseModal';
-import Button from '@/components/ui/Button/Button';
+import Button from '@/components/ui/Button';
 
 export function DialogContainer() {
   const { isOpen, message, type, buttons, callback, resolvePromise, rejectPromise } = useDialogStore();

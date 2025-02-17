@@ -1,12 +1,12 @@
 'use client';
 
 import { forwardRef } from 'react';
-import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '../ui/Modal/Modal';
+import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '../ui/Modal';
 import { Controller, useForm } from 'react-hook-form';
 import { CardForm, cardFormSchema } from '@/apis/cards/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AssignInput, DateInput, ImageUpload, Input, TagInput, Textarea } from '../ui/Field';
-import Button from '../ui/Button/Button';
+import Button from '../ui/Button';
 import { useCreateCard } from '@/apis/cards/queries';
 import useAlert from '@/hooks/useAlert';
 import { postCardImage } from '@/apis/columns';

@@ -7,7 +7,7 @@ import useMediaQuery from '@/hooks/useMediaQuery';
 import { useDashboardQuery } from '@/apis/dashboards/queries';
 import { useMembersQuery } from '@/apis/members/queries';
 import StackAvatars from '@/components/ui/Avatar/StackAvatars';
-import { ModalHandle } from '@/components/ui/Modal/Modal';
+import { ModalHandle } from '@/components/ui/Modal';
 import InviteDashboard from '@/components/dashboard/InviteDashboard';
 import HeaderButton from '@/components/dashboard-header/HeaderButton';
 import Setting from '@/assets/icons/setting.svg';

@@ -3,11 +3,11 @@
 import Image from 'next/image';
 import { formatDate } from '@/utils/formatDate';
 import { Card } from '@/apis/cards/types';
-import Avatar from '../ui/Avatar/Avatar';
+import Avatar from '../ui/Avatar';
 import TagChip from '../ui/Chip/TagChip';
 import calendar from '@/assets/icons/calendar.svg';
 import { useRef } from 'react';
-import { ModalHandle } from '../ui/Modal/Modal';
+import { ModalHandle } from '../ui/Modal';
 import DetailTodo from '@/components/dashboard/DetailTodo';
 import TodoEditModal from './TodoEditModal';
 import { DEFAULT_CARD_IMAGE_URL } from '@/constants/paths';

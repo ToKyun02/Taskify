@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'motion/react';
 import { useGetUser } from '@/apis/users/queries';
-import Avatar from '@/components/ui/Avatar/Avatar';
+import Avatar from '@/components/ui/Avatar';
 import useAlert from '@/hooks/useAlert';
 import { useLogout } from '@/apis/auth/queries';
 

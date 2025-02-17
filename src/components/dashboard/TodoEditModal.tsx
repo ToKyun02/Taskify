@@ -1,11 +1,11 @@
 import { forwardRef } from 'react';
-import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '../ui/Modal/Modal';
+import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '../ui/Modal';
 import { Card, CardForm, cardFormSchema } from '@/apis/cards/types';
 import { AssignInput, DateInput, ImageUpload, Input, TagInput } from '../ui/Field';
 import { useColumnsQuery } from '@/apis/columns/queries';
 import StatusDropdown from '../ui/Dropdown/StatusDropdown';
 import { Textarea } from '../ui/Field';
-import Button from '../ui/Button/Button';
+import Button from '../ui/Button';
 import useAlert from '@/hooks/useAlert';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';

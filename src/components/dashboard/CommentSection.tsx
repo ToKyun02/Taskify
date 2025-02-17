@@ -3,15 +3,15 @@
 import useAlert from '@/hooks/useAlert';
 import { formatDate } from '@/utils/formatDate';
 import { useEffect, useRef, useState } from 'react';
-import Avatar from '../ui/Avatar/Avatar';
-import Button from '../ui/Button/Button';
+import Avatar from '../ui/Avatar';
+import Button from '../ui/Button';
 import { Textarea } from '../ui/Field';
 import useConfirm from '@/hooks/useConfirm';
 import { useCommentsQuery, useDeleteComment, usePostComment, useUpdateComment } from '@/apis/comments/queries';
 import { CommentForm } from '@/apis/comments/types';
 import { getErrorMessage } from '@/utils/errorMessage';
 import { useInView } from 'react-intersection-observer';
-import { ModalHandle } from '../ui/Modal/Modal';
+import { ModalHandle } from '../ui/Modal';
 import EditCommentModal from './EditCommentModal';
 
 interface CommentSectionProps {

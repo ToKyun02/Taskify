@@ -2,14 +2,14 @@
 
 import { Column } from '@/apis/columns/types';
 import ColumnSettingBtn from './ColumnSettingBtn';
-import Dot from '@/components/ui/Dot/Dot';
+import Dot from '@/components/ui/Dot';
 import DashboardButton from '@/components/ui/Button/DashboardButton';
 import { useCardsQuery } from '@/apis/cards/queries';
 import { useInView } from 'react-intersection-observer';
 import { useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
 import TodoCard from '../dashboard/TodoCard';
-import { ModalHandle } from '../ui/Modal/Modal';
+import { ModalHandle } from '../ui/Modal';
 import CreateCard from './CreateCard';
 import { Draggable } from '@hello-pangea/dnd';
 

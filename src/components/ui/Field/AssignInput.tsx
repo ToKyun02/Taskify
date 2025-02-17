@@ -10,7 +10,7 @@ import PaginationWithCounter from '@/components/pagination/PaginationWithCounter
 import { AnimatePresence, motion } from 'motion/react';
 import Image from 'next/image';
 import XIcon from '@/assets/icons/x.svg';
-import Avatar from '../Avatar/Avatar';
+import Avatar from '../Avatar';
 import { Member } from '@/apis/members/types';
 import { Assignee } from '@/types/common';
 

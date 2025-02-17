@@ -1,10 +1,10 @@
 'use client';
 
 import { useRef } from 'react';
-import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '@/components/ui/Modal/Modal';
+import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '@/components/ui/Modal';
 import Image from 'next/image';
 import Setting from '@/assets/icons/setting.svg';
-import Button from '@/components/ui/Button/Button';
+import Button from '@/components/ui/Button';
 import { useForm } from 'react-hook-form';
 import { Column, ColumnForm, columnFormSchema } from '@/apis/columns/types';
 import { zodResolver } from '@hookform/resolvers/zod';

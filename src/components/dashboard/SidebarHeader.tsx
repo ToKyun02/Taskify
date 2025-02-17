@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import Image from 'next/image';
 import { cn } from '@/utils/helper';
 import CreateDashboard from '@/components/dashboard/CreateDashboard';
-import { ModalHandle } from '@/components/ui/Modal/Modal';
+import { ModalHandle } from '@/components/ui/Modal';
 import add_box from '@/assets/icons/add_box.svg';
 
 export default function SidebarHeader({ open }: { open: boolean }) {

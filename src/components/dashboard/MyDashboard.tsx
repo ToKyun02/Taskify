@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
-import { ModalHandle } from '@/components/ui/Modal/Modal';
+import { ModalHandle } from '@/components/ui/Modal';
 import CreateDashboard from './CreateDashboard';
 import MyDashboardList from './MyDashboardList';
 

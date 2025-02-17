@@ -1,5 +1,5 @@
 import { Member } from '@/apis/members/types';
-import Avatar from './Avatar';
+import Avatar from '.';
 
 interface StackAvatarsProps {
   members: Pick<Member, 'email' | 'profileImageUrl'>[];

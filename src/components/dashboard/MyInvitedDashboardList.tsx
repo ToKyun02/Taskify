@@ -1,16 +1,16 @@
 'use client';
 
-import Button from '../ui/Button/Button';
+import Button from '../ui/Button';
 import { useEffect, useState } from 'react';
 import { useRespondToInvitaion, useMyInvitationsQuery } from '@/apis/invitations/queries';
 import { useInView } from 'react-intersection-observer';
 import useDebounce from '@/hooks/useDebounce';
-import { Card, CardTitle } from '@/components/ui/Card/Card';
+import { Card, CardTitle } from '@/components/ui/Card';
 import MyInvitedEmptyCard from './MyInvitedEmptyCard';
 import { SearchInput } from '../ui/Field';
 import useAlert from '@/hooks/useAlert';
 import { getErrorMessage } from '@/utils/errorMessage';
-import { Table, TableBody, TableCell, TableCol, TableColGroup, TableHead, TableHeadCell, TableRow } from '@/components/ui/Table/Table';
+import { Table, TableBody, TableCell, TableCol, TableColGroup, TableHead, TableHeadCell, TableRow } from '@/components/ui/Table';
 import { RespondToInvitationRequest } from '@/apis/invitations/types';
 
 const PAGE_SIZE = 10;

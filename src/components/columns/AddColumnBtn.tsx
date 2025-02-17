@@ -4,11 +4,11 @@ import { ColumnForm, columnFormSchema, ColumnsResponse } from '@/apis/columns/ty
 import DashboardButton from '@/components/ui/Button/DashboardButton';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '@/components/ui/Modal/Modal';
+import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '@/components/ui/Modal';
 import { useRef } from 'react';
 import useAlert from '@/hooks/useAlert';
 import { Input } from '@/components/ui/Field';
-import Button from '../ui/Button/Button';
+import Button from '../ui/Button';
 import { useColumnMutation } from '@/apis/columns/queries';
 import { getErrorMessage } from '@/utils/errorMessage';
 import xIcon from '@/assets/icons/x.svg';

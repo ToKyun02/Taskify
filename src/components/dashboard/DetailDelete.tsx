@@ -2,7 +2,7 @@
 
 import { useParams, useRouter } from 'next/navigation';
 import { useRemoveDashboard } from '@/apis/dashboards/queries';
-import Button from '@/components/ui/Button/Button';
+import Button from '@/components/ui/Button';
 import useAlert from '@/hooks/useAlert';
 import { getErrorMessage } from '@/utils/errorMessage';
 import useConfirm from '@/hooks/useConfirm';
