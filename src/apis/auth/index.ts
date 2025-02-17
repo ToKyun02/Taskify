@@ -1,21 +1,10 @@
 import axiosClientHelper from '@/utils/network/axiosClientHelper';
 import { LoginFormData, LoginResponse, loginResponseSchema, PutPasswordFormData } from './types';
-import { isAxiosError } from 'axios';
-import { isError } from 'es-toolkit/compat';
+import { safeResponse } from '@/utils/network/safeResponse';
 
-export const login = async (loginFormData: LoginFormData): LoginResponse => {
-  try {
-    const response = await axiosClientHelper.post('/auth/login', loginFormData);
-
-    const result = loginResponseSchema.safeParse(response.data);
-    if (!result.success) {
-      throw new Error('서버에서 받은 데이터가 예상과 다릅니다.');
-    }
-    return response.data;
-  } catch (error) {
-    if (isAxiosError(error)) return error.response?.data;
-    return { message: isError(error) ? error.message : String(error) };
-  }
+export const login = async (loginFormData: LoginFormData) => {
+  const response = await axiosClientHelper.post<LoginResponse>('/auth/login', loginFormData);
+  return safeResponse(response.data, loginResponseSchema);
 };
 
 export const putPassword = async (putPasswordFormData: PutPasswordFormData) => {
