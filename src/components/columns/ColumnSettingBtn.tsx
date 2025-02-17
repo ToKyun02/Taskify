@@ -1,17 +1,17 @@
 'use client';
 
 import { useRef } from 'react';
-import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '@/components/ui/Modal';
 import Image from 'next/image';
-import Setting from '@/assets/icons/setting.svg';
-import Button from '@/components/ui/Button';
 import { useForm } from 'react-hook-form';
-import { Column, ColumnForm, columnFormSchema } from '@/apis/columns/types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Input } from '@/components/ui/Field';
-import { getErrorMessage } from '@/utils/errorMessage';
 import useAlert from '@/hooks/useAlert';
+import { Column, ColumnForm, columnFormSchema } from '@/apis/columns/types';
 import { useColumnMutation } from '@/apis/columns/queries';
+import { getErrorMessage } from '@/utils/errorMessage';
+import { Input } from '@/components/ui/Field';
+import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '@/components/ui/Modal';
+import Button from '@/components/ui/Button';
+import Setting from '@/assets/icons/setting.svg';
 import xIcon from '@/assets/icons/x.svg';
 
 export default function ColumnSettingBtn({ column }: { column: Column }) {

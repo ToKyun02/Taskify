@@ -1,17 +1,17 @@
 'use client';
 
-import { Column } from '@/apis/columns/types';
-import ColumnSettingBtn from './ColumnSettingBtn';
-import Dot from '@/components/ui/Dot';
-import DashboardButton from '@/components/ui/Button/DashboardButton';
-import { useCardsQuery } from '@/apis/cards/queries';
-import { useInView } from 'react-intersection-observer';
 import { useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
-import TodoCard from '../dashboard/TodoCard';
-import { ModalHandle } from '../ui/Modal';
-import CreateCard from './CreateCard';
+import { useInView } from 'react-intersection-observer';
 import { Draggable } from '@hello-pangea/dnd';
+import { Column } from '@/apis/columns/types';
+import { useCardsQuery } from '@/apis/cards/queries';
+import ColumnSettingBtn from '@/components/columns/ColumnSettingBtn';
+import Dot from '@/components/ui/Dot';
+import DashboardButton from '@/components/ui/Button/DashboardButton';
+import TodoCard from '@/components/dashboard/TodoCard';
+import { ModalHandle } from '@/components/ui/Modal';
+import CreateCard from '@/components/columns/CreateCard';
 
 const PAGE_SIZE = 5;
 

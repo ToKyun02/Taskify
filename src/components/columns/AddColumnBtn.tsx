@@ -1,19 +1,19 @@
 'use client';
 
-import { ColumnForm, columnFormSchema, ColumnsResponse } from '@/apis/columns/types';
-import DashboardButton from '@/components/ui/Button/DashboardButton';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '@/components/ui/Modal';
 import { useRef } from 'react';
+import Image from 'next/image';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { some } from 'es-toolkit/compat';
 import useAlert from '@/hooks/useAlert';
-import { Input } from '@/components/ui/Field';
-import Button from '../ui/Button';
+import { ColumnForm, columnFormSchema, ColumnsResponse } from '@/apis/columns/types';
 import { useColumnMutation } from '@/apis/columns/queries';
 import { getErrorMessage } from '@/utils/errorMessage';
+import DashboardButton from '@/components/ui/Button/DashboardButton';
+import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '@/components/ui/Modal';
+import { Input } from '@/components/ui/Field';
+import Button from '@/components/ui/Button';
 import xIcon from '@/assets/icons/x.svg';
-import Image from 'next/image';
-import { some } from 'es-toolkit/compat';
 
 interface AddColumnBtnProps {
   dashboardId: number;
