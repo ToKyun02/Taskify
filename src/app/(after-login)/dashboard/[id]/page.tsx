@@ -1,7 +1,7 @@
-import ColumnList from '@/components/columns/ColumnList';
 import { Metadata } from 'next';
-import axiosServerHelper from '@/utils/network/axiosServerHelper';
+import ColumnList from '@/components/columns/ColumnList';
 import { Dashboard, dashboardSchema } from '@/apis/dashboards/types';
+import axiosServerHelper from '@/utils/network/axiosServerHelper';
 import { safeResponse } from '@/utils/network/safeResponse';
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {

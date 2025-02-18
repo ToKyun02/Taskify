@@ -1,13 +1,13 @@
+import { redirect } from 'next/navigation';
+import { Dashboard, dashboardSchema } from '@/apis/dashboards/types';
+import axiosServerHelper from '@/utils/network/axiosServerHelper';
+import { safeResponse } from '@/utils/network/safeResponse';
 import { Page, PageInner } from '@/components/layout/Page';
 import DetailModify from '@/components/dashboard/DetailModify';
 import DetailMembers from '@/components/dashboard/DetailMembers';
 import DetailInvited from '@/components/dashboard/DetailInvited';
 import GoBackLink from '@/components/ui/Link/GoBackLink';
 import DetailDelete from '@/components/dashboard/DetailDelete';
-import axiosServerHelper from '@/utils/network/axiosServerHelper';
-import { redirect } from 'next/navigation';
-import { Dashboard, dashboardSchema } from '@/apis/dashboards/types';
-import { safeResponse } from '@/utils/network/safeResponse';
 
 export default async function DashboardEditPage({ params }: { params: Promise<{ id: string }> }) {
   const id = (await params).id;

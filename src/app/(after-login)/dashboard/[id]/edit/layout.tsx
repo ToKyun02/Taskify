@@ -1,8 +1,8 @@
 import { ReactNode } from 'react';
 import { Metadata } from 'next';
 import axiosServerHelper from '@/utils/network/axiosServerHelper';
-import { Dashboard, dashboardSchema } from '@/apis/dashboards/types';
 import { safeResponse } from '@/utils/network/safeResponse';
+import { Dashboard, dashboardSchema } from '@/apis/dashboards/types';
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const resolvedParams = await params;
