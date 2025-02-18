@@ -111,7 +111,7 @@ export default function CommentSection({ cardId, columnId, dashboardId }: Commen
 
       <EditCommentModal ref={editModalRef} initialContent={editingComment?.content || ''} onSave={handleSaveComment} />
 
-      <div className='min-h-[78px]'>
+      <div className='grid min-h-[78px] gap-4'>
         {isLoading && <div className='pt-6 text-center text-md font-medium text-gray-50'>댓글을 불러오고 있습니다...</div>}
 
         {!isLoading && comments.length === 0 && <div className='pt-6 text-center text-md font-medium text-gray-50'>작성된 댓글이 없습니다</div>}

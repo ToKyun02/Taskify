@@ -13,6 +13,7 @@ import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '@/co
 import Button from '@/components/ui/Button';
 import Setting from '@/assets/icons/setting.svg';
 import xIcon from '@/assets/icons/x.svg';
+import useConfirm from '@/hooks/useConfirm';
 
 export default function ColumnSettingBtn({ column }: { column: Column }) {
   const {
@@ -31,6 +32,7 @@ export default function ColumnSettingBtn({ column }: { column: Column }) {
   const removeModalRef = useRef<ModalHandle>(null);
   const { update, remove } = useColumnMutation(column.dashboardId);
   const alert = useAlert();
+  const confirm = useConfirm();
 
   const handleReset = (updatedTitle?: string) => {
     reset({
@@ -39,9 +41,11 @@ export default function ColumnSettingBtn({ column }: { column: Column }) {
     updateModalRef.current?.close();
   };
 
-  const onClick = () => {
-    updateModalRef.current?.close();
-    removeModalRef.current?.open();
+  const onClick = async () => {
+    const result = await confirm('컬럼의 모든 카드가 삭제됩니다.');
+    if (result) {
+      await onDelete();
+    }
   };
 
   const onSubmit = async (formData: ColumnForm) => {
@@ -71,14 +75,19 @@ export default function ColumnSettingBtn({ column }: { column: Column }) {
   const isDisabled = !isDirty || !isValid || isSubmitting;
 
   return (
-    <div className='cursor-pointer'>
-      <Image src={Setting} alt='관리 버튼' width={18} height={18} onClick={() => updateModalRef.current?.open()} />
+    <>
+      <button type='button' className='flex h-6 w-6 cursor-pointer items-center justify-center rounded-md hover:bg-gray-20' onClick={() => updateModalRef.current?.open()}>
+        <Image src={Setting} alt='관리 버튼' />
+      </button>
+
       {/* 컬럼 수정 모달 */}
       <Modal ref={updateModalRef}>
         <ModalContent>
           <ModalHeader className='flex justify-between'>
             <span>컬럼 관리</span>
-            <Image src={xIcon} alt='컬럼 관리 취소 아이콘' width={24} height={24} onClick={() => handleReset()} className='cursor-pointer' />
+            <button type='button' className='flex h-6 w-6 cursor-pointer items-center justify-center' onClick={() => handleReset()}>
+              <Image src={xIcon} alt='컬럼 관리 취소 아이콘' />
+            </button>
           </ModalHeader>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Input label='이름' error={errors.title?.message} placeholder='컬럼 이름을 입력해주세요' {...register('title')} />
@@ -93,24 +102,6 @@ export default function ColumnSettingBtn({ column }: { column: Column }) {
           </form>
         </ModalContent>
       </Modal>
-      {/* 컬럼 제거 모달 */}
-      <Modal ref={removeModalRef}>
-        <ModalContent>
-          <div className='py-3 text-center'>컬럼의 모든 카드가 삭제됩니다.</div>
-          <ModalFooter>
-            <Button
-              variant='outline'
-              onClick={() => {
-                removeModalRef.current?.close();
-                updateModalRef.current?.open();
-              }}
-            >
-              취소
-            </Button>
-            <Button onClick={async () => await onDelete()}>삭제</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </div>
+    </>
   );
 }

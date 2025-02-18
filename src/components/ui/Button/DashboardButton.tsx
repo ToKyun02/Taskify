@@ -27,7 +27,7 @@ import plusIcon from '@/assets/icons/plus.svg';
 const dashboardButtonStyles = cva('', {
   variants: {
     variant: {
-      addTodo: 'flex h-8 w-full items-center justify-center rounded-md border border-gray-30 bg-white hover:shadow-md md:h-10 lg:w-[314px]',
+      addTodo: 'flex h-8 w-full items-center justify-center rounded-md border border-gray-30 bg-white hover:shadow-md md:h-10',
       deleteDashboard: 'h-[52px] w-full rounded-lg border border-gray-30 bg-white text-lg font-medium hover:shadow-md md:h-[62px] md:w-[320px] md:text-2lg',
       createDashboard: 'flex h-[58px] w-full items-center justify-center gap-3 rounded-md border border-gray-30 bg-white p-5 hover:shadow-md md:h-[70px]',
       column: 'flex h-[66px] w-full items-center justify-center gap-3 rounded-lg border border-gray-30 bg-white text-lg font-bold text-gray-70 hover:shadow-md md:h-[70px] md:text-2lg lg:w-[354px]',
