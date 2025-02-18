@@ -13,8 +13,9 @@ import {
 } from '@/apis/dashboards/types';
 
 export const useDashboardsQuery = (params: GetDashboardsRequest) => {
+  const { page, size, navigationMethod, cursorId } = params;
   return useQuery({
-    queryKey: ['dashboards', params],
+    queryKey: ['dashboards', page, size, navigationMethod, cursorId],
     queryFn: () => getDashboards(params),
   });
 };
