@@ -13,6 +13,7 @@ import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '@/co
 import Button from '@/components/ui/Button';
 import Setting from '@/assets/icons/setting.svg';
 import xIcon from '@/assets/icons/x.svg';
+import useConfirm from '@/hooks/useConfirm';
 
 export default function ColumnSettingBtn({ column }: { column: Column }) {
   const {
@@ -31,6 +32,7 @@ export default function ColumnSettingBtn({ column }: { column: Column }) {
   const removeModalRef = useRef<ModalHandle>(null);
   const { update, remove } = useColumnMutation(column.dashboardId);
   const alert = useAlert();
+  const confirm = useConfirm();
 
   const handleReset = (updatedTitle?: string) => {
     reset({
@@ -39,9 +41,11 @@ export default function ColumnSettingBtn({ column }: { column: Column }) {
     updateModalRef.current?.close();
   };
 
-  const onClick = () => {
-    updateModalRef.current?.close();
-    removeModalRef.current?.open();
+  const onClick = async () => {
+    const result = await confirm('컬럼의 모든 카드가 삭제됩니다.');
+    if (result) {
+      await onDelete();
+    }
   };
 
   const onSubmit = async (formData: ColumnForm) => {
@@ -96,25 +100,6 @@ export default function ColumnSettingBtn({ column }: { column: Column }) {
               </Button>
             </ModalFooter>
           </form>
-        </ModalContent>
-      </Modal>
-
-      {/* 컬럼 제거 모달 */}
-      <Modal ref={removeModalRef}>
-        <ModalContent>
-          <div className='py-3 text-center'>컬럼의 모든 카드가 삭제됩니다.</div>
-          <ModalFooter>
-            <Button
-              variant='outline'
-              onClick={() => {
-                removeModalRef.current?.close();
-                updateModalRef.current?.open();
-              }}
-            >
-              취소
-            </Button>
-            <Button onClick={async () => await onDelete()}>삭제</Button>
-          </ModalFooter>
         </ModalContent>
       </Modal>
     </>
