@@ -7,7 +7,9 @@ export default function loading() {
     <Page>
       <PageInner>
         <GoBackSkeleton />
-        <CardSkeleton count={2} />
+        <div className='grid gap-4'>
+          <CardSkeleton count={2} />
+        </div>
       </PageInner>
     </Page>
   );
