@@ -4,7 +4,7 @@ import { useParams, useRouter } from 'next/navigation';
 import useAlert from '@/hooks/useAlert';
 import useConfirm from '@/hooks/useConfirm';
 import { useRemoveDashboard } from '@/apis/dashboards/queries';
-import { getErrorMessage } from '@/utils/errorMessage';
+import { getErrorMessage } from '@/utils/network/errorMessage';
 import Button from '@/components/ui/Button';
 
 export default function DetailDelete() {

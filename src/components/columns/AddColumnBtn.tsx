@@ -8,7 +8,7 @@ import { some } from 'es-toolkit/compat';
 import useAlert from '@/hooks/useAlert';
 import { ColumnForm, columnFormSchema, ColumnsResponse } from '@/apis/columns/types';
 import { useColumnMutation } from '@/apis/columns/queries';
-import { getErrorMessage } from '@/utils/errorMessage';
+import { getErrorMessage } from '@/utils/network/errorMessage';
 import DashboardButton from '@/components/ui/Button/DashboardButton';
 import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '@/components/ui/Modal';
 import { Input } from '@/components/ui/Field';

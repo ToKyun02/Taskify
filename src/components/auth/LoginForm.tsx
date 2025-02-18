@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import useAlert from '@/hooks/useAlert';
 import { loginSchema, LoginFormData } from '@/apis/auth/types';
 import { useLogin } from '@/apis/auth/queries';
-import { getErrorMessage } from '@/utils/errorMessage';
+import { getErrorMessage } from '@/utils/network/errorMessage';
 import Field from '@/components/auth/Field';
 import SubmitButton from '@/components/auth/SubmitButton';
 import { LOGIN_FORM_PLACEHOLDER } from '@/constants/auth';

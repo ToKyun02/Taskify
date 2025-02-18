@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import useAlert from '@/hooks/useAlert';
 import { signupSchema, SignupFormData } from '@/apis/users/types';
 import { useSignup } from '@/apis/users/queries';
-import { getErrorMessage } from '@/utils/errorMessage';
+import { getErrorMessage } from '@/utils/network/errorMessage';
 import Field from '@/components/auth/Field';
 import SubmitButton from '@/components/auth/SubmitButton';
 import Checkbox from '@/components/auth/Checkbox';

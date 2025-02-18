@@ -9,7 +9,7 @@ import TagChip from '@/components/ui/Chip/TagChip';
 import { ModalHandle } from '@/components/ui/Modal';
 import DetailTodo from '@/components/todo/DetailTodo';
 import TodoEditModal from '@/components/todo/TodoEditModal';
-import { DEFAULT_CARD_IMAGE_URL } from '@/constants/paths';
+import { DEFAULT_CARD_IMAGE_URL } from '@/constants/todo';
 import calendar from '@/assets/icons/calendar.svg';
 
 interface TodoCardProps {

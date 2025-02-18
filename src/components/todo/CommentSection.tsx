@@ -7,7 +7,7 @@ import useConfirm from '@/hooks/useConfirm';
 import { useCommentsQuery, useDeleteComment, usePostComment, useUpdateComment } from '@/apis/comments/queries';
 import { CommentForm } from '@/apis/comments/types';
 import { formatDate } from '@/utils/formatDate';
-import { getErrorMessage } from '@/utils/errorMessage';
+import { getErrorMessage } from '@/utils/network/errorMessage';
 import Avatar from '@/components/ui/Avatar';
 import Button from '@/components/ui/Button';
 import { Textarea } from '@/components/ui/Field';

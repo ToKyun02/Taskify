@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import useAlert from '@/hooks/useAlert';
 import { useUpdateDashboard } from '@/apis/dashboards/queries';
 import { Dashboard, dashboardFormSchema, DashboardFormType } from '@/apis/dashboards/types';
-import { getErrorMessage } from '@/utils/errorMessage';
+import { getErrorMessage } from '@/utils/network/errorMessage';
 import { Card, CardTitle } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Field';
 import ColorPicker from '@/components/ui/Chip/ColorPicker';

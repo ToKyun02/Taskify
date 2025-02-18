@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import useAlert from '@/hooks/useAlert';
 import { inviteDashboardFormSchema, InviteDashboardFormType } from '@/apis/dashboards/types';
 import { useInviteDashboard } from '@/apis/dashboards/queries';
-import { getErrorMessage } from '@/utils/errorMessage';
+import { getErrorMessage } from '@/utils/network/errorMessage';
 import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '@/components/ui/Modal';
 import { Input } from '@/components/ui/Field';
 import Button from '@/components/ui/Button';

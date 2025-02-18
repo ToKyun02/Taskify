@@ -7,7 +7,7 @@ import Button from '@/components/ui/Button';
 import useAlert from '@/hooks/useAlert';
 import useConfirm from '@/hooks/useConfirm';
 import { useCancelInviteDashboard, useDashboardInvitationsQuery } from '@/apis/dashboards/queries';
-import { getErrorMessage } from '@/utils/errorMessage';
+import { getErrorMessage } from '@/utils/network/errorMessage';
 import { Card, CardTitle } from '@/components/ui/Card';
 import { ModalHandle } from '@/components/ui/Modal';
 import InviteDashboard from '@/components/dashboard/InviteDashboard';

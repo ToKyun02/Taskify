@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import useAlert from '@/hooks/useAlert';
 import { Column, ColumnForm, columnFormSchema } from '@/apis/columns/types';
 import { useColumnMutation } from '@/apis/columns/queries';
-import { getErrorMessage } from '@/utils/errorMessage';
+import { getErrorMessage } from '@/utils/network/errorMessage';
 import { Input } from '@/components/ui/Field';
 import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '@/components/ui/Modal';
 import Button from '@/components/ui/Button';

@@ -7,7 +7,7 @@ import { useColumnsQuery } from '@/apis/columns/queries';
 import { useUpdateCard } from '@/apis/cards/queries';
 import { postCardImage } from '@/apis/columns';
 import convertDateFormat from '@/utils/convertDateFormat';
-import { getErrorMessage } from '@/utils/errorMessage';
+import { getErrorMessage } from '@/utils/network/errorMessage';
 import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '@/components/ui/Modal';
 import { AssignInput, DateInput, ImageUpload, Input, TagInput } from '@/components/ui/Field';
 import StatusDropdown from '@/components/ui/Dropdown/StatusDropdown';

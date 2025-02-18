@@ -7,12 +7,12 @@ import useAlert from '@/hooks/useAlert';
 import { CardForm, cardFormSchema } from '@/apis/cards/types';
 import { useCreateCard } from '@/apis/cards/queries';
 import { postCardImage } from '@/apis/columns';
-import { getErrorMessage } from '@/utils/errorMessage';
+import { getErrorMessage } from '@/utils/network/errorMessage';
 import convertDateFormat from '@/utils/convertDateFormat';
 import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '@/components/ui/Modal';
 import { AssignInput, DateInput, ImageUpload, Input, TagInput, Textarea } from '@/components/ui/Field';
 import Button from '@/components/ui/Button';
-import { DEFAULT_CARD_IMAGE_URL } from '@/constants/paths';
+import { DEFAULT_CARD_IMAGE_URL } from '@/constants/todo';
 
 const DEFAULT_POST_IMAGE = { imageUrl: DEFAULT_CARD_IMAGE_URL } as const;
 

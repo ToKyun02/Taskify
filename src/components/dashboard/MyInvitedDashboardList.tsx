@@ -7,7 +7,7 @@ import useDebounce from '@/hooks/useDebounce';
 import useAlert from '@/hooks/useAlert';
 import { useRespondToInvitaion, useMyInvitationsQuery } from '@/apis/invitations/queries';
 import { RespondToInvitationRequest } from '@/apis/invitations/types';
-import { getErrorMessage } from '@/utils/errorMessage';
+import { getErrorMessage } from '@/utils/network/errorMessage';
 import { Card, CardTitle } from '@/components/ui/Card';
 import MyInvitedEmptyCard from '@/components/dashboard/MyInvitedEmptyCard';
 import { SearchInput } from '@/components/ui/Field';

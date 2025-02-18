@@ -6,7 +6,7 @@ import { isAxiosError } from 'axios';
 import useAlert from '@/hooks/useAlert';
 import useConfirm from '@/hooks/useConfirm';
 import { useMembersQuery, useRemoveMember } from '@/apis/members/queries';
-import { getErrorMessage } from '@/utils/errorMessage';
+import { getErrorMessage } from '@/utils/network/errorMessage';
 import PaginationWithCounter from '@/components/pagination/PaginationWithCounter';
 import { Table, TableBody, TableCell, TableCol, TableColGroup, TableHead, TableHeadCell, TableRow } from '@/components/ui/Table';
 import { Card, CardTitle } from '@/components/ui/Card';
