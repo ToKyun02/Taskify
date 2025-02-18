@@ -42,10 +42,10 @@ export default function EditCommentModal({ initialContent, onSave, ref }: EditCo
         <ModalHeader>댓글 수정</ModalHeader>
         <Textarea value={content} onChange={(e) => setContent(e.target.value)} autoFocus />
         <ModalFooter>
-          <Button variant='outline' size='sm' onClick={handleCancel}>
+          <Button variant='outline' onClick={handleCancel}>
             취소
           </Button>
-          <Button size='sm' onClick={handleSubmit} disabled={isSubmitting || !isChanged}>
+          <Button onClick={handleSubmit} disabled={isSubmitting || !isChanged}>
             {isSubmitting ? '저장 중...' : '저장'}
           </Button>
         </ModalFooter>
