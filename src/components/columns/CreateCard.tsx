@@ -3,6 +3,7 @@
 import { Ref } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { isArray } from 'es-toolkit/compat';
 import useAlert from '@/hooks/useAlert';
 import { CardForm, cardFormSchema } from '@/apis/cards/types';
 import { useCreateCard } from '@/apis/cards/queries';
@@ -100,7 +101,8 @@ export default function CreateCard({ dashboardId, columnId, ref }: CreateCardPro
             name='tags'
             control={control}
             render={({ field }) => {
-              return <TagInput label='태그' error={errors.tags?.message} placeholder='입력후 Enter' {...field} />;
+              const errorMessage = isArray(errors.tags) ? errors.tags.find((error) => !!error)?.message : undefined;
+              return <TagInput label='태그' error={errorMessage} placeholder='입력후 Enter' {...field} />;
             }}
           />
           <Controller

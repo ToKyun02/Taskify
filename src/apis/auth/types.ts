@@ -31,9 +31,9 @@ export type LoginResponse = Promise<LoginSuccessResponse | LoginFailResponse>;
 
 export const passwordSchema = z
   .object({
-    password: z.string().min(PASSWORD_PUT_FORM_VALID_LENGTH.PASSWORD.MIN, PASSWORD_PUT_FORM_ERROR_MESSAGE.PASSWORD.MIN),
-    newPassword: z.string().min(PASSWORD_PUT_FORM_VALID_LENGTH.NEW_PASSWORD.MIN, PASSWORD_PUT_FORM_ERROR_MESSAGE.NEW_PASSWORD.MIN),
-    newPasswordConfirm: z.string(),
+    password: z.string().min(PASSWORD_PUT_FORM_VALID_LENGTH.PASSWORD.MIN, PASSWORD_PUT_FORM_ERROR_MESSAGE.PASSWORD.MIN).trim(),
+    newPassword: z.string().min(PASSWORD_PUT_FORM_VALID_LENGTH.NEW_PASSWORD.MIN, PASSWORD_PUT_FORM_ERROR_MESSAGE.NEW_PASSWORD.MIN).trim(),
+    newPasswordConfirm: z.string().trim(),
   })
   .refine((check) => check.newPassword === check.newPasswordConfirm, {
     message: PASSWORD_PUT_FORM_ERROR_MESSAGE.NEW_PASSWORD_CONFRIM.NOT_MATCH,

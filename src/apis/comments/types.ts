@@ -16,7 +16,7 @@ export const commentSchema = z.object({
 export type Comment = z.infer<typeof commentSchema>;
 
 export const commentFormSchema = z.object({
-  content: z.string(),
+  content: z.string().trim(),
   cardId: z.number(),
   columnId: z.number(),
   dashboardId: z.number(),

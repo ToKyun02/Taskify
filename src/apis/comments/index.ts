@@ -26,7 +26,7 @@ export const getComments = async (params: GetCommentsParams) => {
  */
 export const putComment = async (commentId: number, putCommentForm: PutCommentForm) => {
   const response = await axiosClientHelper.put<Comment>(`/comments/${commentId}`, putCommentForm);
-  return safeResponse(response.data, commentsResponseSchema);
+  return safeResponse(response.data, commentSchema);
 };
 
 /**

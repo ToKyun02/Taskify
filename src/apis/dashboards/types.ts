@@ -30,6 +30,7 @@ export type GetDashboardsRequest = Partial<BasePagination> & {
 export const dashboardFormSchema = z.object({
   title: z
     .string()
+    .trim()
     .min(DASHBOARD_FORM_VALID_LENGTH.TITLE.MIN, { message: DASHBOARD_FORM_ERROR_MESSAGE.TITLE.MIN })
     .max(DASHBOARD_FORM_VALID_LENGTH.TITLE.MAX, { message: DASHBOARD_FORM_ERROR_MESSAGE.TITLE.MAX }),
   color: z.enum(DEFAULT_COLORS),
