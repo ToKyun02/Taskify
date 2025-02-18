@@ -1,8 +1,8 @@
 import { ChangeEvent, InputHTMLAttributes, useEffect, useId, useRef } from 'react';
 import Image from 'next/image';
 import { cn } from '@/utils/helper';
-import { BaseError, BaseItem, BaseLabel } from './Base';
-import { BaseField } from './types';
+import { BaseError, BaseItem, BaseLabel } from '@/components/ui/Field/Base';
+import { BaseField } from '@/components/ui/Field/types';
 import deleteIcon from '@/assets/icons/x_white.svg';
 import addIcon from '@/assets/icons/plus.svg';
 

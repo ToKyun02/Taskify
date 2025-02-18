@@ -1,5 +1,5 @@
-import { cn } from '@/utils/helper';
 import { HTMLAttributes } from 'react';
+import { cn } from '@/utils/helper';
 
 interface NumberChipProps extends HTMLAttributes<HTMLSpanElement> {
   label: number;

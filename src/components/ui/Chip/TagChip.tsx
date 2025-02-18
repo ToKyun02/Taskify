@@ -1,6 +1,6 @@
 import { HTMLAttributes } from 'react';
-import { DEFAULT_COLORS } from '@/constants/colors';
 import { cn, getColorByString } from '@/utils/helper';
+import { DEFAULT_COLORS } from '@/constants/colors';
 
 /**
  * 하나의 color 값으로 배경색과 폰트색상에 적용합니다.

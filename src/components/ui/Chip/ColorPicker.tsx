@@ -1,8 +1,8 @@
 import Image from 'next/image';
+import { cn } from '@/utils/helper';
+import ColorChip from '@/components/ui/Chip/ColorChip';
 import { DEFAULT_COLORS } from '@/constants/colors';
 import check_icon from '@/assets/icons/check.svg';
-import ColorChip from './ColorChip';
-import { cn } from '@/utils/helper';
 
 /**
  * input name을 통한 radio group으로 구성된 컬러 피커 입니다.

@@ -1,8 +1,8 @@
 import { forwardRef, InputHTMLAttributes } from 'react';
 import Image from 'next/image';
 import { cn } from '@/utils/helper';
-import { baseFieldClassName } from './Base';
-import { BaseField } from './types';
+import { baseFieldClassName } from '@/components/ui/Field/Base';
+import { BaseField } from '@/components/ui/Field/types';
 import searchIcon from '@/assets/icons/search.svg';
 
 type SearchInputProps = BaseField & InputHTMLAttributes<HTMLInputElement>;

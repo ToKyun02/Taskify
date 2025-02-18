@@ -1,7 +1,7 @@
 import { forwardRef, TextareaHTMLAttributes, useId } from 'react';
 import { cn } from '@/utils/helper';
-import { BaseError, baseErrorClassName, baseFieldClassName, BaseItem, BaseLabel } from './Base';
-import { BaseField } from './types';
+import { BaseError, baseErrorClassName, baseFieldClassName, BaseItem, BaseLabel } from '@/components/ui/Field/Base';
+import { BaseField } from '@/components/ui/Field/types';
 
 type TextareaProps = BaseField & TextareaHTMLAttributes<HTMLTextAreaElement>;
 

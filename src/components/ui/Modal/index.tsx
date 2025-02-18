@@ -1,6 +1,6 @@
 import { forwardRef, HTMLAttributes, PropsWithChildren, useImperativeHandle, useState } from 'react';
-import BaseModal from './BaseModal';
 import { cn } from '@/utils/helper';
+import BaseModal from '@/components/ui/Modal/BaseModal';
 
 /**
  * Modal 컴포넌트 (컨텐츠 주입형)

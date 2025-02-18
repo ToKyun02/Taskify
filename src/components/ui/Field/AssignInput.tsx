@@ -1,18 +1,18 @@
 'use client';
 
 import { InputHTMLAttributes, useId, useRef, useState, useEffect } from 'react';
-import { cn } from '@/utils/helper';
-import { BaseError, baseErrorClassName, baseFieldClassName, BaseItem, BaseLabel } from './Base';
-import { BaseField } from './types';
-import { useMembersQuery } from '@/apis/members/queries';
-import { useParams } from 'next/navigation';
-import PaginationWithCounter from '@/components/pagination/PaginationWithCounter';
-import { AnimatePresence, motion } from 'motion/react';
 import Image from 'next/image';
-import XIcon from '@/assets/icons/x.svg';
-import Avatar from '../Avatar';
+import { useParams } from 'next/navigation';
+import { AnimatePresence, motion } from 'motion/react';
+import { useMembersQuery } from '@/apis/members/queries';
 import { Member } from '@/apis/members/types';
+import { cn } from '@/utils/helper';
+import { BaseError, baseErrorClassName, baseFieldClassName, BaseItem, BaseLabel } from '@/components/ui/Field/Base';
+import { BaseField } from '@/components/ui/Field/types';
+import PaginationWithCounter from '@/components/pagination/PaginationWithCounter';
+import Avatar from '@/components/ui/Avatar';
 import { Assignee } from '@/types/common';
+import XIcon from '@/assets/icons/x.svg';
 
 const PAGE_SIZE = 5;
 
