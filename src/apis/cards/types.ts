@@ -11,7 +11,7 @@ const cardBaseSchema = z.object({
   dueDate: z.union([z.string(), z.instanceof(Date)]).refine((date) => isValidDate(date), {
     message: '유효하지 않은 날짜 형식입니다.',
   }),
-  tags: z.array(z.string().trim()),
+  tags: z.array(z.string().trim().max(10, '10글자 이하로 작성해주세요')),
   imageUrl: z.string().url(),
 });
 

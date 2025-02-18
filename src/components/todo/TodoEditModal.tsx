@@ -1,6 +1,7 @@
 import { Ref } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { isArray } from 'es-toolkit/compat';
 import useAlert from '@/hooks/useAlert';
 import { Card, CardForm, cardFormSchema } from '@/apis/cards/types';
 import { useColumnsQuery } from '@/apis/columns/queries';
@@ -105,7 +106,14 @@ export default function TodoEditModal({ card, ref }: TodoEditModalProps) {
 
             <Controller name='dueDate' control={control} render={({ field }) => <DateInput label='마감일' error={errors.dueDate?.message} placeholder='날짜를 입력해주세요' required {...field} />} />
 
-            <Controller name='tags' control={control} render={({ field }) => <TagInput label='태그' error={errors.tags?.message} placeholder='입력 후 Enter' {...field} />} />
+            <Controller
+              name='tags'
+              control={control}
+              render={({ field }) => {
+                const errorMessage = isArray(errors.tags) ? errors.tags.find((error) => !!error)?.message : undefined;
+                return <TagInput label='태그' error={errorMessage} placeholder='입력 후 Enter' {...field} />;
+              }}
+            />
 
             <Controller name='imageUrl' control={control} render={({ field }) => <ImageUpload label='이미지' error={errors.imageUrl?.message} defaultValue={card.imageUrl} {...field} />} />
           </div>
