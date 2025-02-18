@@ -1,6 +1,6 @@
 import axiosClientHelper from '@/utils/network/axiosClientHelper';
-import { CardImageForm, CardImageResponse, cardImageResponseSchema, Column, ColumnForm, columnSchema, ColumnsResponse, columnsResponseSchema, GetColumnsParams } from './types';
 import { safeResponse } from '@/utils/network/safeResponse';
+import { CardImageForm, CardImageResponse, cardImageResponseSchema, Column, ColumnForm, columnSchema, ColumnsResponse, columnsResponseSchema, GetColumnsParams } from '@/apis/columns/types';
 
 /**
  * column 생성

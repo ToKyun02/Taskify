@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { createProfileImage, getUser, signup, updateUser } from '.';
-import { CreateProfileImageForm, SignupFormData, UpdateUserForm } from './types';
+import { createProfileImage, getUser, signup, updateUser } from '@/apis/users';
+import { CreateProfileImageForm, SignupFormData, UpdateUserForm } from '@/apis/users/types';
 
 export const useGetUser = () => {
   return useQuery({

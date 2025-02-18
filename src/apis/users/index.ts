@@ -1,6 +1,6 @@
 import axiosClientHelper from '@/utils/network/axiosClientHelper';
-import { CreateProfileImageForm, ProfileImageUrlResponse, profileImageUrlResponseSchema, SignupFormData, SignupResponse, UpdateUserForm, User, userSchema } from './types';
 import { safeResponse } from '@/utils/network/safeResponse';
+import { CreateProfileImageForm, ProfileImageUrlResponse, profileImageUrlResponseSchema, SignupFormData, SignupResponse, UpdateUserForm, User, userSchema } from '@/apis/users/types';
 
 /**
  * signup

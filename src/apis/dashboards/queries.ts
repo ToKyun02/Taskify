@@ -1,8 +1,16 @@
 'use client';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { cancelDashboardInvitation, createDashboard, deleteDashboard, getDashboardDetails, getDashboardInvitations, getDashboards, inviteDashboard, updateDashboard } from '.';
-import { CancelInviteDashboardRequest, CreateDashboardRequest, Dashboard, GetDashboardInvitationsRequest, GetDashboardsRequest, InviteDashboardRequest, UpdateDashboardRequest } from './types';
+import { cancelDashboardInvitation, createDashboard, deleteDashboard, getDashboardDetails, getDashboardInvitations, getDashboards, inviteDashboard, updateDashboard } from '@/apis/dashboards';
+import {
+  CancelInviteDashboardRequest,
+  CreateDashboardRequest,
+  Dashboard,
+  GetDashboardInvitationsRequest,
+  GetDashboardsRequest,
+  InviteDashboardRequest,
+  UpdateDashboardRequest,
+} from '@/apis/dashboards/types';
 
 export const useDashboardsQuery = (params: GetDashboardsRequest) => {
   return useQuery({

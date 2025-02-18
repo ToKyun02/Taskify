@@ -1,8 +1,8 @@
 'use client';
 
 import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getMyInvitations, respondToInvitation } from '.';
-import { GetMyInvitationsRequest, RespondToInvitationRequest } from './types';
+import { getMyInvitations, respondToInvitation } from '@/apis/invitations/';
+import { GetMyInvitationsRequest, RespondToInvitationRequest } from '@/apis/invitations/types';
 
 export const useMyInvitationsQuery = (params: GetMyInvitationsRequest) => {
   return useInfiniteQuery({
