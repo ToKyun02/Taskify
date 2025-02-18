@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { RootInner } from './Inner';
-import { BaseLinkItem, IconLinkItem } from './type';
+import { RootInner } from '@/components/landing/layout/Inner';
+import { BaseLinkItem, IconLinkItem } from '@/components/landing/layout/type';
 
 export default function Footer({ menus, sns }: { menus: BaseLinkItem[]; sns: IconLinkItem[] }) {
   return (

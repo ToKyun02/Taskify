@@ -1,16 +1,17 @@
 'use client';
 
-import { forwardRef, useEffect, useState } from 'react';
-import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '../ui/Modal/Modal';
-import { Textarea } from '../ui/Field';
-import Button from '../ui/Button/Button';
+import { Ref, useEffect, useState } from 'react';
+import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '@/components/ui/Modal';
+import { Textarea } from '@/components/ui/Field';
+import Button from '@/components/ui/Button';
 
 interface EditCommentModalProps {
   initialContent: string;
   onSave: (content: string) => Promise<void>;
+  ref: Ref<ModalHandle>;
 }
 
-const EditCommentModal = forwardRef<ModalHandle, EditCommentModalProps>(({ initialContent, onSave }, ref) => {
+export default function EditCommentModal({ initialContent, onSave, ref }: EditCommentModalProps) {
   const [content, setContent] = useState(initialContent);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -51,7 +52,4 @@ const EditCommentModal = forwardRef<ModalHandle, EditCommentModalProps>(({ initi
       </ModalContent>
     </Modal>
   );
-});
-
-EditCommentModal.displayName = 'EditCommentModal';
-export default EditCommentModal;
+}

@@ -1,7 +1,7 @@
 import { z } from 'zod';
+import { userSchema } from '@/apis/users/types';
 import { DASHBOARD_FORM_ERROR_MESSAGE, DASHBOARD_FORM_VALID_LENGTH } from '@/constants/dashboard';
 import { DEFAULT_COLORS } from '@/constants/colors';
-import { userSchema } from '@/apis/users/types';
 import { BasePagination, NavigationMethod } from '@/types/common';
 
 export const dashboardSchema = z.object({

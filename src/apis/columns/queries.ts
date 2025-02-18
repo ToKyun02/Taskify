@@ -1,8 +1,8 @@
 'use client';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { deleteColumn, getColumns, postColumn, putColumn } from '.';
-import { ColumnForm } from './types';
+import { deleteColumn, getColumns, postColumn, putColumn } from '@/apis/columns';
+import { ColumnForm } from '@/apis/columns/types';
 
 export const useColumnsQuery = (dashboardId: number) => {
   return useQuery({

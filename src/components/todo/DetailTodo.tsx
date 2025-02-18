@@ -1,29 +1,30 @@
 'use client';
 
-import { forwardRef } from 'react';
+import { Ref } from 'react';
 import Image from 'next/image';
 import useAlert from '@/hooks/useAlert';
+import useConfirm from '@/hooks/useConfirm';
 import { Card } from '@/apis/cards/types';
 import { useColumnsQuery } from '@/apis/columns/queries';
 import { useRemoveCard } from '@/apis/cards/queries';
-import useConfirm from '@/hooks/useConfirm';
-import CommentSection from '@/components/dashboard/CommentSection';
-import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '@/components/ui/Modal/Modal';
-import Avatar from '@/components/ui/Avatar/Avatar';
+import { getErrorMessage } from '@/utils/network/errorMessage';
+import { formatDate } from '@/utils/formatDate';
+import CommentSection from '@/components/todo/CommentSection';
+import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '@/components/ui/Modal';
+import Avatar from '@/components/ui/Avatar';
 import TagChip from '@/components/ui/Chip/TagChip';
 import RoundChip from '@/components/ui/Chip/RoundChip';
-import { getErrorMessage } from '@/utils/errorMessage';
-import { formatDate } from '@/utils/formatDate';
-import Dropdown from '@/components/ui/Dropdown/Dropdown';
-import { DEFAULT_CARD_IMAGE_URL } from '@/constants/paths';
+import Dropdown from '@/components/ui/Dropdown';
+import { DEFAULT_CARD_IMAGE_URL } from '@/constants/todo';
 import x_img from '@/assets/icons/x.svg';
 
 interface DetailTodoProps {
   card: Card;
   onEdit: () => void;
+  ref: Ref<ModalHandle>;
 }
 
-const DetailTodo = forwardRef<ModalHandle, DetailTodoProps>(({ card, onEdit }, ref) => {
+export default function DetailTodo({ card, onEdit, ref }: DetailTodoProps) {
   const { data: columnsData } = useColumnsQuery(card.dashboardId);
   const { mutateAsync: remove } = useRemoveCard();
   const columns = columnsData?.data ?? [];
@@ -133,7 +134,4 @@ const DetailTodo = forwardRef<ModalHandle, DetailTodoProps>(({ card, onEdit }, r
       </ModalContent>
     </Modal>
   );
-});
-
-DetailTodo.displayName = 'DetailTodoModal';
-export default DetailTodo;
+}

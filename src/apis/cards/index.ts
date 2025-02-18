@@ -1,7 +1,7 @@
 import axiosClientHelper from '@/utils/network/axiosClientHelper';
-import { Card, CardRequest, cardSchema, CardsResponse, cardsResponseSchema, GetCardsParams } from './types';
-import { Column } from '../columns/types';
 import { safeResponse } from '@/utils/network/safeResponse';
+import { Card, CardRequest, cardSchema, CardsResponse, cardsResponseSchema, GetCardsParams } from '@/apis/cards/types';
+import { Column } from '@/apis/columns/types';
 
 /**
  * card 생성

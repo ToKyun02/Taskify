@@ -1,9 +1,9 @@
 import { FocusEvent, InputHTMLAttributes, KeyboardEvent, useEffect, useId, useRef, useState } from 'react';
 import { motion } from 'motion/react';
 import { cn } from '@/utils/helper';
-import TagChip from '../Chip/TagChip';
-import { BaseError, baseErrorClassName, baseFieldClassName, BaseItem, BaseLabel } from './Base';
-import { BaseField } from './types';
+import TagChip from '@/components/ui/Chip/TagChip';
+import { BaseError, baseErrorClassName, baseFieldClassName, BaseItem, BaseLabel } from '@/components/ui/Field/Base';
+import { BaseField } from '@/components/ui/Field/types';
 
 type TagInputProps = BaseField &
   Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange'> & {

@@ -1,6 +1,6 @@
 import axiosClientHelper from '@/utils/network/axiosClientHelper';
-import { LoginFormData, LoginResponse, loginResponseSchema, PutPasswordFormData } from './types';
 import { safeResponse } from '@/utils/network/safeResponse';
+import { LoginFormData, LoginResponse, loginResponseSchema, PutPasswordFormData } from '@/apis/auth/types';
 
 /**
  * login

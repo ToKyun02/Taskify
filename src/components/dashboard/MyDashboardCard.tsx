@@ -1,9 +1,9 @@
-import { cn } from '@/utils/helper';
-import Dot from '@/components/ui/Dot/Dot';
 import Image from 'next/image';
+import { cn } from '@/utils/helper';
+import Dot from '@/components/ui/Dot';
+import { DEFAULT_COLOR } from '@/constants/colors';
 import crown from '@/assets/icons/crown.svg';
 import right_arrow from '@/assets/icons/right_arrow.svg';
-import { DEFAULT_COLOR } from '@/constants/colors';
 
 interface MyDashboardCardProps {
   title: string;

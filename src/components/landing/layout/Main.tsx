@@ -1,5 +1,5 @@
 import { PropsWithChildren } from 'react';
-import { MainInner } from './Inner';
+import { MainInner } from '@/components/landing/layout/Inner';
 
 export default function Main({ children }: PropsWithChildren) {
   return (

@@ -1,18 +1,22 @@
-import { forwardRef } from 'react';
+import { Ref } from 'react';
 import { useRouter } from 'next/navigation';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useAlert from '@/hooks/useAlert';
-import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '@/components/ui/Modal/Modal';
-import Button from '@/components/ui/Button/Button';
-import { Input } from '@/components/ui/Field';
-import ColorPicker from '@/components/ui/Chip/ColorPicker';
 import { useCreateDashboard } from '@/apis/dashboards/queries';
 import { dashboardFormSchema, DashboardFormType } from '@/apis/dashboards/types';
+import { getErrorMessage } from '@/utils/network/errorMessage';
+import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '@/components/ui/Modal';
+import Button from '@/components/ui/Button';
+import { Input } from '@/components/ui/Field';
+import ColorPicker from '@/components/ui/Chip/ColorPicker';
 import { DEFAULT_COLORS } from '@/constants/colors';
-import { getErrorMessage } from '@/utils/errorMessage';
 
-const CreateDashboard = forwardRef<ModalHandle>((props, ref) => {
+interface CreateDashboardProps {
+  ref: Ref<ModalHandle>;
+}
+
+export default function CreateDashboard({ ref }: CreateDashboardProps) {
   const {
     handleSubmit,
     register,
@@ -81,8 +85,4 @@ const CreateDashboard = forwardRef<ModalHandle>((props, ref) => {
       </ModalContent>
     </Modal>
   );
-});
-
-CreateDashboard.displayName = 'CreateDashboard';
-
-export default CreateDashboard;
+}

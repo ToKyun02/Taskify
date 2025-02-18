@@ -1,10 +1,10 @@
-import dynamic from 'next/dynamic';
 import { useState } from 'react';
+import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { easeInOut, motion } from 'motion/react';
 import LottieData from '@/assets/landings/hero.json';
 import LogoFull from '@/assets/images/logo_full_white.svg';
-import Link from 'next/link';
 
 const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
 

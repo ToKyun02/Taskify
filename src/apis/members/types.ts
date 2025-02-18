@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import { User, userSchema } from '../users/types';
+import { User, userSchema } from '@/apis//users/types';
+import { Dashboard } from '@/apis/dashboards/types';
 import { BasePagination } from '@/types/common';
-import { Dashboard } from '../dashboards/types';
 
 export type GetMembersRequest = BasePagination & {
   dashboardId: Dashboard['id'];

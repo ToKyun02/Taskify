@@ -3,9 +3,9 @@
 import { HTMLAttributes, useState } from 'react';
 import Image from 'next/image';
 import { cva, VariantProps } from 'class-variance-authority';
+import { User } from '@/apis/users/types';
 import { cn, getColorByString } from '@/utils/helper';
 import { DEFAULT_COLORS } from '@/constants/colors';
-import { User } from '@/apis/users/types';
 
 /**
  * 커스터마이징 가능한 기본 공용 Avatar 컴포넌트입니다.

@@ -1,9 +1,9 @@
 'use client';
 
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { deleteCard, getCard, getCards, moveCard, postCard, putCard } from '.';
-import { Card, CardRequest, CardsResponse, GetCardsParams } from './types';
-import { Column } from '../columns/types';
+import { deleteCard, getCard, getCards, moveCard, postCard, putCard } from '@/apis/cards';
+import { Card, CardRequest, CardsResponse, GetCardsParams } from '@/apis/cards/types';
+import { Column } from '@/apis/columns/types';
 
 export const useCardsQuery = (params: GetCardsParams) => {
   return useInfiniteQuery({

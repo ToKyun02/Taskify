@@ -6,11 +6,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import useAlert from '@/hooks/useAlert';
 import { UpdateUserForm, updateUserFormSchema, User } from '@/apis/users/types';
 import { useCreateProfileImage, useUpdateUser } from '@/apis/users/queries';
+import { getErrorMessage } from '@/utils/network/errorMessage';
 import { Input } from '@/components/ui/Field/Input';
 import { ImageUpload } from '@/components/ui/Field/ImageUpload';
-import Button from '@/components/ui/Button/Button';
-import { Card, CardTitle } from '@/components//ui/Card/Card';
-import { getErrorMessage } from '@/utils/errorMessage';
+import Button from '@/components/ui/Button';
+import { Card, CardTitle } from '@/components/ui/Card';
 
 type ProfileEditProps = {
   user: User;

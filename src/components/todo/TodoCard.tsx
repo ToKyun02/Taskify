@@ -1,16 +1,16 @@
 'use client';
 
-import Image from 'next/image';
-import { formatDate } from '@/utils/formatDate';
-import { Card } from '@/apis/cards/types';
-import Avatar from '../ui/Avatar/Avatar';
-import TagChip from '../ui/Chip/TagChip';
-import calendar from '@/assets/icons/calendar.svg';
 import { useRef } from 'react';
-import { ModalHandle } from '../ui/Modal/Modal';
-import DetailTodo from '@/components/dashboard/DetailTodo';
-import TodoEditModal from './TodoEditModal';
-import { DEFAULT_CARD_IMAGE_URL } from '@/constants/paths';
+import Image from 'next/image';
+import { Card } from '@/apis/cards/types';
+import { formatDate } from '@/utils/formatDate';
+import Avatar from '@/components/ui/Avatar';
+import TagChip from '@/components/ui/Chip/TagChip';
+import { ModalHandle } from '@/components/ui/Modal';
+import DetailTodo from '@/components/todo/DetailTodo';
+import TodoEditModal from '@/components/todo/TodoEditModal';
+import { DEFAULT_CARD_IMAGE_URL } from '@/constants/todo';
+import calendar from '@/assets/icons/calendar.svg';
 
 interface TodoCardProps {
   card: Card;

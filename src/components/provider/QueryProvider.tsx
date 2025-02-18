@@ -1,7 +1,7 @@
 'use client';
 
-import { QueryClientProvider as Provider, QueryClient } from '@tanstack/react-query';
 import { PropsWithChildren } from 'react';
+import { QueryClientProvider as Provider, QueryClient } from '@tanstack/react-query';
 
 const queryClient = new QueryClient({
   defaultOptions: {

@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { login, logout, putPassword } from '.';
-import { LoginFormData, PutPasswordFormData } from './types';
+import { login, logout, putPassword } from '@/apis/auth';
+import { LoginFormData, PutPasswordFormData } from '@/apis/auth/types';
 
 export const useLogin = () => {
   return useMutation({

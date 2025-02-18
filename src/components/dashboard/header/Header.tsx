@@ -1,8 +1,8 @@
 'use client';
 
 import { useParams, useSelectedLayoutSegment } from 'next/navigation';
-import Profile from '@/components/dashboard-header/Profile';
-import DashboardInfo from '@/components/dashboard-header/DashboardInfo';
+import Profile from '@/components/dashboard/header/Profile';
+import DashboardInfo from '@/components/dashboard/header/DashboardInfo';
 import { PAGE_TITLE } from '@/constants/dashboard';
 
 export default function Header() {

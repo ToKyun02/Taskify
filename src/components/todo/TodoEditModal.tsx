@@ -1,24 +1,25 @@
-import { forwardRef } from 'react';
-import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '../ui/Modal/Modal';
-import { Card, CardForm, cardFormSchema } from '@/apis/cards/types';
-import { AssignInput, DateInput, ImageUpload, Input, TagInput } from '../ui/Field';
-import { useColumnsQuery } from '@/apis/columns/queries';
-import StatusDropdown from '../ui/Dropdown/StatusDropdown';
-import { Textarea } from '../ui/Field';
-import Button from '../ui/Button/Button';
-import useAlert from '@/hooks/useAlert';
+import { Ref } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import useAlert from '@/hooks/useAlert';
+import { Card, CardForm, cardFormSchema } from '@/apis/cards/types';
+import { useColumnsQuery } from '@/apis/columns/queries';
 import { useUpdateCard } from '@/apis/cards/queries';
 import { postCardImage } from '@/apis/columns';
 import convertDateFormat from '@/utils/convertDateFormat';
-import { getErrorMessage } from '@/utils/errorMessage';
+import { getErrorMessage } from '@/utils/network/errorMessage';
+import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '@/components/ui/Modal';
+import { AssignInput, DateInput, ImageUpload, Input, TagInput } from '@/components/ui/Field';
+import StatusDropdown from '@/components/ui/Dropdown/StatusDropdown';
+import { Textarea } from '@/components/ui/Field';
+import Button from '@/components/ui/Button';
 
 interface TodoEditModalProps {
   card: Card;
+  ref: Ref<ModalHandle>;
 }
 
-const TodoEditModal = forwardRef<ModalHandle, TodoEditModalProps>(({ card }, ref) => {
+export default function TodoEditModal({ card, ref }: TodoEditModalProps) {
   const alert = useAlert();
   const { data: columnData } = useColumnsQuery(card.dashboardId);
   const columns = columnData?.data ?? [];
@@ -130,7 +131,4 @@ const TodoEditModal = forwardRef<ModalHandle, TodoEditModalProps>(({ card }, ref
       </ModalContent>
     </Modal>
   );
-});
-
-TodoEditModal.displayName = 'TodoEditModal';
-export default TodoEditModal;
+}

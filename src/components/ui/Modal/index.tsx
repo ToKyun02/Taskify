@@ -1,6 +1,6 @@
-import { forwardRef, HTMLAttributes, PropsWithChildren, useImperativeHandle, useState } from 'react';
-import BaseModal from './BaseModal';
+import { HTMLAttributes, PropsWithChildren, Ref, useImperativeHandle, useState } from 'react';
 import { cn } from '@/utils/helper';
+import BaseModal from '@/components/ui/Modal/BaseModal';
 
 /**
  * Modal 컴포넌트 (컨텐츠 주입형)
@@ -30,7 +30,11 @@ export type ModalHandle = {
   close: () => void;
 };
 
-export const Modal = forwardRef<ModalHandle, PropsWithChildren>((props, ref) => {
+type ModalProps = PropsWithChildren & {
+  ref: Ref<ModalHandle>;
+};
+
+export function Modal({ ref, ...props }: ModalProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   useImperativeHandle(ref, () => {
@@ -45,7 +49,7 @@ export const Modal = forwardRef<ModalHandle, PropsWithChildren>((props, ref) => 
   });
 
   return <BaseModal isOpen={isOpen} onClose={() => setIsOpen(false)} {...props} />;
-});
+}
 
 export function ModalHeader({ children, className, ...props }: PropsWithChildren<HTMLAttributes<HTMLDivElement>>) {
   return (
@@ -70,6 +74,3 @@ export function ModalFooter({ children, className, ...props }: PropsWithChildren
     </footer>
   );
 }
-
-// eslintreact/display-name (forwardref)
-Modal.displayName = 'Modal';

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { RootInner } from './Inner';
-import { BaseLinkItem } from './type';
+import { RootInner } from '@/components/landing/layout/Inner';
+import { BaseLinkItem } from '@/components/landing/layout/type';
 import LogoBI from '@/assets/images/logo_bi_white.svg';
 import LogoCI from '@/assets/images/logo_ci_white.svg';
 

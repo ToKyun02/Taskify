@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { motion } from 'motion/react';
 import Image from 'next/image';
-import RoundChip from '../Chip/RoundChip';
+import { motion } from 'motion/react';
+import RoundChip from '@/components/ui/Chip/RoundChip';
 import check from '@/assets/icons/check_gray.svg';
 
 interface Column {

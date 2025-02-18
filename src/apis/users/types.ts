@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { SIGNUP_FORM_VALID_LENGTH, SIGNUP_FORM_ERROR_MESSAGE } from '@/constants/auth';
-import { PROFILEEDIT_FORM_VALID_LENGTH, PROFILEEDIT_FORM_ERROR_MESSAGE } from '@/constants/profileEdit';
+import { PROFILEEDIT_FORM_VALID_LENGTH, PROFILEEDIT_FORM_ERROR_MESSAGE } from '@/constants/user';
 
 interface FailResponse {
   message: string;

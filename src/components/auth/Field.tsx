@@ -1,9 +1,9 @@
-import OpendEyeIcon from '@/assets/icons/opend_eye.svg';
-import ClosedEyeIcon from '@/assets/icons/closed_eye.svg';
-import Image from 'next/image';
 import { useState } from 'react';
+import Image from 'next/image';
 import { UseFormRegisterReturn } from 'react-hook-form';
 import { isEmpty } from 'es-toolkit/compat';
+import OpendEyeIcon from '@/assets/icons/opend_eye.svg';
+import ClosedEyeIcon from '@/assets/icons/closed_eye.svg';
 
 type Input = 'text' | 'email' | 'password';
 

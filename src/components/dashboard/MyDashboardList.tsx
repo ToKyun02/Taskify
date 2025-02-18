@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import MyDashboardCard from '@/components/dashboard/MyDashboardCard';
 import { useDashboardsQuery } from '@/apis/dashboards/queries';
-import DashboardButton from '../ui/Button/DashboardButton';
-import PaginationWithCounter from '../pagination/PaginationWithCounter';
+import MyDashboardCard from '@/components/dashboard/MyDashboardCard';
+import DashboardButton from '@/components/ui/Button/DashboardButton';
+import PaginationWithCounter from '@/components/pagination/PaginationWithCounter';
 
 interface MyDashboardListProps {
   onAdd: () => void;

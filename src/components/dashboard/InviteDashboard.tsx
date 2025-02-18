@@ -1,16 +1,20 @@
-import { forwardRef } from 'react';
+import { Ref } from 'react';
 import { useParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useAlert from '@/hooks/useAlert';
-import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '@/components/ui/Modal/Modal';
-import { Input } from '@/components/ui/Field';
-import Button from '@/components/ui/Button/Button';
 import { inviteDashboardFormSchema, InviteDashboardFormType } from '@/apis/dashboards/types';
 import { useInviteDashboard } from '@/apis/dashboards/queries';
-import { getErrorMessage } from '@/utils/errorMessage';
+import { getErrorMessage } from '@/utils/network/errorMessage';
+import { Modal, ModalContent, ModalFooter, ModalHandle, ModalHeader } from '@/components/ui/Modal';
+import { Input } from '@/components/ui/Field';
+import Button from '@/components/ui/Button';
 
-const InviteDashboard = forwardRef<ModalHandle>((props, ref) => {
+interface InviteDashboardProps {
+  ref: Ref<ModalHandle>;
+}
+
+export default function InviteDashboard({ ref }: InviteDashboardProps) {
   const {
     handleSubmit,
     register,
@@ -73,8 +77,4 @@ const InviteDashboard = forwardRef<ModalHandle>((props, ref) => {
       </ModalContent>
     </Modal>
   );
-});
-
-InviteDashboard.displayName = 'InviteDashboard';
-
-export default InviteDashboard;
+}

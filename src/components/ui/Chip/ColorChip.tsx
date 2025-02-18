@@ -1,6 +1,6 @@
-import { DEFAULT_COLOR } from '@/constants/colors';
-import { cn } from '@/utils/helper';
 import { HTMLAttributes } from 'react';
+import { cn } from '@/utils/helper';
+import { DEFAULT_COLOR } from '@/constants/colors';
 
 interface ColorChipProps extends HTMLAttributes<HTMLSpanElement> {
   color: DEFAULT_COLOR;

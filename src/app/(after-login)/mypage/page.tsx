@@ -1,11 +1,11 @@
 import { redirect } from 'next/navigation';
 import { User, userSchema } from '@/apis/users/types';
+import axiosServerHelper from '@/utils/network/axiosServerHelper';
+import { safeResponse } from '@/utils/network/safeResponse';
 import { Page, PageInner } from '@/components/layout/Page';
 import PasswordEdit from '@/components/profile/PasswordEdit';
 import ProfileEdit from '@/components/profile/ProfileEdit';
 import GoBackLink from '@/components/ui/Link/GoBackLink';
-import axiosServerHelper from '@/utils/network/axiosServerHelper';
-import { safeResponse } from '@/utils/network/safeResponse';
 
 export const metadata = {
   title: 'Taskify - 마이페이지',

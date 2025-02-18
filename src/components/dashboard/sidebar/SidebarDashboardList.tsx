@@ -2,14 +2,14 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import { cn } from '@/utils/helper';
 import { useDashboardsQuery } from '@/apis/dashboards/queries';
 import PaginationControls from '@/components/pagination/PaginationControls';
-import Dot from '@/components/ui/Dot/Dot';
+import Dot from '@/components/ui/Dot';
 import crown from '@/assets/icons/crown.svg';
 import menu from '@/assets/icons/hamburger.svg';
-import { useParams } from 'next/navigation';
 
 const ITEMS_PER_PAGE = 15;
 

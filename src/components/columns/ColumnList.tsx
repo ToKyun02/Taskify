@@ -1,14 +1,14 @@
 'use client';
 
-import { useColumnsQuery } from '@/apis/columns/queries';
 import { useParams } from 'next/navigation';
-import ColumnItem from './ColumnItem';
-import AddColumnBtn from './AddColumnBtn';
+import { useQueryClient } from '@tanstack/react-query';
 import { isEmpty } from 'es-toolkit/compat';
 import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd';
+import { useColumnsQuery } from '@/apis/columns/queries';
 import { useMoveCard } from '@/apis/cards/queries';
-import { useQueryClient } from '@tanstack/react-query';
 import { Card, CardsResponse } from '@/apis/cards/types';
+import ColumnItem from '@/components/columns/ColumnItem';
+import AddColumnBtn from '@/components/columns/AddColumnBtn';
 
 export default function ColumnList() {
   const params = useParams();

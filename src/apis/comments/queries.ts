@@ -1,5 +1,5 @@
 import { InfiniteData, useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getComments, postComment, putComment, deleteComment } from '.';
+import { getComments, postComment, putComment, deleteComment } from '@/apis/comments';
 import type { CommentForm, CommentsResponse, GetCommentsParams, PutCommentForm } from '@/apis/comments/types';
 
 export const useCommentsQuery = (params: GetCommentsParams) => {

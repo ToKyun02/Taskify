@@ -1,11 +1,11 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { cn } from '@/utils/helper';
-import SidebarDashboardList from '@/components/dashboard/SidebarDashboardList';
-import SidebarLogo from '@/components/dashboard/SidebarLogo';
-import SidebarHeader from '@/components/dashboard/SidebarHeader';
 import { usePathname } from 'next/navigation';
+import { cn } from '@/utils/helper';
+import SidebarDashboardList from '@/components/dashboard/sidebar/SidebarDashboardList';
+import SidebarLogo from '@/components/dashboard/sidebar/SidebarLogo';
+import SidebarHeader from '@/components/dashboard/sidebar/SidebarHeader';
 
 export default function Sidebar() {
   const pathname = usePathname();

@@ -1,17 +1,17 @@
 'use client';
 
-import { isAxiosError } from 'axios';
 import { useState } from 'react';
 import { useParams } from 'next/navigation';
+import { isAxiosError } from 'axios';
 import useAlert from '@/hooks/useAlert';
 import useConfirm from '@/hooks/useConfirm';
 import { useMembersQuery, useRemoveMember } from '@/apis/members/queries';
-import { getErrorMessage } from '@/utils/errorMessage';
+import { getErrorMessage } from '@/utils/network/errorMessage';
 import PaginationWithCounter from '@/components/pagination/PaginationWithCounter';
-import { Table, TableBody, TableCell, TableCol, TableColGroup, TableHead, TableHeadCell, TableRow } from '@/components/ui/Table/Table';
-import { Card, CardTitle } from '@/components/ui/Card/Card';
-import Button from '@/components/ui/Button/Button';
-import Avatar from '@/components/ui/Avatar/Avatar';
+import { Table, TableBody, TableCell, TableCol, TableColGroup, TableHead, TableHeadCell, TableRow } from '@/components/ui/Table';
+import { Card, CardTitle } from '@/components/ui/Card';
+import Button from '@/components/ui/Button';
+import Avatar from '@/components/ui/Avatar';
 
 const PAGE_SIZE = 5;
 

@@ -18,10 +18,10 @@
  */
 'use client';
 
+import type { ReactNode, ButtonHTMLAttributes } from 'react';
 import Image from 'next/image';
 import { cva } from 'class-variance-authority';
 import { twMerge } from 'tailwind-merge';
-import type { ReactNode, ButtonHTMLAttributes } from 'react';
 import plusIcon from '@/assets/icons/plus.svg';
 
 const dashboardButtonStyles = cva('', {

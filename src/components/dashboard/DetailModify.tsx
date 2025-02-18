@@ -1,16 +1,16 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import useAlert from '@/hooks/useAlert';
 import { useUpdateDashboard } from '@/apis/dashboards/queries';
-import { Card, CardTitle } from '@/components/ui/Card/Card';
+import { Dashboard, dashboardFormSchema, DashboardFormType } from '@/apis/dashboards/types';
+import { getErrorMessage } from '@/utils/network/errorMessage';
+import { Card, CardTitle } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Field';
 import ColorPicker from '@/components/ui/Chip/ColorPicker';
-import { Dashboard, dashboardFormSchema, DashboardFormType } from '@/apis/dashboards/types';
-import { getErrorMessage } from '@/utils/errorMessage';
-import Button from '@/components/ui/Button/Button';
-import useAlert from '@/hooks/useAlert';
-import { useRouter } from 'next/navigation';
+import Button from '@/components/ui/Button';
 
 export default function DetailModify({ data }: { data: Dashboard }) {
   const {

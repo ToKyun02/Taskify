@@ -1,6 +1,6 @@
 import axiosClientHelper from '@/utils/network/axiosClientHelper';
-import { Comment, CommentForm, commentSchema, CommentsResponse, commentsResponseSchema, GetCommentsParams, PutCommentForm } from './types';
 import { safeResponse } from '@/utils/network/safeResponse';
+import { Comment, CommentForm, commentSchema, CommentsResponse, commentsResponseSchema, GetCommentsParams, PutCommentForm } from '@/apis/comments/types';
 
 /**
  * comment 생성

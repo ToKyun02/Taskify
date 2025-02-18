@@ -1,12 +1,12 @@
 'use client';
 
-import Image from 'next/image';
 import React from 'react';
-import LogoCi from '@/assets/images/logo_ci.svg';
-import LogoBi from '@/assets/images/logo_bi.svg';
-import Button from '@/components/ui/Button/Button';
+import Image from 'next/image';
 import Link from 'next/link';
 import axios from 'axios';
+import Button from '@/components/ui/Button';
+import LogoCi from '@/assets/images/logo_ci.svg';
+import LogoBi from '@/assets/images/logo_bi.svg';
 
 interface ErrorProps {
   error: Error;

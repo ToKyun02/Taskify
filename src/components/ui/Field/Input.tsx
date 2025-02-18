@@ -1,11 +1,14 @@
-import { forwardRef, InputHTMLAttributes, useId } from 'react';
+import { InputHTMLAttributes, Ref, useId } from 'react';
 import { cn } from '@/utils/helper';
-import { BaseError, baseErrorClassName, baseFieldClassName, BaseItem, BaseLabel } from './Base';
-import { BaseField } from './types';
+import { BaseError, baseErrorClassName, baseFieldClassName, BaseItem, BaseLabel } from '@/components/ui/Field/Base';
+import { BaseField } from '@/components/ui/Field/types';
 
-type InputProps = BaseField & InputHTMLAttributes<HTMLInputElement>;
+type InputProps = BaseField &
+  InputHTMLAttributes<HTMLInputElement> & {
+    ref?: Ref<HTMLInputElement>;
+  };
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(({ label, error, className, ...props }, ref) => {
+export function Input({ label, error, className, ref, ...props }: InputProps) {
   const id = useId();
 
   return (
@@ -19,6 +22,4 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(({ label, error, c
       {error && <BaseError>{error}</BaseError>}
     </BaseItem>
   );
-});
-
-Input.displayName = 'Input';
+}

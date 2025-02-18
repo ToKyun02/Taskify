@@ -1,6 +1,6 @@
 import axiosClientHelper from '@/utils/network/axiosClientHelper';
-import { DeleteMemberRequest, GetMembersRequest, Members, membersSchema } from './types';
 import { safeResponse } from '@/utils/network/safeResponse';
+import { DeleteMemberRequest, GetMembersRequest, Members, membersSchema } from '@/apis/members/types';
 
 /**
  * 대시보드 멤버 목록 조회

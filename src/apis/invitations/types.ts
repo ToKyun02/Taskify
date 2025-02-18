@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { DashboardInvitation, dashboardInvitationSchema } from '../dashboards/types';
+import { DashboardInvitation, dashboardInvitationSchema } from '@/apis/dashboards/types';
 import { BaseCursor } from '@/types/common';
 
 export type GetMyInvitationsRequest = Partial<BaseCursor> & {

@@ -1,16 +1,16 @@
 'use client';
 
-import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import useAlert from '@/hooks/useAlert';
+import { signupSchema, SignupFormData } from '@/apis/users/types';
+import { useSignup } from '@/apis/users/queries';
+import { getErrorMessage } from '@/utils/network/errorMessage';
 import Field from '@/components/auth/Field';
 import SubmitButton from '@/components/auth/SubmitButton';
-import Checkbox from './Checkbox';
+import Checkbox from '@/components/auth/Checkbox';
 import { SIGNUP_FORM_PLACEHOLDER } from '@/constants/auth';
-import { signupSchema, SignupFormData } from '@/apis/users/types';
-import useAlert from '@/hooks/useAlert';
-import { useRouter } from 'next/navigation';
-import { useSignup } from '@/apis/users/queries';
-import { getErrorMessage } from '@/utils/errorMessage';
 
 export default function SignupForm() {
   const {

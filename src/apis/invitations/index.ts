@@ -1,7 +1,7 @@
 import axiosClientHelper from '@/utils/network/axiosClientHelper';
-import { GetMyInvitationsRequest, MyInvitations, myInvitationsSchema, RespondToInvitationRequest } from './types';
-import { DashboardInvitation, dashboardInvitationSchema } from '../dashboards/types';
 import { safeResponse } from '@/utils/network/safeResponse';
+import { GetMyInvitationsRequest, MyInvitations, myInvitationsSchema, RespondToInvitationRequest } from '@/apis/invitations/types';
+import { DashboardInvitation, dashboardInvitationSchema } from '@/apis/dashboards/types';
 
 /**
  * 내가 받은 초대 목록 조회

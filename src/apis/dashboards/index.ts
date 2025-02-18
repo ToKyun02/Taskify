@@ -1,4 +1,5 @@
 import axiosClientHelper from '@/utils/network/axiosClientHelper';
+import { safeResponse } from '@/utils/network/safeResponse';
 import {
   Dashboard,
   DashboardInvitation,
@@ -14,8 +15,7 @@ import {
   InviteDashboardRequest,
   dashboardInvitationSchema,
   CancelInviteDashboardRequest,
-} from './types';
-import { safeResponse } from '@/utils/network/safeResponse';
+} from '@/apis/dashboards/types';
 
 /**
  * dashboard 생성

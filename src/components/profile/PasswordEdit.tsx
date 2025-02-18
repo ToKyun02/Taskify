@@ -2,13 +2,13 @@
 
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Input } from '@/components/ui/Field/Input';
-import { passwordSchema, PutPasswordFormData } from '@/apis/auth/types';
 import useAlert from '@/hooks/useAlert';
-import { Card, CardTitle } from '@/components//ui/Card/Card';
-import Button from '@/components/ui/Button/Button';
-import { getErrorMessage } from '@/utils/errorMessage';
+import { passwordSchema, PutPasswordFormData } from '@/apis/auth/types';
 import { usePutPassword } from '@/apis/auth/queries';
+import { getErrorMessage } from '@/utils/network/errorMessage';
+import { Input } from '@/components/ui/Field/Input';
+import { Card, CardTitle } from '@/components/ui/Card';
+import Button from '@/components/ui/Button';
 
 export default function PasswordEdit() {
   const {
