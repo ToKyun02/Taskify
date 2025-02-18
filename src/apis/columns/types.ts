@@ -25,7 +25,7 @@ export const getColumnsParamsSchema = z.object({
 export type GetColumnsParams = z.infer<typeof getColumnsParamsSchema>;
 
 export const columnFormSchema = z.object({
-  title: z.string().trim(),
+  title: z.string().trim().min(2, { message: '컬럼 이름은 최소 2글자 이상이어야 합니다.' }),
 });
 
 export type ColumnForm = z.infer<typeof columnFormSchema>;
