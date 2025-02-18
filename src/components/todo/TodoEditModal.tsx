@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { Ref } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useAlert from '@/hooks/useAlert';
@@ -16,9 +16,10 @@ import Button from '@/components/ui/Button';
 
 interface TodoEditModalProps {
   card: Card;
+  ref: Ref<ModalHandle>;
 }
 
-const TodoEditModal = forwardRef<ModalHandle, TodoEditModalProps>(({ card }, ref) => {
+export default function TodoEditModal({ card, ref }: TodoEditModalProps) {
   const alert = useAlert();
   const { data: columnData } = useColumnsQuery(card.dashboardId);
   const columns = columnData?.data ?? [];
@@ -130,7 +131,4 @@ const TodoEditModal = forwardRef<ModalHandle, TodoEditModalProps>(({ card }, ref
       </ModalContent>
     </Modal>
   );
-});
-
-TodoEditModal.displayName = 'TodoEditModal';
-export default TodoEditModal;
+}

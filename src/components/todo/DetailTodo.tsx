@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef } from 'react';
+import { Ref } from 'react';
 import Image from 'next/image';
 import useAlert from '@/hooks/useAlert';
 import useConfirm from '@/hooks/useConfirm';
@@ -21,9 +21,10 @@ import x_img from '@/assets/icons/x.svg';
 interface DetailTodoProps {
   card: Card;
   onEdit: () => void;
+  ref: Ref<ModalHandle>;
 }
 
-const DetailTodo = forwardRef<ModalHandle, DetailTodoProps>(({ card, onEdit }, ref) => {
+export default function DetailTodo({ card, onEdit, ref }: DetailTodoProps) {
   const { data: columnsData } = useColumnsQuery(card.dashboardId);
   const { mutateAsync: remove } = useRemoveCard();
   const columns = columnsData?.data ?? [];
@@ -133,7 +134,4 @@ const DetailTodo = forwardRef<ModalHandle, DetailTodoProps>(({ card, onEdit }, r
       </ModalContent>
     </Modal>
   );
-});
-
-DetailTodo.displayName = 'DetailTodoModal';
-export default DetailTodo;
+}

@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef } from 'react';
+import { Ref } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useAlert from '@/hooks/useAlert';
@@ -19,9 +19,10 @@ const DEFAULT_POST_IMAGE = { imageUrl: DEFAULT_CARD_IMAGE_URL } as const;
 interface CreateCardProps {
   dashboardId: number;
   columnId: number;
+  ref: Ref<ModalHandle>;
 }
 
-const CreateCard = forwardRef<ModalHandle, CreateCardProps>(({ dashboardId, columnId }, ref) => {
+export default function CreateCard({ dashboardId, columnId, ref }: CreateCardProps) {
   const {
     handleSubmit,
     register,
@@ -121,8 +122,4 @@ const CreateCard = forwardRef<ModalHandle, CreateCardProps>(({ dashboardId, colu
       </ModalContent>
     </Modal>
   );
-});
-
-CreateCard.displayName = 'CreateCard';
-
-export default CreateCard;
+}
