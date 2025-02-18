@@ -33,16 +33,16 @@ export default function TodoCard({ card }: TodoCardProps) {
         onClick={() => detailTodoModalRef.current?.open()}
       >
         {card.imageUrl !== DEFAULT_CARD_IMAGE_URL && <Image src={card.imageUrl} alt={card.title} className='w-full md:w-[120px] lg:w-full' width={400} height={200} />}
-        <div className='flex flex-col gap-1.5 md:flex-1 md:flex-row lg:flex-col lg:gap-2'>
-          <div className='flex flex-col gap-1.5 md:flex-none lg:gap-2.5'>
+        <div className='flex flex-col gap-1.5 md:flex-1 md:flex-row md:gap-4 lg:flex-col lg:gap-2'>
+          <div className='flex flex-col gap-1.5 md:justify-between lg:gap-1.5'>
             <span className='break-words break-all text-md font-medium text-gray-70 lg:text-lg lg:leading-5'>{card.title}</span>
-            <div className='flex flex-wrap gap-1.5 break-words'>
+            <div className='flex flex-wrap gap-1.5 break-words md:max-w-[500px]'>
               {card.tags.map((tag) => (
                 <TagChip key={tag} label={tag} />
               ))}
             </div>
           </div>
-          <div className='flex justify-between md:flex-auto md:items-end'>
+          <div className='flex justify-between gap-3 md:flex-auto md:items-end'>
             <div className='flex items-center gap-1'>
               <Image src={calendar} width={10} height={11} alt='캘린더' />
               <span className='text-xs font-medium text-gray-50'>{formattedDate}</span>
