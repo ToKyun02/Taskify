@@ -77,7 +77,7 @@ export default function ColumnList() {
             <Droppable droppableId={column.id.toString()} key={column.id}>
               {(provided) => (
                 <div {...provided.droppableProps} ref={provided.innerRef}>
-                  <li className='flex flex-col gap-4 border-b border-r-0 p-6 lg:min-h-[calc(100dvh-70px)] lg:border-b-0 lg:border-r'>
+                  <li className='flex flex-col gap-4 border-b border-r-0 p-6 lg:min-h-[calc(100dvh-70px)] lg:w-96 lg:border-b-0 lg:border-r'>
                     <ColumnItem column={column} />
                   </li>
                   {provided.placeholder}
