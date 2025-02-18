@@ -25,7 +25,7 @@ export const getColumnsParamsSchema = z.object({
 export type GetColumnsParams = z.infer<typeof getColumnsParamsSchema>;
 
 export const columnFormSchema = z.object({
-  title: z.string(),
+  title: z.string().trim(),
 });
 
 export type ColumnForm = z.infer<typeof columnFormSchema>;
