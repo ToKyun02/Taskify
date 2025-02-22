@@ -101,6 +101,6 @@ export const getDashboardInvitations = async (params: GetDashboardInvitationsReq
  * https://sp-taskify-api.vercel.app/docs/#/Dashboards/DeleteInvitation
  */
 export const cancelDashboardInvitation = async (params: CancelInviteDashboardRequest) => {
-  const { dashboardId, invitationId } = params;
-  await axiosClientHelper.delete<void>(`/dashboards/${dashboardId}/invitations/${invitationId}`);
+  const { id, invitationId } = params;
+  await axiosClientHelper.delete<void>(`/dashboards/${id}/invitations/${invitationId}`);
 };

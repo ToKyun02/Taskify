@@ -73,6 +73,6 @@ export const inviteDashboardFormSchema = z.object({
 export type InviteDashboardFormType = z.infer<typeof inviteDashboardFormSchema>;
 export type InviteDashboardRequest = InviteDashboardFormType & { id: Dashboard['id'] };
 export type CancelInviteDashboardRequest = {
-  dashboardId: Dashboard['id'];
+  id: Dashboard['id'];
   invitationId: DashboardInvitation['id'];
 };

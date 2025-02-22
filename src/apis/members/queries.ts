@@ -3,9 +3,8 @@ import { deleteMember, getMembers } from '@/apis/members/';
 import { DeleteMemberRequest, GetMembersRequest } from '@/apis/members/types';
 
 export const useMembersQuery = (params: GetMembersRequest) => {
-  const { page, size, dashboardId } = params;
   return useQuery({
-    queryKey: ['members', page, size, dashboardId],
+    queryKey: ['members', params],
     queryFn: () => getMembers(params),
   });
 };
