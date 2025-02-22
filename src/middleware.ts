@@ -1,28 +1,33 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
-const AFTER_LOGIN_DOMAIN = ['/mydashboard', '/dashboard', '/mypage'] satisfies readonly string[];
-const BEFORE_LOGIN_DOMAIN = ['/faq', '/privacy', '/login', '/signup', '/'] satisfies readonly string[];
+const protectedRoutes = ['/mydashboard', '/dashboard', '/mypage'] satisfies readonly string[];
+const publicRoutes = ['/faq', '/privacy', '/login', '/signup', '/'] satisfies readonly string[];
 
 export const middleware = async (request: NextRequest) => {
+  const pathname = request.nextUrl.pathname;
+  const isProtectedRoute = protectedRoutes.some((route) => pathname === route || pathname.startsWith(`${route}/`));
+  const isPublicRoute = publicRoutes.includes(pathname);
+
   const cookieStore = await cookies();
   const accessToken = cookieStore.get('accessToken');
 
-  const pathname = request.nextUrl.pathname;
+  if (isProtectedRoute && !accessToken) {
+    return NextResponse.redirect(new URL('/login', request.nextUrl));
+  }
 
-  if (!accessToken?.value) {
-    if (AFTER_LOGIN_DOMAIN.some((path) => pathname.startsWith(path))) {
-      return NextResponse.redirect(new URL('/login', request.url));
-    }
-  } else {
-    if (BEFORE_LOGIN_DOMAIN.includes(pathname)) {
-      return NextResponse.redirect(new URL('/mydashboard', request.url));
-    }
+  if (
+    //
+    isPublicRoute &&
+    accessToken &&
+    !request.nextUrl.pathname.startsWith('/mydashboard')
+  ) {
+    return NextResponse.redirect(new URL('/mydashboard', request.nextUrl));
   }
 
   return NextResponse.next();
 };
 
 export const config = {
-  matcher: ['/:path*'],
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)'],
 };
