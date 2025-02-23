@@ -1,4 +1,4 @@
-import axiosClientHelper from '@/utils/network/axiosClientHelper';
+import { axiosInstance } from '@/utils/network/axios';
 import { safeResponse } from '@/utils/network/safeResponse';
 import { CreateProfileImageForm, ProfileImageUrlResponse, profileImageUrlResponseSchema, SignupFormData, SignupResponse, UpdateUserForm, User, userSchema } from '@/apis/users/types';
 
@@ -7,7 +7,7 @@ import { CreateProfileImageForm, ProfileImageUrlResponse, profileImageUrlRespons
  * https://sp-taskify-api.vercel.app/docs/#/Users/Create
  */
 export const signup = async (signupFormData: SignupFormData) => {
-  const response = await axiosClientHelper.post<SignupResponse>('/users', signupFormData);
+  const response = await axiosInstance.post<SignupResponse>('/users', signupFormData);
   return safeResponse(response.data, userSchema);
 };
 
@@ -16,7 +16,7 @@ export const signup = async (signupFormData: SignupFormData) => {
  * https://sp-taskify-api.vercel.app/docs/#/Users/GetMyInfo
  */
 export const getUser = async () => {
-  const response = await axiosClientHelper.get<User>('/users/me');
+  const response = await axiosInstance.get<User>('/users/me');
   return safeResponse(response.data, userSchema);
 };
 
@@ -25,7 +25,7 @@ export const getUser = async () => {
  * https://sp-taskify-api.vercel.app/docs/#/Users/UpdateMyInfo
  */
 export const updateUser = async (updateUserForm: UpdateUserForm) => {
-  const response = await axiosClientHelper.put<User>('/users/me', updateUserForm);
+  const response = await axiosInstance.put<User>('/users/me', updateUserForm);
   return safeResponse(response.data, userSchema);
 };
 
@@ -34,7 +34,7 @@ export const updateUser = async (updateUserForm: UpdateUserForm) => {
  * https://sp-taskify-api.vercel.app/docs/#/Users/UploadProfileImage
  */
 export const createProfileImage = async (createProfileImageForm: CreateProfileImageForm) => {
-  const response = await axiosClientHelper.post<ProfileImageUrlResponse>('/users/me/image', createProfileImageForm, {
+  const response = await axiosInstance.post<ProfileImageUrlResponse>('/users/me/image', createProfileImageForm, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },

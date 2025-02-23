@@ -1,4 +1,4 @@
-import axiosClientHelper from '@/utils/network/axiosClientHelper';
+import { axiosInstance } from '@/utils/network/axios';
 import { safeResponse } from '@/utils/network/safeResponse';
 import { Comment, CommentForm, commentSchema, CommentsResponse, commentsResponseSchema, GetCommentsParams, PutCommentForm } from '@/apis/comments/types';
 
@@ -7,7 +7,7 @@ import { Comment, CommentForm, commentSchema, CommentsResponse, commentsResponse
  * https://sp-taskify-api.vercel.app/docs/#/Comments/Create
  */
 export const postComment = async (commentForm: CommentForm) => {
-  const response = await axiosClientHelper.post<Comment>('/comments', commentForm);
+  const response = await axiosInstance.post<Comment>('/comments', commentForm);
   return safeResponse(response.data, commentSchema);
 };
 
@@ -16,7 +16,7 @@ export const postComment = async (commentForm: CommentForm) => {
  * https://sp-taskify-api.vercel.app/docs/#/Columns/Find
  */
 export const getComments = async (params: GetCommentsParams) => {
-  const response = await axiosClientHelper.get<CommentsResponse>('/comments', { params });
+  const response = await axiosInstance.get<CommentsResponse>('/comments', { params });
   return safeResponse(response.data, commentsResponseSchema);
 };
 
@@ -25,7 +25,7 @@ export const getComments = async (params: GetCommentsParams) => {
  * https://sp-taskify-api.vercel.app/docs/#/Columns/Update
  */
 export const putComment = async (commentId: number, putCommentForm: PutCommentForm) => {
-  const response = await axiosClientHelper.put<Comment>(`/comments/${commentId}`, putCommentForm);
+  const response = await axiosInstance.put<Comment>(`/comments/${commentId}`, putCommentForm);
   return safeResponse(response.data, commentSchema);
 };
 
@@ -34,5 +34,5 @@ export const putComment = async (commentId: number, putCommentForm: PutCommentFo
  * https://sp-taskify-api.vercel.app/docs/#/Columns/Delete
  */
 export const deleteComment = async (commentId: number) => {
-  await axiosClientHelper.delete<void>(`/comments/${commentId}`);
+  await axiosInstance.delete<void>(`/comments/${commentId}`);
 };

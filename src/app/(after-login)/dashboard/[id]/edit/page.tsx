@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import { Dashboard, dashboardSchema } from '@/apis/dashboards/types';
-import axiosServerHelper from '@/utils/network/axiosServerHelper';
+import { axiosInstance } from '@/utils/network/axios';
 import { safeResponse } from '@/utils/network/safeResponse';
 import { Page, PageInner } from '@/components/layout/Page';
 import DetailModify from '@/components/dashboard/DetailModify';
@@ -11,7 +11,7 @@ import DetailDelete from '@/components/dashboard/DetailDelete';
 
 export default async function DashboardEditPage({ params }: { params: Promise<{ id: string }> }) {
   const id = (await params).id;
-  const response = await axiosServerHelper<Dashboard>(`/dashboards/${id}`);
+  const response = await axiosInstance<Dashboard>(`/dashboards/${id}`);
   const dashboardDetail = safeResponse(response.data, dashboardSchema);
 
   if (!dashboardDetail.createdByMe) {

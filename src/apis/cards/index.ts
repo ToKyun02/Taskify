@@ -1,4 +1,4 @@
-import axiosClientHelper from '@/utils/network/axiosClientHelper';
+import { axiosInstance } from '@/utils/network/axios';
 import { safeResponse } from '@/utils/network/safeResponse';
 import { Card, CardRequest, cardSchema, CardsResponse, cardsResponseSchema, GetCardsParams } from '@/apis/cards/types';
 import { Column } from '@/apis/columns/types';
@@ -8,7 +8,7 @@ import { Column } from '@/apis/columns/types';
  * https://sp-taskify-api.vercel.app/docs/#/Cards/Create
  */
 export const postCard = async (cardRequest: CardRequest) => {
-  const response = await axiosClientHelper.post<Card>('/cards', cardRequest);
+  const response = await axiosInstance.post<Card>('/cards', cardRequest);
   return safeResponse(response.data, cardSchema);
 };
 
@@ -18,7 +18,7 @@ export const postCard = async (cardRequest: CardRequest) => {
  */
 export const getCards = async (params: GetCardsParams) => {
   const { cursorId, size, columnId } = params;
-  const response = await axiosClientHelper.get<CardsResponse>('/cards', {
+  const response = await axiosInstance.get<CardsResponse>('/cards', {
     params: {
       size,
       columnId,
@@ -33,7 +33,7 @@ export const getCards = async (params: GetCardsParams) => {
  * https://sp-taskify-api.vercel.app/docs/#/Cards/Get
  */
 export const getCard = async (cardId: number) => {
-  const response = await axiosClientHelper.get<Card>(`/cards/${cardId}`);
+  const response = await axiosInstance.get<Card>(`/cards/${cardId}`);
   return safeResponse(response.data, cardSchema);
 };
 
@@ -42,7 +42,7 @@ export const getCard = async (cardId: number) => {
  * https://sp-taskify-api.vercel.app/docs/#/Cards/Update
  */
 export const putCard = async (cardId: number, cardRequest: CardRequest) => {
-  const response = await axiosClientHelper.put<Card>(`/cards/${cardId}`, cardRequest);
+  const response = await axiosInstance.put<Card>(`/cards/${cardId}`, cardRequest);
   return safeResponse(response.data, cardSchema);
 };
 
@@ -51,7 +51,7 @@ export const putCard = async (cardId: number, cardRequest: CardRequest) => {
  * https://sp-taskify-api.vercel.app/docs/#/Cards/Update
  */
 export const moveCard = async (cardId: Card['id'], columnId: Column['id']) => {
-  const response = await axiosClientHelper.put<Card>(`/cards/${cardId}`, { columnId });
+  const response = await axiosInstance.put<Card>(`/cards/${cardId}`, { columnId });
   return safeResponse(response.data, cardSchema);
 };
 
@@ -60,5 +60,5 @@ export const moveCard = async (cardId: Card['id'], columnId: Column['id']) => {
  * https://sp-taskify-api.vercel.app/docs/#/Cards/Delete
  */
 export const deleteCard = async (cardId: number) => {
-  await axiosClientHelper.delete<void>(`/cards/${cardId}`);
+  await axiosInstance.delete<void>(`/cards/${cardId}`);
 };

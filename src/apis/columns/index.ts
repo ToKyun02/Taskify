@@ -1,4 +1,4 @@
-import axiosClientHelper from '@/utils/network/axiosClientHelper';
+import { axiosInstance } from '@/utils/network/axios';
 import { safeResponse } from '@/utils/network/safeResponse';
 import { CardImageForm, CardImageResponse, cardImageResponseSchema, Column, ColumnForm, columnSchema, ColumnsResponse, columnsResponseSchema, GetColumnsParams } from '@/apis/columns/types';
 
@@ -7,7 +7,7 @@ import { CardImageForm, CardImageResponse, cardImageResponseSchema, Column, Colu
  * https://sp-taskify-api.vercel.app/docs/#/Columns/Create
  */
 export const postColumn = async (dashboardId: number, columnForm: ColumnForm) => {
-  const response = await axiosClientHelper.post<Column>('/columns', {
+  const response = await axiosInstance.post<Column>('/columns', {
     ...columnForm,
     dashboardId,
   });
@@ -19,7 +19,7 @@ export const postColumn = async (dashboardId: number, columnForm: ColumnForm) =>
  * https://sp-taskify-api.vercel.app/docs/#/Columns/Find
  */
 export const getColumns = async (params: GetColumnsParams) => {
-  const response = await axiosClientHelper.get<ColumnsResponse>('/columns', {
+  const response = await axiosInstance.get<ColumnsResponse>('/columns', {
     params,
   });
   return safeResponse(response.data, columnsResponseSchema);
@@ -30,7 +30,7 @@ export const getColumns = async (params: GetColumnsParams) => {
  * https://sp-taskify-api.vercel.app/docs/#/Columns/Update
  */
 export const putColumn = async (columnId: number, columnForm: ColumnForm) => {
-  const response = await axiosClientHelper.put<Column>(`/columns/${columnId}`, columnForm);
+  const response = await axiosInstance.put<Column>(`/columns/${columnId}`, columnForm);
   return safeResponse(response.data, columnSchema);
 };
 
@@ -39,7 +39,7 @@ export const putColumn = async (columnId: number, columnForm: ColumnForm) => {
  * https://sp-taskify-api.vercel.app/docs/#/Columns/Delete
  */
 export const deleteColumn = async (columnId: number) => {
-  await axiosClientHelper.delete<void>(`/columns/${columnId}`);
+  await axiosInstance.delete<void>(`/columns/${columnId}`);
 };
 
 /**
@@ -47,7 +47,7 @@ export const deleteColumn = async (columnId: number) => {
  * https://sp-taskify-api.vercel.app/docs/#/Columns/UploadImage
  */
 export const postCardImage = async (columnId: number, cardImageForm: CardImageForm) => {
-  const response = await axiosClientHelper.post<CardImageResponse>(`/columns/${columnId}/card-image`, cardImageForm, {
+  const response = await axiosInstance.post<CardImageResponse>(`/columns/${columnId}/card-image`, cardImageForm, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },

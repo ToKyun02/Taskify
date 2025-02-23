@@ -1,4 +1,4 @@
-import axiosClientHelper from '@/utils/network/axiosClientHelper';
+import { axiosInstance } from '@/utils/network/axios';
 import { safeResponse } from '@/utils/network/safeResponse';
 import {
   Dashboard,
@@ -22,7 +22,7 @@ import {
  * https://sp-taskify-api.vercel.app/docs/#/Dashboards/Create
  */
 export const createDashboard = async (params: CreateDashboardRequest) => {
-  const response = await axiosClientHelper.post<Dashboard>('/dashboards', params);
+  const response = await axiosInstance.post<Dashboard>('/dashboards', params);
   return safeResponse(response.data, dashboardSchema);
 };
 
@@ -32,7 +32,7 @@ export const createDashboard = async (params: CreateDashboardRequest) => {
  */
 export const getDashboards = async (params: GetDashboardsRequest) => {
   const { cursorId, page = 1, size = 10, navigationMethod } = params;
-  const response = await axiosClientHelper.get<Dashboards>('/dashboards', {
+  const response = await axiosInstance.get<Dashboards>('/dashboards', {
     params: {
       cursorId,
       page,
@@ -48,7 +48,7 @@ export const getDashboards = async (params: GetDashboardsRequest) => {
  * https://sp-taskify-api.vercel.app/docs/#/Dashboards/Get
  */
 export const getDashboardDetails = async (id: Dashboard['id']) => {
-  const response = await axiosClientHelper.get<Dashboard>(`/dashboards/${id}`);
+  const response = await axiosInstance.get<Dashboard>(`/dashboards/${id}`);
   return safeResponse(response.data, dashboardSchema);
 };
 
@@ -58,7 +58,7 @@ export const getDashboardDetails = async (id: Dashboard['id']) => {
  */
 export const updateDashboard = async (params: UpdateDashboardRequest) => {
   const { id, ...reset } = params;
-  const response = await axiosClientHelper.put<Dashboard>(`/dashboards/${id}`, reset);
+  const response = await axiosInstance.put<Dashboard>(`/dashboards/${id}`, reset);
   return safeResponse(response.data, dashboardSchema);
 };
 
@@ -67,7 +67,7 @@ export const updateDashboard = async (params: UpdateDashboardRequest) => {
  * https://sp-taskify-api.vercel.app/docs/#/Dashboards/Delete
  */
 export const deleteDashboard = async (id: Dashboard['id']) => {
-  const response = await axiosClientHelper.delete<void>(`/dashboards/${id}`);
+  const response = await axiosInstance.delete<void>(`/dashboards/${id}`);
   return response.data;
 };
 
@@ -77,7 +77,7 @@ export const deleteDashboard = async (id: Dashboard['id']) => {
  */
 export const inviteDashboard = async (params: InviteDashboardRequest) => {
   const { id, email } = params;
-  const response = await axiosClientHelper.post<DashboardInvitation>(`/dashboards/${id}/invitations`, { email });
+  const response = await axiosInstance.post<DashboardInvitation>(`/dashboards/${id}/invitations`, { email });
   return safeResponse(response.data, dashboardInvitationSchema);
 };
 
@@ -87,7 +87,7 @@ export const inviteDashboard = async (params: InviteDashboardRequest) => {
  */
 export const getDashboardInvitations = async (params: GetDashboardInvitationsRequest) => {
   const { id, page = 1, size = 10 } = params;
-  const response = await axiosClientHelper.get<DashboardInvitations>(`/dashboards/${id}/invitations`, {
+  const response = await axiosInstance.get<DashboardInvitations>(`/dashboards/${id}/invitations`, {
     params: {
       page,
       size,
@@ -102,5 +102,5 @@ export const getDashboardInvitations = async (params: GetDashboardInvitationsReq
  */
 export const cancelDashboardInvitation = async (params: CancelInviteDashboardRequest) => {
   const { dashboardId, invitationId } = params;
-  await axiosClientHelper.delete<void>(`/dashboards/${dashboardId}/invitations/${invitationId}`);
+  await axiosInstance.delete<void>(`/dashboards/${dashboardId}/invitations/${invitationId}`);
 };

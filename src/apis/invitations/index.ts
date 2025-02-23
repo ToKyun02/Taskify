@@ -1,4 +1,4 @@
-import axiosClientHelper from '@/utils/network/axiosClientHelper';
+import { axiosInstance } from '@/utils/network/axios';
 import { safeResponse } from '@/utils/network/safeResponse';
 import { GetMyInvitationsRequest, MyInvitations, myInvitationsSchema, RespondToInvitationRequest } from '@/apis/invitations/types';
 import { DashboardInvitation, dashboardInvitationSchema } from '@/apis/dashboards/types';
@@ -9,7 +9,7 @@ import { DashboardInvitation, dashboardInvitationSchema } from '@/apis/dashboard
  */
 export const getMyInvitations = async (params: GetMyInvitationsRequest) => {
   const { cursorId, size = 10, title } = params;
-  const response = await axiosClientHelper.get<MyInvitations>('/invitations', {
+  const response = await axiosInstance.get<MyInvitations>('/invitations', {
     params: {
       size,
       ...(title && { title }), // 검색어가 있을경우에만(빈값 보내면 오류)
@@ -25,6 +25,6 @@ export const getMyInvitations = async (params: GetMyInvitationsRequest) => {
  */
 export const respondToInvitation = async (params: RespondToInvitationRequest) => {
   const { invitationId, inviteAccepted } = params;
-  const response = await axiosClientHelper.put<DashboardInvitation>(`/invitations/${invitationId}`, { inviteAccepted });
+  const response = await axiosInstance.put<DashboardInvitation>(`/invitations/${invitationId}`, { inviteAccepted });
   return safeResponse(response.data, dashboardInvitationSchema);
 };

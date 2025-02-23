@@ -1,4 +1,4 @@
-import axiosClientHelper from '@/utils/network/axiosClientHelper';
+import { axiosInstance } from '@/utils/network/axios';
 import { safeResponse } from '@/utils/network/safeResponse';
 import { DeleteMemberRequest, GetMembersRequest, Members, membersSchema } from '@/apis/members/types';
 
@@ -8,7 +8,7 @@ import { DeleteMemberRequest, GetMembersRequest, Members, membersSchema } from '
  */
 export const getMembers = async (params: GetMembersRequest) => {
   const { page = 1, size = 20, dashboardId } = params;
-  const response = await axiosClientHelper.get<Members>('/members', {
+  const response = await axiosInstance.get<Members>('/members', {
     params: {
       size,
       page,
@@ -24,5 +24,5 @@ export const getMembers = async (params: GetMembersRequest) => {
  */
 export const deleteMember = async (params: DeleteMemberRequest) => {
   const { memberId } = params;
-  await axiosClientHelper.delete<void>(`/members/${memberId}`);
+  await axiosInstance.delete<void>(`/members/${memberId}`);
 };

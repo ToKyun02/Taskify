@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import { User, userSchema } from '@/apis/users/types';
-import axiosServerHelper from '@/utils/network/axiosServerHelper';
+import { axiosInstance } from '@/utils/network/axios';
 import { safeResponse } from '@/utils/network/safeResponse';
 import { Page, PageInner } from '@/components/layout/Page';
 import PasswordEdit from '@/components/profile/PasswordEdit';
@@ -28,7 +28,7 @@ export const metadata = {
 };
 
 export default async function MyPage() {
-  const response = await axiosServerHelper<User>('/users/me');
+  const response = await axiosInstance<User>('/users/me');
   const userData = safeResponse(response.data, userSchema);
 
   if (!userData) {

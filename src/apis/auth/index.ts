@@ -1,4 +1,4 @@
-import axiosClientHelper from '@/utils/network/axiosClientHelper';
+import { axiosInstance } from '@/utils/network/axios';
 import { safeResponse } from '@/utils/network/safeResponse';
 import { LoginFormData, LoginResponse, loginResponseSchema, PutPasswordFormData } from '@/apis/auth/types';
 
@@ -7,12 +7,8 @@ import { LoginFormData, LoginResponse, loginResponseSchema, PutPasswordFormData 
  * https://sp-taskify-api.vercel.app/docs/#/Auth/Login
  */
 export const login = async (loginFormData: LoginFormData) => {
-  const response = await axiosClientHelper.post<LoginResponse>('/auth/login', loginFormData);
+  const response = await axiosInstance.post<LoginResponse>('/auth/login', loginFormData);
   return safeResponse(response.data, loginResponseSchema);
-};
-
-export const logout = async () => {
-  await axiosClientHelper.post<void>('/auth/logout');
 };
 
 /**
@@ -20,5 +16,5 @@ export const logout = async () => {
  * https://sp-taskify-api.vercel.app/docs/#/Auth/ChangePassword
  */
 export const putPassword = async (putPasswordFormData: PutPasswordFormData) => {
-  await axiosClientHelper.put<void>('/auth/password', putPasswordFormData);
+  await axiosInstance.put<void>('/auth/password', putPasswordFormData);
 };
