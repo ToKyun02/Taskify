@@ -17,17 +17,10 @@ export const loginResponseSchema = z.object({
     createdAt: z.union([z.string(), z.date()]),
     updatedAt: z.union([z.string(), z.date()]),
   }),
+  accessToken: z.string(),
 });
 
-export type LoginSuccessResponse = z.infer<typeof loginResponseSchema>;
-
-export const loginFailSchema = z.object({
-  message: z.string(),
-});
-
-export type LoginFailResponse = z.infer<typeof loginFailSchema>;
-
-export type LoginResponse = Promise<LoginSuccessResponse | LoginFailResponse>;
+export type LoginResponse = z.infer<typeof loginResponseSchema>;
 
 export const passwordSchema = z
   .object({

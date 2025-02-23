@@ -4,11 +4,11 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useAlert from '@/hooks/useAlert';
 import { loginSchema, LoginFormData } from '@/apis/auth/types';
-import { useLogin } from '@/apis/auth/queries';
-import { getErrorMessage } from '@/utils/network/errorMessage';
 import Field from '@/components/auth/Field';
 import SubmitButton from '@/components/auth/SubmitButton';
 import { LOGIN_FORM_PLACEHOLDER } from '@/constants/auth';
+import { loginAction } from '@/actions/login';
+import { useRouter } from 'next/navigation';
 
 export default function LoginForm() {
   const {
@@ -25,16 +25,15 @@ export default function LoginForm() {
   });
 
   const alert = useAlert();
-  const { mutateAsync: login } = useLogin();
+  const router = useRouter();
 
   const onSubmit = async (loginFormData: LoginFormData) => {
-    try {
-      await login(loginFormData);
-      await alert('로그인이 완료되었습니다!');
-      window.location.reload();
-    } catch (error) {
-      const message = getErrorMessage(error);
-      alert(message);
+    const result = await loginAction(loginFormData);
+    if (result.success) {
+      await alert(result.message);
+      router.push('/mydashboard');
+    } else {
+      alert(result.message);
     }
   };
 

@@ -3,22 +3,17 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'motion/react';
-import useAlert from '@/hooks/useAlert';
 import { useGetUser } from '@/apis/users/queries';
-import { useLogout } from '@/apis/auth/queries';
 import Avatar from '@/components/ui/Avatar';
+import { logoutAction } from '@/actions/logout';
 
 export default function Profile() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { data, isFetching } = useGetUser();
-  const alert = useAlert();
   const menuRef = useRef<HTMLDivElement | null>(null);
-  const { mutateAsync: logout } = useLogout();
 
   const handleLogout = async () => {
-    await logout();
-    await alert('로그아웃 했습니다.');
-    window.location.reload();
+    logoutAction();
   };
 
   useEffect(() => {
