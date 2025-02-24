@@ -28,6 +28,7 @@ export default {
         violet: {
           10: '#F1EFFD',
           20: '#5534DA',
+          30: '#623FEE',
         },
         red: '#D6173A',
         green: {

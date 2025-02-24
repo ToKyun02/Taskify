@@ -57,7 +57,7 @@ export default function Hero() {
         className='mb-[6.25rem] flex flex-col items-center md:mb-[6.875rem] md:flex-row md:justify-center md:gap-4'
       >
         <span className='text-[2.5rem] font-bold tracking-tight text-white md:text-[3.5rem] lg:text-[4.75rem]'>새로운 일정 관리</span>
-        <span className='font-mont text-[2.625rem] font-thin tracking-normal text-violet-20 md:text-[4.375rem] lg:text-[5.625rem]'>Taskify</span>
+        <span className='text-violet-30 font-mont text-[2.625rem] font-thin tracking-normal md:text-[4.375rem] lg:text-[5.625rem]'>Taskify</span>
       </motion.h1>
       <MotionLink
         href='/login'
