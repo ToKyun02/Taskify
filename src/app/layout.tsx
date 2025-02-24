@@ -1,20 +1,14 @@
-import localFont from 'next/font/local';
 import { Montserrat } from 'next/font/google';
 import { DialogContainer } from '@/components/ui/Modal/DialogContainer';
 import QueryClientProvider from '@/components/provider/QueryProvider';
 import './globals.css';
 
-const pretendard = localFont({
-  src: '../fonts/PretendardVariable.woff2',
-  display: 'swap',
-  weight: '45 920',
-  variable: '--font-pretendard',
-});
-
 const montserrat = Montserrat({
   weight: '700',
   subsets: ['latin'],
   variable: '--font-montserrat',
+  preload: true,
+  display: 'swap',
 });
 
 export default function RootLayout({
@@ -24,7 +18,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='ko'>
-      <body className={`${pretendard.className} ${montserrat.variable}`}>
+      <head>
+        <link rel='stylesheet' as='style' crossOrigin='anonymous' href='https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css' />
+      </head>
+      <body className={`${montserrat.variable}`}>
         <QueryClientProvider>
           {children}
           <DialogContainer />
