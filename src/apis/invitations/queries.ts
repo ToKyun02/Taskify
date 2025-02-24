@@ -5,9 +5,8 @@ import { getMyInvitations, respondToInvitation } from '@/apis/invitations/';
 import { GetMyInvitationsRequest, RespondToInvitationRequest } from '@/apis/invitations/types';
 
 export const useMyInvitationsQuery = (params: GetMyInvitationsRequest) => {
-  const { size, cursorId, title } = params;
   return useInfiniteQuery({
-    queryKey: ['myInvitations', size, cursorId, title],
+    queryKey: ['myInvitations', params],
     queryFn: ({ pageParam }) =>
       getMyInvitations({
         ...params,

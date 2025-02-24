@@ -30,7 +30,7 @@ export default function DetailInvited() {
     if (!result) return;
 
     try {
-      await cancel({ dashboardId: Number(id), invitationId });
+      await cancel({ id: Number(id), invitationId });
       alert('초대를 취소했습니다.');
     } catch (error) {
       const message = getErrorMessage(error);

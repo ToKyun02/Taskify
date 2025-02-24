@@ -13,9 +13,8 @@ import {
 } from '@/apis/dashboards/types';
 
 export const useDashboardsQuery = (params: GetDashboardsRequest) => {
-  const { page, size, navigationMethod, cursorId } = params;
   return useQuery({
-    queryKey: ['dashboards', page, size, navigationMethod, cursorId],
+    queryKey: ['dashboards', params],
     queryFn: () => getDashboards(params),
   });
 };
@@ -28,9 +27,8 @@ export const useDashboardQuery = (id: Dashboard['id']) => {
 };
 
 export const useDashboardInvitationsQuery = (params: GetDashboardInvitationsRequest) => {
-  const { id, ...rest } = params;
   return useQuery({
-    queryKey: ['invitations', id, rest],
+    queryKey: ['invitations', params],
     queryFn: () => getDashboardInvitations(params),
   });
 };
@@ -84,7 +82,7 @@ export const useInviteDashboard = () => {
     },
     onSuccess: (_, { id }) => {
       queryClient.invalidateQueries({ queryKey: ['myInvitations'] });
-      queryClient.invalidateQueries({ queryKey: ['invitations', id] });
+      queryClient.invalidateQueries({ queryKey: ['invitations', { id }] });
     },
   });
 };
@@ -96,8 +94,8 @@ export const useCancelInviteDashboard = () => {
     mutationFn: (params: CancelInviteDashboardRequest) => {
       return cancelDashboardInvitation(params);
     },
-    onSuccess: (_, { dashboardId }) => {
-      queryClient.invalidateQueries({ queryKey: ['invitations', dashboardId] });
+    onSuccess: (_, { id }) => {
+      queryClient.invalidateQueries({ queryKey: ['invitations', { id }] });
     },
   });
 };
