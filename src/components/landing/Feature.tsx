@@ -37,13 +37,13 @@ export default function Feature() {
   // prettier-ignore
   const scaleFactor = [
     useTransform(scrollYProgress, [0, 0.5], [1, 0.96]), 
-    useTransform(scrollYProgress, [0.5, 0.1], [1, 1])
+    useTransform(scrollYProgress, [0.5, 1], [1, 1])
   ];
 
   // prettier-ignore
   const opacityFactor = [
     useTransform(scrollYProgress, [0, 0.5], [1, 0.4]), 
-    useTransform(scrollYProgress, [0.5, 0.1], [1, 1])
+    useTransform(scrollYProgress, [0.5, 1], [1, 1])
   ];
 
   return (
